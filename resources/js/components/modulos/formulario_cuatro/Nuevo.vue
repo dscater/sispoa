@@ -1,0 +1,466 @@
+<template>
+    <div
+        class="modal fade"
+        :class="{ show: bModal }"
+        id="modal-default"
+        aria-modal="true"
+        role="dialog"
+    >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-lightblue">
+                    <h4 class="modal-title" v-text="tituloModal"></h4>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        @click="cierraModal"
+                    >
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.codigo_pei,
+                                    }"
+                                    >Código PEI*</label
+                                >
+                                <el-input
+                                    placeholder="Código PEI"
+                                    :class="{ 'is-invalid': errors.codigo_pei }"
+                                    v-model="formulario_cuatro.codigo_pei"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.codigo_pei"
+                                    v-text="errors.codigo_pei[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger':
+                                            errors.accion_institucional,
+                                    }"
+                                    >Acción Institucional específica*</label
+                                >
+
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Acción Institucional específica"
+                                    :class="{
+                                        'is-invalid':
+                                            errors.accion_institucional,
+                                    }"
+                                    v-model="
+                                        formulario_cuatro.accion_institucional
+                                    "
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.accion_institucional"
+                                    v-text="errors.accion_institucional[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.indicador,
+                                    }"
+                                    >Indicador de Proceso*</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Indicador de Proceso"
+                                    :class="{ 'is-invalid': errors.indicador }"
+                                    v-model="formulario_cuatro.indicador"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.indicador"
+                                    v-text="errors.indicador[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.codigo_poa,
+                                    }"
+                                    >Código POA*</label
+                                >
+                                <el-input
+                                    placeholder="Código POA"
+                                    :class="{ 'is-invalid': errors.codigo_poa }"
+                                    v-model="formulario_cuatro.codigo_poa"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.codigo_poa"
+                                    v-text="errors.codigo_poa[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.accion_corto,
+                                    }"
+                                    >Acción de Corto Plazo de Gestión*</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Acción de Corto Plazo de Gestión"
+                                    :class="{
+                                        'is-invalid': errors.accion_corto,
+                                    }"
+                                    v-model="formulario_cuatro.accion_corto"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.accion_corto"
+                                    v-text="errors.accion_corto[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger':
+                                            errors.resultado_esperado,
+                                    }"
+                                    >Resultado Esperado Gestión*</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Resultado Esperado Gestión"
+                                    :class="{
+                                        'is-invalid': errors.resultado_esperado,
+                                    }"
+                                    v-model="
+                                        formulario_cuatro.resultado_esperado
+                                    "
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.resultado_esperado"
+                                    v-text="errors.resultado_esperado[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.presupuesto,
+                                    }"
+                                    >Presupuesto Programado Gestión*</label
+                                >
+                                <input
+                                    type="number"
+                                    placeholder="Presupuesto Programado Gestión"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.presupuesto,
+                                    }"
+                                    v-model="formulario_cuatro.presupuesto"
+                                />
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.presupuesto"
+                                    v-text="errors.presupuesto[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.ponderacion,
+                                    }"
+                                    >Ponderación %*</label
+                                >
+                                <input
+                                    type="number"
+                                    placeholder="Ponderación %"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': errors.presupuesto,
+                                    }"
+                                    v-model="formulario_cuatro.ponderacion"
+                                />
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.ponderacion"
+                                    v-text="errors.ponderacion[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.unidad_id,
+                                    }"
+                                    >Unidad Organizacional*</label
+                                >
+                                <el-select
+                                    class="w-100 d-block"
+                                    :class="{
+                                        'is-invalid': errors.unidad_id,
+                                    }"
+                                    v-model="formulario_cuatro.unidad_id"
+                                    clearable
+                                >
+                                    <el-option
+                                        v-for="item in listUnidades"
+                                        :key="item.id"
+                                        :value="item.id"
+                                        :label="item.nombre"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.unidad_id"
+                                    v-text="errors.unidad_id[0]"
+                                ></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button
+                        type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal"
+                        @click="cierraModal"
+                    >
+                        Cerrar
+                    </button>
+                    <el-button
+                        type="primary"
+                        class="bg-lightblue"
+                        :loading="enviando"
+                        @click="setRegistroModal()"
+                        >{{ textoBoton }}</el-button
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        muestra_modal: {
+            type: Boolean,
+            default: false,
+        },
+        accion: {
+            type: String,
+            default: "nuevo",
+        },
+        formulario_cuatro: {
+            type: Object,
+            default: {
+                id: 0,
+                codigo_pei: "",
+                accion_institucional: "",
+                indicador: "",
+                codigo_poa: "",
+                accion_corto: "",
+                resultado_esperado: "",
+                presupuesto: "",
+                ponderacion: "",
+                unidad_id: "",
+            },
+        },
+    },
+    watch: {
+        muestra_modal: function (newVal, oldVal) {
+            this.errors = [];
+            if (newVal) {
+                this.bModal = true;
+            } else {
+                this.bModal = false;
+            }
+        },
+    },
+    computed: {
+        tituloModal() {
+            if (this.accion == "nuevo") {
+                return "AGREGAR USUARIO";
+            } else {
+                return "MODIFICAR REGISTRO";
+            }
+        },
+        textoBoton() {
+            if (this.accion == "nuevo") {
+                return "Registrar";
+            } else {
+                return "Actualizar";
+            }
+        },
+    },
+    data() {
+        return {
+            user: JSON.parse(localStorage.getItem("user")),
+            bModal: this.muestra_modal,
+            enviando: false,
+            listUnidades: [],
+            errors: [],
+        };
+    },
+    mounted() {
+        this.bModal = this.muestra_modal;
+        this.getUnidades();
+    },
+    methods: {
+        getUnidades() {
+            axios.get("/admin/unidads").then((response) => {
+                this.listUnidades = response.data.unidads;
+            });
+        },
+        setRegistroModal() {
+            this.enviando = true;
+            try {
+                this.textoBtn = "Enviando...";
+                let url = "/admin/formulario_cuatro";
+                let config = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                };
+                let formdata = new FormData();
+                formdata.append(
+                    "codigo_pei",
+                    this.formulario_cuatro.codigo_pei
+                        ? this.formulario_cuatro.codigo_pei
+                        : ""
+                );
+                formdata.append(
+                    "accion_institucional",
+                    this.formulario_cuatro.accion_institucional
+                        ? this.formulario_cuatro.accion_institucional
+                        : ""
+                );
+                formdata.append(
+                    "indicador",
+                    this.formulario_cuatro.indicador
+                        ? this.formulario_cuatro.indicador
+                        : ""
+                );
+                formdata.append(
+                    "codigo_poa",
+                    this.formulario_cuatro.codigo_poa
+                        ? this.formulario_cuatro.codigo_poa
+                        : ""
+                );
+                formdata.append(
+                    "accion_corto",
+                    this.formulario_cuatro.accion_corto
+                        ? this.formulario_cuatro.accion_corto
+                        : ""
+                );
+                formdata.append(
+                    "resultado_esperado",
+                    this.formulario_cuatro.resultado_esperado
+                        ? this.formulario_cuatro.resultado_esperado
+                        : ""
+                );
+                formdata.append(
+                    "presupuesto",
+                    this.formulario_cuatro.presupuesto
+                        ? this.formulario_cuatro.presupuesto
+                        : ""
+                );
+                formdata.append(
+                    "ponderacion",
+                    this.formulario_cuatro.ponderacion
+                        ? this.formulario_cuatro.ponderacion
+                        : ""
+                );
+                formdata.append(
+                    "unidad_id",
+                    this.formulario_cuatro.unidad_id
+                        ? this.formulario_cuatro.unidad_id
+                        : ""
+                );
+                if (this.accion == "edit") {
+                    url =
+                        "/admin/formulario_cuatro/" + this.formulario_cuatro.id;
+                    formdata.append("_method", "PUT");
+                }
+                axios
+                    .post(url, formdata, config)
+                    .then((res) => {
+                        this.enviando = false;
+                        Swal.fire({
+                            icon: "success",
+                            title: res.data.msj,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        this.limpiaFormularioCuatro();
+                        this.$emit("envioModal");
+                        this.errors = [];
+                        if (this.accion == "edit") {
+                            this.textoBtn = "Actualizar";
+                        } else {
+                            this.textoBtn = "Registrar";
+                        }
+                    })
+                    .catch((error) => {
+                        this.enviando = false;
+                        if (this.accion == "edit") {
+                            this.textoBtn = "Actualizar";
+                        } else {
+                            this.textoBtn = "Registrar";
+                        }
+                        if (error.response) {
+                            if (error.response.status === 422) {
+                                this.errors = error.response.data.errors;
+                            }
+                        }
+                    });
+            } catch (e) {
+                this.enviando = false;
+                console.log(e);
+            }
+        },
+        // Dialog/modal
+        cierraModal() {
+            this.bModal = false;
+            this.$emit("close");
+        },
+        limpiaFormularioCuatro() {
+            this.errors = [];
+            this.formulario_cuatro.codigo_pei = "";
+            this.formulario_cuatro.accion_institucional = "";
+            this.formulario_cuatro.indicador = "";
+            this.formulario_cuatro.codigo_poa = "";
+            this.formulario_cuatro.accion_corto = "";
+            this.formulario_cuatro.resultado_esperado = "";
+            this.formulario_cuatro.presupuesto = "";
+            this.formulario_cuatro.ponderacion = "";
+            this.formulario_cuatro.unidad_id = "";
+        },
+    },
+};
+</script>
+
+<style></style>
