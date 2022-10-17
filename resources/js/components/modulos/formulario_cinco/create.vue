@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-gray-dark">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3
@@ -33,8 +33,6 @@
                                         </h3>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-12">
                                         <label
@@ -69,6 +67,8 @@
                                         ></span>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <Operacion
                                     v-for="(operacion, index) in listOperacions"
                                     :formulario_id="formulario_id.toString()"
@@ -274,114 +274,147 @@ export default {
                                             (index_tarea + 1)
                                     );
                                 }
-                            }
-                        );
-                        item_lugar_responsable.partidas.forEach(
-                            (item_partida, index_partida) => {
-                                if (
-                                    item_partida.partida == null ||
-                                    item_partida.partida == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar una <b>partida</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.descripcion == null ||
-                                    item_partida.descripcion == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar una <b>descripción</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.cantidad == null ||
-                                    item_partida.cantidad == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar una <b>cantidad</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.unidad == null ||
-                                    item_partida.unidad == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar una <b>unidad</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.costo == null ||
-                                    item_partida.costo == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar un <b>costo</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.ue == null ||
-                                    item_partida.ue == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar un <b>UE</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.prog == null ||
-                                    item_partida.prog == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar un <b>PROG</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
-                                if (
-                                    item_partida.act == null ||
-                                    item_partida.act == ""
-                                ) {
-                                    array_errors.push(
-                                        "Debes ingresar un <b>ACT</b> en el elemento  " +
-                                            (index + 1) +
-                                            "-" +
-                                            (index_lugar_responsable + 1) +
-                                            " fila " +
-                                            (index_partida + 1)
-                                    );
-                                }
+
+                                item_tarea.partidas.forEach(
+                                    (item_partida, index_partida) => {
+                                        if (
+                                            item_partida.partida == null ||
+                                            item_partida.partida == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar una <b>partida</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.descripcion == null ||
+                                            item_partida.descripcion == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar una <b>descripción</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.cantidad == null ||
+                                            item_partida.cantidad == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar una <b>cantidad</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.unidad == null ||
+                                            item_partida.unidad == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar una <b>unidad</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.costo == null ||
+                                            item_partida.costo == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar un <b>costo</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.ue == null ||
+                                            item_partida.ue == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar un <b>UE</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.prog == null ||
+                                            item_partida.prog == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar un <b>PROG</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                        if (
+                                            item_partida.act == null ||
+                                            item_partida.act == ""
+                                        ) {
+                                            array_errors.push(
+                                                "Debes ingresar un <b>ACT</b> en el elemento  " +
+                                                    (index + 1) +
+                                                    "-" +
+                                                    (index_lugar_responsable +
+                                                        1) +
+                                                    " (tarea " +
+                                                    (index_tarea + 1) +
+                                                    " - " +
+                                                    (index_partida + 1) +
+                                                    ")"
+                                            );
+                                        }
+                                    }
+                                );
                             }
                         );
                     }

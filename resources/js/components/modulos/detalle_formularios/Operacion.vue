@@ -53,12 +53,12 @@
             v-for="(detalle, index_detalle) in o_Operacion.detalle_operaciones"
         >
             <span
-                class="rounded-circle numero_operacion_detalle"
-                v-text="index + 1 + '-' + (index_detalle + 1)"
+                class="numero_operacion_detalle_cuatro"
+                v-text="index + 1 + '-' + (index_detalle + 1) + ' Actividad/Tarea'"
             ></span>
-            <div class="col-md-12">
+            <div class="col-md-12 mt-4">
                 <div class="card">
-                    <div class="card-body text-black">
+                    <div class="card-body text-black p-2">
                         <button
                             class="btn btn-danger rounded-circle btnQuitar"
                             @click="quitarDetalle(index_detalle, detalle.id)"
@@ -514,7 +514,7 @@
                             @click="agregarDetalle"
                         >
                             <i class="fa fa-plus"></i>
-                            Agregar Detalle
+                            Agregar detalle Actividad/Tarea
                         </button>
                     </div>
                 </div>
@@ -662,19 +662,20 @@ export default {
     font-size: 1.2rem;
 }
 
-.numero_operacion_detalle {
-    padding: 5px 0px;
+.numero_operacion_detalle_cuatro {
+    padding: 3px;
     background: var(--secondary);
-    width: 37px;
-    height: 37px;
+    width: auto;
+    height: auto;
     position: absolute;
     z-index: 100;
     left: 0px;
-    top: 0px;
+    top: 5px;
+    border-radius:5px;
     color: white;
     text-align: center;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.7rem;
 }
 
 .detalle_trimestres tr td {

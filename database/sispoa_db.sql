@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 17-10-2022 a las 01:01:53
+-- Tiempo de generación: 17-10-2022 a las 19:40:53
 -- Versión del servidor: 5.7.33
 -- Versión de PHP: 7.4.19
 
@@ -41,14 +41,10 @@ CREATE TABLE `actividad_tareas` (
 --
 
 INSERT INTO `actividad_tareas` (`id`, `fco_id`, `detalle_operacion_id`, `lugar_responsable_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '2022-10-17 00:52:32', '2022-10-17 00:52:32'),
-(2, 1, 2, 2, '2022-10-17 00:52:32', '2022-10-17 00:52:32'),
-(3, 1, 3, 3, '2022-10-17 00:52:33', '2022-10-17 00:52:33'),
-(4, 1, 4, 4, '2022-10-17 00:52:33', '2022-10-17 00:52:33'),
-(5, 1, 5, 5, '2022-10-17 00:52:33', '2022-10-17 00:52:33'),
-(6, 2, 6, 6, '2022-10-17 00:52:33', '2022-10-17 00:52:33'),
-(7, 2, 7, 6, '2022-10-17 00:52:33', '2022-10-17 00:52:33'),
-(8, 2, 8, 6, '2022-10-17 00:52:33', '2022-10-17 00:52:33');
+(1, 1, 1, 1, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(2, 1, 2, 2, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(3, 2, 6, 3, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(4, 2, 7, 3, '2022-10-17 19:40:27', '2022-10-17 19:40:27');
 
 -- --------------------------------------------------------
 
@@ -81,13 +77,6 @@ CREATE TABLE `certificacions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `certificacions`
---
-
-INSERT INTO `certificacions` (`id`, `formulario_id`, `fco_id`, `actividad_tarea_id`, `partida_id`, `cantidad_usar`, `justificacion`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `ue`, `prog`, `proy`, `act`, `ff`, `of`, `codigo`, `accion`, `estado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, 99, 'JUSTIFICACION', NULL, 1, 2, 3, '01', '01', '11', '10', '11', '11', '3234', 'ACCION A CORTO PLAZO', 'PENDIENTE', '2022-10-16', '2022-10-17 00:57:36', '2022-10-17 00:57:36');
 
 -- --------------------------------------------------------
 
@@ -137,7 +126,7 @@ CREATE TABLE `detalle_formularios` (
 --
 
 INSERT INTO `detalle_formularios` (`id`, `formulario_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, '2022-10-16', '2022-10-17 00:38:22', '2022-10-17 00:38:22');
+(1, 1, '2022-10-17', '2022-10-17 19:31:22', '2022-10-17 19:31:22');
 
 -- --------------------------------------------------------
 
@@ -176,14 +165,14 @@ CREATE TABLE `detalle_operacions` (
 --
 
 INSERT INTO `detalle_operacions` (`id`, `operacion_id`, `ponderacion`, `resultado_esperado`, `medios_verificacion`, `codigo_tarea`, `actividad_tarea`, `pt_e`, `pt_f`, `pt_m`, `st_a`, `st_m`, `st_j`, `tt_j`, `tt_a`, `tt_s`, `ct_o`, `ct_n`, `ct_d`, `inicio`, `final`, `created_at`, `updated_at`) VALUES
-(1, 1, 10.00, 'PLAN ESTRATÉGICO COMUNICACIONAL 2022', 'INFORME', '4.1.1', 'ELABORACIÓN DEL PLAN ESTRATÉGICO COMUNICACIONAL 2022', '', '', '1', '', '', '', '', '', '', '', '', '', '2022-01-03', '2022-03-31', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(2, 1, 20.00, 'POBLACIÓN BOLIVIANA CONOCE LAS ACCIONES Y RESULTADOS DE LA ASUSS', 'INFORMES', '4.1.2', 'COBERTURA DE PRENSA PARA LA GESTIÓN DE INFORMACIÓN', '', '', '1', '', '', '1', '', '', '1', '', '', '1', '2022-01-03', '2022-12-31', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(3, 1, 20.00, 'LA POBLACIÓN BOLIVIANA CONOCE LAS ACCIONES Y RESULTADOS DE LA ASUSS', 'INFORME', '4.1.3', 'REALIZAR GESTIONES PARA LA DIFUSIÓN EN MEDIOS DE COMUNICACIÓN TRADICIONALES Y DIGITALES', '', '', '', '', '', '', '', '', '', '', '', '1', '2022-03-01', '2022-12-15', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(4, 1, 10.00, 'VISIBILIZAR LA IMAGEN INSTITUCIONAL DE LA ASUSS', 'INFORME', '4.1.4', 'ADMINISTRACIÓN DE REDES  SOCIALES DE LA ASUSS', '', '', '', '', '', '1', '', '', '', '', '', '1', '2022-01-03', '2022-12-31', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(5, 1, 10.00, 'LA POBLACION BOLIVINAA CONOCE LAS ACCIONES Y LOS RESULTADOS DE LA ASUSS', 'INFORME', '4.1.5', 'PARTICIPACION EN FERIAS Y EVENTOS', '', '', '1', '', '', '', '', '', '', '', '', '1', '2022-01-03', '2022-12-31', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(6, 2, 10.00, 'MEMORIA INSTITUCIONAL DE LA GESTIÓN 2021 Y MEMORIA INSTITUCIONAL DE LA GESTIÓN 2022', 'INFORME', '4.2.1.', 'ELABORIACION DE LA MEMORIA INSTITUCIONAL', '', '', '', '1', '', '', '', '', '', '', '', '1', '2022-03-01', '2022-12-31', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(7, 2, 10.00, 'CONTAR CON MATERIAL PROMOCIONAL E INFORMATIVO', 'INFORME', '4.2.2', 'ELABORACIÓN Y DIFUSIÓN DE MATERIALES PROMOCIONALES, INFORMATIVOS E INSTITUCIONALES', '', '', '', '', '', '1', '', '', '', '', '', '1', '2022-03-01', '2022-12-15', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(8, 2, 10.00, 'TRES REVISTAS INSTITUCIONALES DE LA ASUSS', 'REVISTAS', '4.2.3', 'ELABORACIÓN DE LA REVISTA DELA ASUSS', '', '', '', '1', '', '', '', '1', '', '', '', '1', '2022-04-01', '2022-12-31', '2022-10-17 00:38:22', '2022-10-17 00:38:22');
+(1, 1, 10.00, 'PLAN ESTRATEGICO COMUNICACIONAL 2022', 'INFORME', '4.1.1', 'ELABORACIÓN DE PLAN ESTRATEGICO COMUNICACIONAL 2022', '1', '', '', '', '', '', '', '', '', '', '', '', '2022-01-03', '2022-03-31', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(2, 1, 20.00, 'POBLACION BOLIVIANA CONOCE LAS ACCIONES Y RESULTADOSDE LA ASUSS', 'INFORMES', '4.1.2', 'COBERTURA DE PRENSA PARA LA GESTIÓN DE INFORMACIÓN', '', '', '1', '', '', '1', '', '', '1', '', '', '1', '2022-01-03', '2022-12-31', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(3, 1, 20.00, 'LA POBLACION BOLIVIANA CONOCE LAS ACCIONES Y LOS RESULTADOS DE LA ASUSS', 'INFORME', '4.1.3.', 'REALIZAR LAS GESTIONES PARA LA DIFUSION EN MEDIOS DE COMUNICACIÓN TRADICIONALES', '', '', '', '', '', '', '', '', '', '', '', '1', '2022-03-01', '2022-12-15', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(4, 1, 10.00, 'VISIBILIZAR LA IMAGEN INSTITUCIONAL DE LA ASUSS', 'INFORME', '4.1.4', 'ADMINISTRACION DE REDES SOCIALES DE LA ASUSS', '', '', '', '', '', '', '', '', '', '', '', '', '2022-01-03', '2022-12-31', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(5, 1, 10.00, 'LA POBLACION BOLIVIANA CONOCE LAS ACCIONES Y LOS RESULTADOS DE LA ASUSS', 'INFORME', '4.1.5', 'PARTICIPACION EN FERIAS Y EVENTOS', '', '', '', '', '', '', '', '', '', '', '', '', '2022-01-03', '2022-12-31', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(6, 2, 10.00, 'MEMORIA INSTITUCIONAL DE LA GESTIÓN 2021 Y MEMORIA INSTITUCIONAL DE LA GESTIÓN 2022', 'INFORME', '4.2.1', 'ELABORACIÓN  DE LA MEMORIA INSTITUCIONAL', '', '', '', '1', '', '', '', '', '', '', '', '1', '2022-03-01', '2022-12-31', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(7, 2, 10.00, 'CONTAR CON MATERIAL PROMOCIONAL E INFORMATIVO', 'INFORME', '4.2.2', 'ELABORACION Y DIFUSION DE MATERIALES PROMOCIONALES INFORMATIVOS E INSTITUCIONALES', '', '', '', '', '', '11', '', '', '', '', '', '1', '2022-03-01', '2022-12-15', '2022-10-17 19:31:23', '2022-10-17 19:31:23'),
+(8, 2, 10.00, 'TRES REVISTAS INSTITUCIONALES DE LA ASUSS', 'REVISTAS', '4.2.3', 'ELABORACIÓN DE LA REVISTA DE LA ASUSS', '', '', '', '1', '', '', '', '1', '', '', '', '1', '2022-04-01', '2022-12-31', '2022-10-17 19:31:23', '2022-10-17 19:31:23');
 
 -- --------------------------------------------------------
 
@@ -205,7 +194,7 @@ CREATE TABLE `formulario_cinco` (
 --
 
 INSERT INTO `formulario_cinco` (`id`, `formulario_id`, `total_formulario`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, '2085950.00', '2022-10-16', '2022-10-17 00:52:32', '2022-10-17 00:54:13');
+(1, 1, '667703.00', '2022-10-17', '2022-10-17 19:40:26', '2022-10-17 19:40:27');
 
 -- --------------------------------------------------------
 
@@ -234,7 +223,7 @@ CREATE TABLE `formulario_cuatro` (
 --
 
 INSERT INTO `formulario_cuatro` (`id`, `codigo_pei`, `accion_institucional`, `indicador`, `codigo_poa`, `accion_corto`, `resultado_esperado`, `presupuesto`, `ponderacion`, `unidad_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, '11.1.298.4', 'CONSOLIDAR LA CAPACIDAD TÉCNICA, TECNOLOGICA FINANCIERA Y NORMATIVA DE LA AUTORIDAD DE SUPERVISIÓN DE CORTO PLAZO', 'INCREMENTAR EL ÍNDICE DE EFICACIA DE LA ASUSS', '11.1.298.4', 'CONSOLIDAR LA ESTRUCTURA INSTTITUCIONAL TÉCNICA, ADMINISTRATIVA, FINANCIERA Y JURÍDICA DE LA AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO A NIVEL NACIONAL, REGIONAL Y DEPARTAMENTAL', 'EJECUCIÓN FÍSICA A 90% Y FINANCIERA A 90%', '2081175.00', 20.00, 1, '2022-10-16', '2022-10-17 00:31:47', '2022-10-17 00:31:47');
+(1, '11.1.298.4', 'CONSOLIDAR LA CAPACIDAD TÉCNICA TECNOLOGICA FINANCIERA Y NORMATIVA DE LA AUTORIDAD DE SUPERVISIÓN DE CORTO PLAZO', 'INCREMENTAR EL ÍNDICE DE EFICACIA DE LA ASUSS', '11.1.298.4', 'CONSOLIDAR LA ESTRUCTURA INSTITUCIONAL TÉCNICA, ADMINISTRATIVA, FINANCIERA Y JURÍDICA DE LA AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO A NIVEL NACIONAL', 'EJECUCIÓN FÍSICA 90% Y FINANCIERA 90%', '2081175.00', 20.00, 1, '2022-10-17', '2022-10-17 19:23:24', '2022-10-17 19:23:24');
 
 -- --------------------------------------------------------
 
@@ -256,8 +245,8 @@ CREATE TABLE `f_c_operacions` (
 --
 
 INSERT INTO `f_c_operacions` (`id`, `formulario_cinco_id`, `operacion_id`, `total_operacion`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '1430133.00', '2022-10-17 00:52:32', '2022-10-17 00:52:32'),
-(2, 1, 2, '655817.00', '2022-10-17 00:52:33', '2022-10-17 00:52:33');
+(1, 1, 1, '162495.00', '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(2, 1, 2, '505208.00', '2022-10-17 19:40:26', '2022-10-17 19:40:26');
 
 -- --------------------------------------------------------
 
@@ -279,12 +268,9 @@ CREATE TABLE `lugar_responsables` (
 --
 
 INSERT INTO `lugar_responsables` (`id`, `fco_id`, `lugar`, `responsable`, `created_at`, `updated_at`) VALUES
-(1, 1, 'NACIONAL', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL Y TÉCNICO DE ÁRA DE COMUNICACIÓN SOCIAL', '2022-10-17 00:52:32', '2022-10-17 00:54:12'),
-(2, 1, 'NACIONAL', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL Y TÉCNICO DE ÁREA DE COMUNICACIÓN SOCIAL', '2022-10-17 00:52:32', '2022-10-17 00:54:12'),
-(3, 1, 'NACIONAL', 'RESPONABLE DE ÁREA DE COMUNICACIÓN SOCIAL Y TÉCNICO DE ÁREA DE COMUNICACIÓN SOCIAL', '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(4, 1, 'NACIONAL', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL Y TÉCNICO DE ÁREA DE COMUNICACIÓN SOCIAL', '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(5, 1, 'LA PAZ', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL YTÉCNICO DE ÁREA DE COMUNICACIÓN SOCIAL', '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(6, 2, 'LA PAZ', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL Y TÉCNICO DE ÁREA DE COMUNICACIÓN SOCIAL', '2022-10-17 00:52:33', '2022-10-17 00:54:12');
+(1, 1, 'NACIONAL', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL TÉCNICO DE ÁREA DE COMUNICACION SOCIAL', '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(2, 1, 'NACIONAL', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL TÉCNICO DE ÁREA DE COMUNICACION SOCIAL', '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(3, 2, 'LA PAZ', 'RESPONSABLE DE ÁREA DE COMUNICACIÓN SOCIAL Y TÉCNICO DE ÁREA DE COMUNICACIÓN SOCIAL', '2022-10-17 19:40:26', '2022-10-17 19:40:26');
 
 -- --------------------------------------------------------
 
@@ -339,8 +325,8 @@ CREATE TABLE `operacions` (
 --
 
 INSERT INTO `operacions` (`id`, `detalle_formulario_id`, `codigo_operacion`, `operacion`, `created_at`, `updated_at`) VALUES
-(1, 1, '4.1', 'VISIBILIZAR Y POSICIONAR LA AUTIRDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO A NIVEL REGIONAL Y NACIONAL', '2022-10-17 00:38:22', '2022-10-17 00:38:22'),
-(2, 1, '4.2', 'ELABORACIÓN Y PUBLICACION DE CONTENIDOS DE LA AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL ED CORTO PLAZO', '2022-10-17 00:38:22', '2022-10-17 00:38:22');
+(1, 1, '4.1', 'VISIBILIZAR Y POSICIONAR LA AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO A NIVEL REGIONAL Y NACIONAL', '2022-10-17 19:31:22', '2022-10-17 19:31:22'),
+(2, 1, '4.2', 'ELABORACIÓN Y PUBLICACIÓN DE CONTENIDOS DE LA AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO', '2022-10-17 19:31:22', '2022-10-17 19:31:22');
 
 -- --------------------------------------------------------
 
@@ -351,6 +337,7 @@ INSERT INTO `operacions` (`id`, `detalle_formulario_id`, `codigo_operacion`, `op
 CREATE TABLE `partidas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `lugar_responsable_id` bigint(20) UNSIGNED NOT NULL,
+  `actividad_tarea_id` bigint(20) UNSIGNED NOT NULL,
   `partida` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cantidad` double NOT NULL,
@@ -369,22 +356,16 @@ CREATE TABLE `partidas` (
 -- Volcado de datos para la tabla `partidas`
 --
 
-INSERT INTO `partidas` (`id`, `lugar_responsable_id`, `partida`, `descripcion`, `cantidad`, `unidad`, `costo`, `t42`, `ue`, `prog`, `act`, `otros`, `created_at`, `updated_at`) VALUES
-(1, 1, '25600', 'SERVICIOS DE IMPRENTA, FOTOCOPIADO Y FOTOGRÁFICOS(FOTOCOPIAS)', 100, 'unidad', '0.20', '20.00', '01', '01', '10', NULL, '2022-10-17 00:52:32', '2022-10-17 00:54:12'),
-(2, 2, '22110', 'PASAJES AL INTERIOR DEL PAÍS', 25, 'unidad', '1157.00', '28925.00', '01', '01', '10', NULL, '2022-10-17 00:52:32', '2022-10-17 00:54:12'),
-(3, 2, '22210', 'VIATICOS POR VIAJES AL INTERIOR DEL PAÍS', 50, 'día', '371.00', '18550.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(4, 2, '43700', 'OTRA MAQUINARIA Y EQUIPO', 1, 'global', '100000.00', '100000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(5, 2, '32500', 'PERIODICOS (SUSCRIPCION)', 1, 'global', '15000.00', '15000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(6, 3, '2500', 'PUBLICIDAD', 1, 'global', '1003638.00', '1003638.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(7, 4, '25500', 'PUBLICIDAD', 1, 'global', '154000.00', '154000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(8, 5, '23400', 'OTROS ALQUILERES', 4, 'alquiler', '10000.00', '40000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(9, 5, '25600', 'SERVICIOS DE IMPRENTA FOTOCOPIADO Y FOTOG´RAFICOS (MATERIAL INFORMATIVO)', 1, 'global', '70000.00', '70000.00', '91', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(10, 6, '25600', 'SERVICIOS DE IMPRENTA FOTOCOPIADO Y FOTOGRAFDICOS(MEMORIA INSTITUCIONAL)', 150, 'unidad', '200.00', '30000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(11, 6, '25600', 'SERVICIO DE IMPRENTA, FOTOCOPIADO Y FOTOGRAFICOS(ELABORACIÓN DE DISEÑO Y DIAGRAMACIÓN DE MINIMEDIOS, AGENDAS, CALENDARIOS Y OTROS)', 1, 'global', '386609.00', '386609.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(12, 6, '25220', 'CONSULTORIAS DE LINEA', 9, 'meses', '9550.00', '85950.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:12'),
-(13, 6, '31110', 'GASTOS POR REFRIGERIOS AL PERSONAL PERMANENTE, EVENTUAL Y CONSULTORES INDIVIDUALES DE LÍNEA DE LAS INSTITUCIONES PÚBLICAS', 181, 'dias', '18.00', '3258.00', '91', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:13'),
-(14, 6, '43120', 'EQUIPO DE COMPUTACIÓN', 2, 'unidad', '25000.00', '50000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:13'),
-(15, 6, '25600', 'SERVICIOS DE IMPRENTA, FOTOCOPIADO Y FOTOGRAFICOS(ELABORACIÓN DISENO Y DIAGRAMACION DE REVISTAS)', 1, 'global', '100000.00', '100000.00', '01', '01', '10', NULL, '2022-10-17 00:52:33', '2022-10-17 00:54:13');
+INSERT INTO `partidas` (`id`, `lugar_responsable_id`, `actividad_tarea_id`, `partida`, `descripcion`, `cantidad`, `unidad`, `costo`, `t42`, `ue`, `prog`, `act`, `otros`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '25600', 'SERVICIOS DE IMPRENTA,FOTOCOPIADO Y FOTOGRAFICOS(FOTOCOPIAS)', 100, 'unidad', '0.20', '20.00', '01', '01', '10', NULL, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(2, 2, 2, '22110', 'PASAJES AL INTERIOR DEL PAÍS', 25, 'pasaje', '1157.00', '28925.00', '01', '01', '10', NULL, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(3, 2, 2, '22210', 'VIATICOS POR VIAJES AL INTERIOR DEL PAÍS', 50, 'dpia', '371.00', '18550.00', '01', '01', '10', NULL, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(4, 2, 2, '43700', 'OTRA MAQUINARIA Y EQUIPO', 1, 'global', '100000.00', '100000.00', '01', '01', '10', NULL, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(5, 2, 2, '32500', 'PERIODICOS (SUSCRIPCION)', 1, 'global', '15000.00', '15000.00', '01', '01', '10', NULL, '2022-10-17 19:40:26', '2022-10-17 19:40:26'),
+(6, 3, 3, '25600', 'SERVICIOS DE IMPRENTA FOTOCOPIADO Y FOTOGRÁFICOS(MEMORIA INSTITUCIONAL)', 150, 'unidad', '200.00', '30000.00', '01', '01', '10', NULL, '2022-10-17 19:40:27', '2022-10-17 19:40:27'),
+(7, 3, 4, '25600', 'SERVICIO DE IMPRENTA FOTOCOPIADO Y FOTOGRÁFICOS (ELABORACIÓN DISEÑO Y DIAGRAMACIÓN DE MINIMEDIOS AGENDAS CALENDARIOSY OTROS', 1, 'global', '386000.00', '386000.00', '01', '01', '10', NULL, '2022-10-17 19:40:27', '2022-10-17 19:40:27'),
+(8, 3, 4, '25220', 'CONSULTORÍAS EN LÍNEA', 9, 'meses', '9550.00', '85950.00', '01', '01', '10', NULL, '2022-10-17 19:40:27', '2022-10-17 19:40:27'),
+(9, 3, 4, '31110', 'GASTOS POR REFRIGERIOS AL PERSONAL PERMANENTE, EVENTUAL Y CONSULTORES INDIVIDUALES DE LÍNEA DE LAS INSTITUCIONES PÚBLICAS', 181, 'días', '18.00', '3258.00', '01', '01', '10', NULL, '2022-10-17 19:40:27', '2022-10-17 19:40:27');
 
 -- --------------------------------------------------------
 
@@ -585,13 +566,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `actividad_tareas`
 --
 ALTER TABLE `actividad_tareas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `certificacions`
 --
 ALTER TABLE `certificacions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -633,7 +614,7 @@ ALTER TABLE `f_c_operacions`
 -- AUTO_INCREMENT de la tabla `lugar_responsables`
 --
 ALTER TABLE `lugar_responsables`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -651,7 +632,7 @@ ALTER TABLE `operacions`
 -- AUTO_INCREMENT de la tabla `partidas`
 --
 ALTER TABLE `partidas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`

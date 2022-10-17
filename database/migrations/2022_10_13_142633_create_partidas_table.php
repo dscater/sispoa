@@ -16,6 +16,7 @@ class CreatePartidasTable extends Migration
         Schema::create('partidas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("lugar_responsable_id");
+            $table->string("actividad_tarea_id", 255);
             $table->string("partida", 255);
             $table->string("descripcion", 255);
             $table->double("cantidad", 255);
@@ -28,6 +29,7 @@ class CreatePartidasTable extends Migration
             $table->string("otros", 255)->nullable();
             $table->timestamps();
             $table->foreign("lugar_responsable_id")->on("lugar_responsables")->references("id");
+            $table->foreign("actividad_tarea_id")->on("actividad_tareas")->references("id");
         });
     }
 

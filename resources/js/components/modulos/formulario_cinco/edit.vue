@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-gray-dark">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3
@@ -33,8 +33,6 @@
                                         </h3>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-12">
                                         <label
@@ -70,6 +68,8 @@
                                         ></span>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <Operacion
                                     v-for="(operacion, index) in listOperacions"
                                     :operacion="operacion"
@@ -305,6 +305,19 @@ export default {
                         );
                         item_lugar_responsable.partidas.forEach(
                             (item_partida, index_partida) => {
+                                if (
+                                    item_partida.actividad_tarea_id == null ||
+                                    item_partida.actividad_tarea_id == ""
+                                ) {
+                                    array_errors.push(
+                                        "Debes seleccionar una <b>tarea/actividad</b> para la partida en el elemento  " +
+                                            (index + 1) +
+                                            "-" +
+                                            (index_lugar_responsable + 1) +
+                                            " fila " +
+                                            (index_partida + 1)
+                                    );
+                                }
                                 if (
                                     item_partida.partida == null ||
                                     item_partida.partida == ""

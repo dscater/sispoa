@@ -12,7 +12,7 @@ class ActividadTarea extends Model
     protected $fillable = ['fco_id', 'detalle_operacion_id', 'lugar_responsable_id',];
 
     protected $appends = ["descripcion"];
-    protected $with = ["detalle_operacion"];
+    protected $with = ["detalle_operacion", "partidas"];
 
     public function getDescripcionAttribute()
     {
@@ -28,5 +28,10 @@ class ActividadTarea extends Model
     public function detalle_operacion()
     {
         return $this->belongsTo(DetalleOperacion::class, 'detalle_operacion_id');
+    }
+
+    public function partidas()
+    {
+        return $this->hasMany(Partida::class, 'actividad_tarea_id');
     }
 }

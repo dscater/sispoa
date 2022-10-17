@@ -11,6 +11,6 @@ class ActividadTareaController extends Controller
     {
         $actividad_tarea_id = $request->actividad_tarea_id;
         $actividad_tarea = ActividadTarea::find($actividad_tarea_id);
-        return response()->JSON($actividad_tarea->lugar_responsable->partidas);
+        return response()->JSON($actividad_tarea->partidas);
     }
 }

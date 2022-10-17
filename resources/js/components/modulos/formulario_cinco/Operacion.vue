@@ -1,7 +1,7 @@
 <template>
     <div
         class="row border mb-3 p-2 detalle contenedor_operacion"
-        :class="[(index + 1) % 2 == 0 ? 'bg-gray-light' : 'bg-light']"
+        :class="[(index + 1) % 2 == 0 ? 'gray-dark' : '']"
     >
         <span class="rounded-circle numero_detalle" v-text="index + 1"></span>
         <button class="btn btn-danger rounded-circle btnQuitar" @click="quitar">
@@ -75,10 +75,16 @@
         >
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body text-black">
+                    <div class="card-body text-black p-2">
                         <span
-                            class="rounded-circle numero_operacion_detalle"
-                            v-text="index + 1 + '-' + (index_detalle + 1)"
+                            class="numero_operacion_detalle"
+                            v-text="
+                                index +
+                                1 +
+                                '-' +
+                                (index_detalle + 1) +
+                                ' Lugar Responsable'
+                            "
                         ></span>
                         <button
                             class="btn btn-danger rounded-circle btnQuitar"
@@ -89,7 +95,7 @@
                         >
                             X
                         </button>
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
@@ -126,6 +132,8 @@
                                     Tarea*</label
                                 >
                                 <el-input
+                                    type="textarea"
+                                    resize
                                     placeholder="Responsable de ejecución de la operación Tarea"
                                     :class="{
                                         'is-invalid':
@@ -149,336 +157,270 @@
                                     "
                                 ></span>
                             </div>
-                            <div class="row">
+                            <div class="row pr-1">
                                 <div class="col-md-12">
-                                    <div class="card contenedor_tabla">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <button
-                                                        class="btn btn-sm bg-teal"
-                                                        @click="
-                                                            agregarTarea(
-                                                                index_detalle,
-                                                                detalle_lr
-                                                            )
-                                                        "
-                                                    >
-                                                        <i
-                                                            class="fa fa-plus"
-                                                        ></i>
-                                                        Agregar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <table
-                                                class="table table-bordered tabla_detalle"
-                                            >
-                                                <thead>
-                                                    <tr>
-                                                        <th
-                                                            class="text-center"
-                                                            width="60px"
-                                                        >
-                                                            Código tarea
-                                                        </th>
-                                                        <th class="text-center">
-                                                            Actividades/Tareas
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr
-                                                        v-for="(
-                                                            tarea, index_tarea
-                                                        ) in detalle_lr.actividad_tareas"
-                                                        :key="index_tarea"
-                                                    >
-                                                        <td>
-                                                            <select
-                                                                v-model="
-                                                                    tarea.detalle_operacion_id
-                                                                "
-                                                                class="form-control"
-                                                                @change="
-                                                                    setTextoTarea(
-                                                                        index_detalle,
-                                                                        index_tarea,
-                                                                        $event
-                                                                    )
-                                                                "
-                                                            >
-                                                                <option
-                                                                    v-for="detalle_operacion in o_Operacion.detalle_operaciones"
-                                                                    :key="
-                                                                        detalle_operacion.id
-                                                                    "
-                                                                    :value="
-                                                                        detalle_operacion.id
-                                                                    "
-                                                                >
-                                                                    {{
-                                                                        detalle_operacion.codigo_tarea
-                                                                    }}
-                                                                </option>
-                                                            </select>
-                                                        </td>
-
-                                                        <td class="eliminar">
-                                                            <el-input
-                                                                type="textarea"
-                                                                autosize
-                                                                placeholder="Actividades/Tareas"
-                                                                v-model="
-                                                                    tarea.descripcion
-                                                                "
-                                                            >
-                                                            </el-input>
-                                                            <button
-                                                                class="btn btn-danger rounded-circle btnQuitar"
-                                                                v-if="
-                                                                    index_tarea >
-                                                                    0
-                                                                "
-                                                                @click="
-                                                                    quitarTarea(
-                                                                        index_detalle,
-                                                                        index_tarea,
-                                                                        tarea.id
-                                                                    )
-                                                                "
-                                                            >
-                                                                X
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="card contenedor_tabla">
-                                        <div
-                                            class="card-header d-flex justify-content-between"
+                                    <div class="row">
+                                        <button
+                                            class="btn btn-sm bg-teal btn-block btn-flat"
+                                            @click="
+                                                agregarTarea(
+                                                    index_detalle,
+                                                    detalle_lr
+                                                )
+                                            "
                                         >
+                                            <i class="fa fa-plus"></i>
+                                            Agregar Tarea/Actividad
+                                        </button>
+                                    </div>
+                                    <div
+                                        class="row mt-1 mb-1 fila_tarea border pt-3"
+                                        v-for="(
+                                            tarea, index_tarea
+                                        ) in detalle_lr.actividad_tareas"
+                                        :key="index_tarea"
+                                        :class="[
+                                            (index_tarea + 1) % 2 == 0
+                                                ? 'bg-light'
+                                                : 'bg-white',
+                                        ]"
+                                    >
+                                        <button
+                                            class="btn btn-danger rounded-circle btnQuitar"
+                                            v-if="index_tarea > 0"
+                                            @click="
+                                                quitarTarea(
+                                                    index_detalle,
+                                                    index_tarea,
+                                                    tarea.id
+                                                )
+                                            "
+                                        >
+                                            X
+                                        </button>
+                                        <div class="col-md-2 form-group mb-1">
+                                            <label>Código de tarea</label>
+                                            <select
+                                                v-model="
+                                                    tarea.detalle_operacion_id
+                                                "
+                                                class="form-control"
+                                                @change="
+                                                    setTextoTarea(
+                                                        index_detalle,
+                                                        index_tarea,
+                                                        $event
+                                                    )
+                                                "
+                                            >
+                                                <option
+                                                    v-for="detalle_operacion in o_Operacion.detalle_operaciones"
+                                                    :key="detalle_operacion.id"
+                                                    :value="
+                                                        detalle_operacion.id
+                                                    "
+                                                >
+                                                    {{
+                                                        detalle_operacion.codigo_tarea
+                                                    }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-10 form-group mb-1">
+                                            <label>Actividad/Tarea</label>
+                                            <el-input
+                                                type="textarea"
+                                                autosize
+                                                placeholder="Actividades/Tareas"
+                                                v-model="tarea.descripcion"
+                                                readonly
+                                            >
+                                            </el-input>
+                                        </div>
+                                        <div class="row">
                                             <button
-                                                class="btn btn-sm bg-teal"
+                                                class="btn btn-sm mt-2 bg-gray-dark btn-block btn-flat"
                                                 @click="
                                                     agregarPartida(
                                                         index_detalle,
-                                                        detalle_lr
+                                                        index_tarea,
+                                                        tarea
                                                     )
                                                 "
                                             >
                                                 <i class="fa fa-plus"></i>
-                                                Agregar
+                                                Agregar Partida
                                             </button>
-                                            <h4 class="titulo_destalle">
-                                                Partidas
-                                            </h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <table
-                                                class="table table-bordered tabla_detalle"
-                                            >
-                                                <thead>
-                                                    <tr>
-                                                        <th
-                                                            class="text-center"
-                                                            rowspan="2"
-                                                        >
-                                                            Partida
-                                                        </th>
-                                                        <th
-                                                            class="text-center"
-                                                            rowspan="2"
-                                                        >
-                                                            Descripción
-                                                        </th>
-                                                        <th
-                                                            class="text-center"
-                                                            rowspan="2"
-                                                        >
-                                                            Cantidad
-                                                        </th>
-                                                        <th
-                                                            class="text-center"
-                                                            rowspan="2"
-                                                        >
-                                                            Unidad de Medida
-                                                        </th>
-                                                        <th
-                                                            class="text-center"
-                                                            rowspan="2"
-                                                        >
-                                                            Costo Unitario
-                                                        </th>
-                                                        <th
-                                                            class="text-center"
-                                                            colspan="4"
-                                                        >
-                                                            Recursos internos
-                                                        </th>
-                                                        <th class="text-center">
-                                                            Recursos externos
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-center">
-                                                            TRANSF 42
-                                                        </th>
-                                                        <th class="text-center">
-                                                            UE
-                                                        </th>
-                                                        <th class="text-center">
-                                                            PROG
-                                                        </th>
-                                                        <th class="text-center">
-                                                            ACT
-                                                        </th>
-                                                        <th class="text-center">
-                                                            OTROS
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr
-                                                        v-for="(
-                                                            partida,
-                                                            index_partida
-                                                        ) in detalle_lr.partidas"
-                                                        :key="index_partida"
+                                            <div class="col-md-12">
+                                                <div
+                                                    class="row mt-1 pt-3 fila_partida"
+                                                    v-for="(
+                                                        partida, index_partida
+                                                    ) in tarea.partidas"
+                                                    :key="index_partida"
+                                                >
+                                                    <button
+                                                        class="btn btn-danger rounded-circle btnQuitar"
+                                                        v-if="index_partida > 0"
+                                                        @click="
+                                                            quitarPartida(
+                                                                index_detalle,
+                                                                index_tarea,
+                                                                index_partida,
+                                                                partida.id
+                                                            )
+                                                        "
                                                     >
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                v-model="
-                                                                    partida.partida
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <el-input
-                                                                type="textarea"
-                                                                autosize
-                                                                placeholder="Descripción"
-                                                                v-model="
-                                                                    partida.descripcion
-                                                                "
-                                                            >
-                                                            </el-input>
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="number"
-                                                                step="0.01"
-                                                                v-model="
-                                                                    partida.cantidad
-                                                                "
-                                                                @change="
-                                                                    calculaTotales
-                                                                "
-                                                                @keyup="
-                                                                    calculaTotales
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                v-model="
-                                                                    partida.unidad
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="number"
-                                                                step="0.01"
-                                                                v-model="
-                                                                    partida.costo
-                                                                "
-                                                                @change="
-                                                                    calculaTotales
-                                                                "
-                                                                @keyup="
-                                                                    calculaTotales
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="number"
-                                                                step="0.01"
-                                                                v-model="
-                                                                    partida.t42
-                                                                "
-                                                                class="form-control"
-                                                                readonly
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                v-model="
-                                                                    partida.ue
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                v-model="
-                                                                    partida.prog
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                v-model="
-                                                                    partida.act
-                                                                "
-                                                                class="form-control"
-                                                            />
-                                                        </td>
-                                                        <td class="eliminar">
-                                                            <el-input
-                                                                type="textarea"
-                                                                autosize
-                                                                placeholder="Otros"
-                                                                v-model="
-                                                                    partida.otros
-                                                                "
-                                                            >
-                                                            </el-input>
-                                                            <button
-                                                                class="btn btn-danger rounded-circle btnQuitar"
-                                                                v-if="
-                                                                    index_partida >
-                                                                    0
-                                                                "
-                                                                @click="
-                                                                    quitarPartida(
-                                                                        index_detalle,
-                                                                        index_partida,
-                                                                        partida.id
-                                                                    )
-                                                                "
-                                                            >
-                                                                X
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                        X
+                                                    </button>
+                                                    <div
+                                                        class="col-md-2 form-group"
+                                                    >
+                                                        <label>Partida</label>
+                                                        <input
+                                                            type="text"
+                                                            v-model="
+                                                                partida.partida
+                                                            "
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-6 form-group"
+                                                    >
+                                                        <label
+                                                            >Descripción</label
+                                                        >
+                                                        <el-input
+                                                            type="textarea"
+                                                            autosize
+                                                            placeholder="Descripción"
+                                                            v-model="
+                                                                partida.descripcion
+                                                            "
+                                                        >
+                                                        </el-input>
+                                                    </div>
+                                                    <div
+                                                        class="col-md-2 form-group"
+                                                    >
+                                                        <label>Cantidad</label>
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            v-model="
+                                                                partida.cantidad
+                                                            "
+                                                            @change="
+                                                                calculaTotales
+                                                            "
+                                                            @keyup="
+                                                                calculaTotales
+                                                            "
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-2 form-group"
+                                                    >
+                                                        <label
+                                                            >Unidad de
+                                                            medida</label
+                                                        >
+                                                        <input
+                                                            type="text"
+                                                            v-model="
+                                                                partida.unidad
+                                                            "
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-2 form-group"
+                                                    >
+                                                        <label
+                                                            >Costo
+                                                            unitario</label
+                                                        >
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            v-model="
+                                                                partida.costo
+                                                            "
+                                                            @change="
+                                                                calculaTotales
+                                                            "
+                                                            @keyup="
+                                                                calculaTotales
+                                                            "
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-2 form-group"
+                                                    >
+                                                        <label>TRANSF 42</label>
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            v-model="
+                                                                partida.t42
+                                                            "
+                                                            class="form-control"
+                                                            readonly
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-1 form-group"
+                                                    >
+                                                        <label>UE</label>
+                                                        <input
+                                                            type="text"
+                                                            v-model="partida.ue"
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-1 form-group"
+                                                    >
+                                                        <label>PROG</label>
+                                                        <input
+                                                            type="text"
+                                                            v-model="
+                                                                partida.prog
+                                                            "
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-1 form-group"
+                                                    >
+                                                        <label>ACT</label>
+                                                        <input
+                                                            type="text"
+                                                            v-model="
+                                                                partida.act
+                                                            "
+                                                            class="form-control"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="col-md-3 form-group"
+                                                    >
+                                                        <label>Otros</label>
+                                                        <el-input
+                                                            type="textarea"
+                                                            autosize
+                                                            placeholder="Otros"
+                                                            v-model="
+                                                                partida.otros
+                                                            "
+                                                        >
+                                                        </el-input>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -491,9 +433,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body">
-                        <h4>
-                            TOTAL:
+                    <div class="card-body bg-primary">
+                        <h4 class="text-md">
+                            TOTAL OPERACIÓN:
                             {{
                                 o_Operacion.total_operacion &&
                                 o_Operacion.total_operacion != ""
@@ -517,7 +459,7 @@
                             @click="agregarDetalleLR"
                         >
                             <i class="fa fa-plus"></i>
-                            Agregar Detalle
+                            Agregar Lugar y Responsable de operación
                         </button>
                     </div>
                 </div>
@@ -577,22 +519,23 @@ export default {
                         fco_id: "",
                         detalle_operacion_id: "",
                         lugar_responsable_id: 0,
-                    },
-                ],
-                partidas: [
-                    {
-                        id: 0,
-                        lugar_responsable_id: 0,
-                        partida: "",
-                        descripcion: "",
-                        cantidad: "",
-                        unidad: "",
-                        costo: "",
-                        t42: "",
-                        ue: "",
-                        prog: "",
-                        act: "",
-                        otros: "",
+                        partidas: [
+                            {
+                                id: 0,
+                                lugar_responsable_id: 0,
+                                actividad_tarea_id: "",
+                                partida: "",
+                                descripcion: "",
+                                cantidad: "",
+                                unidad: "",
+                                costo: "",
+                                t42: "",
+                                ue: "",
+                                prog: "",
+                                act: "",
+                                otros: "",
+                            },
+                        ],
                     },
                 ],
             });
@@ -645,13 +588,6 @@ export default {
             } else {
                 this.texto_operacion = "";
             }
-            // axios
-            //     .get("/admin/operacions/getTareas", {
-            //         params: { id: this.o_Operacion.operacion_id },
-            //     })
-            //     .then((response) => {
-            //         this.o_Operacion.detalle_operaciones = response.data;
-            //     });
         },
 
         // QUITAR OPERACION
@@ -672,22 +608,23 @@ export default {
                         fco_id: "",
                         detalle_operacion_id: "",
                         lugar_responsable_id: 0,
-                    },
-                ],
-                partidas: [
-                    {
-                        id: 0,
-                        lugar_responsable_id: 0,
-                        partida: "",
-                        descripcion: "",
-                        cantidad: "",
-                        unidad: "",
-                        costo: "",
-                        t42: "",
-                        ue: "",
-                        prog: "",
-                        act: "",
-                        otros: "",
+                        partidas: [
+                            {
+                                id: 0,
+                                lugar_responsable_id: "",
+                                actividad_tarea_id: "",
+                                partida: "",
+                                descripcion: "",
+                                cantidad: "",
+                                unidad: "",
+                                costo: "",
+                                t42: "",
+                                ue: "",
+                                prog: "",
+                                act: "",
+                                otros: "",
+                            },
+                        ],
                     },
                 ],
             });
@@ -707,12 +644,32 @@ export default {
                 fco_id: "",
                 detalle_operacion_id: "",
                 lugar_responsable_id: item.id,
+                partidas: [
+                    {
+                        id: 0,
+                        lugar_responsable_id: item.id,
+                        actividad_tarea_id: "",
+                        partida: "",
+                        descripcion: "",
+                        cantidad: "",
+                        unidad: "",
+                        costo: "",
+                        t42: "",
+                        ue: "",
+                        prog: "",
+                        act: "",
+                        otros: "",
+                    },
+                ],
             });
         },
-        agregarPartida(index, item) {
-            this.o_Operacion.lugar_responsables[index].partidas.push({
+        agregarPartida(index, index_tarea, item) {
+            this.o_Operacion.lugar_responsables[index].actividad_tareas[
+                index_tarea
+            ].partidas.push({
                 id: 0,
                 lugar_responsable_id: item.id,
+                actividad_tarea_id: "",
                 partida: "",
                 descripcion: "",
                 cantidad: "",
@@ -725,12 +682,32 @@ export default {
                 otros: "",
             });
         },
+        filtraTareasPartida(index, item) {
+            this.o_Operacion.lugar_responsables[index].actividad_tareas.filter(
+                (tarea) => {}
+            );
+        },
         setTextoTarea(index, index_tarea, event) {
             this.o_Operacion.lugar_responsables[index].actividad_tareas[
                 index_tarea
             ].descripcion = this.o_Operacion.detalle_operaciones.filter(
                 (item) => item.id == event.target.value
             )[0].actividad_tarea;
+            // AGREGAR LA TAREA A LA LISTA DE ACTIVIDADES DEL LUGAR RESPONSABLE
+            let existe_actividad = this.o_Operacion.lugar_responsables[
+                index
+            ].actividad_tareas.filter(
+                (at) => at.detalle_operacion_id == event.target.value
+            );
+            if (!existe_actividad.length.detalle_operacion) {
+                this.o_Operacion.lugar_responsables[
+                    index
+                ].actividad_tareas.filter(
+                    (at) => at.detalle_operacion_id == event.target.value
+                )[0].detalle_operacion = this.o_Operacion.detalle_operaciones.filter(
+                    (item) => item.id == event.target.value
+                )[0];
+            }
         },
         quitarTarea(index, index_tarea, id = 0) {
             this.o_Operacion.lugar_responsables[index].actividad_tareas.splice(
@@ -741,11 +718,10 @@ export default {
                 this.$emit("quitar_tarea", id);
             }
         },
-        quitarPartida(index, index_partida, id = 0) {
-            this.o_Operacion.lugar_responsables[index].partidas.splice(
-                index_partida,
-                1
-            );
+        quitarPartida(index, index_tarea, index_partida, id = 0) {
+            this.o_Operacion.lugar_responsables[index].actividad_tareas[
+                index_tarea
+            ].partidas.splice(index_partida, 1);
             if (id != 0) {
                 this.$emit("quitar_partida", id);
             }
@@ -754,18 +730,25 @@ export default {
         calculaTotales() {
             let suma_total = 0;
             this.o_Operacion.lugar_responsables.forEach((lugar_responsable) => {
-                lugar_responsable.partidas.forEach((partida) => {
-                    let suma = 0;
-                    if (partida.cantidad != "" && partida.costo != "") {
-                        suma =
-                            parseFloat(partida.cantidad) *
-                            parseFloat(partida.costo);
+                lugar_responsable.actividad_tareas.forEach(
+                    (actividad_tarea) => {
+                        actividad_tarea.partidas.forEach((partida) => {
+                            let suma = 0;
+                            if (partida.cantidad != "" && partida.costo != "") {
+                                suma =
+                                    parseFloat(partida.cantidad) *
+                                    parseFloat(partida.costo);
+                            }
+                            partida.t42 = suma;
+                            suma_total += suma;
+                        });
                     }
-                    partida.t42 = suma;
-                    suma_total += suma;
-                });
+                );
             });
             this.o_Operacion.total_operacion = suma_total;
+        },
+        setIdActividadPartida(index_lr, index_partida, event) {
+            console.log(event.target);
         },
     },
 };
@@ -790,10 +773,10 @@ export default {
 }
 
 .numero_operacion_detalle {
-    padding: 5px 0px;
+    padding: 2px;
     background: var(--secondary);
-    width: 37px;
-    height: 37px;
+    width: auto;
+    height: auto;
     position: absolute;
     z-index: 100;
     left: -15px;
@@ -801,7 +784,8 @@ export default {
     color: white;
     text-align: center;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.75rem;
+    border-radius: 5px;
 }
 
 .btnQuitar {
@@ -813,6 +797,40 @@ export default {
     top: -10px;
 }
 
+.fila_tarea,
+.fila_partida {
+    position: relative;
+}
+
+.fila_tarea {
+    border: solid 1px #20c997 !important;
+    padding-bottom: 5px;
+}
+.fila_partida {
+    border: solid 1px #cfcdcd !important;
+}
+
+.fila_tarea input,
+.fila_tarea textarea,
+.fila_tarea select,
+.contenedor_operacion input,
+.contenedor_operacion textarea,
+.contenedor_operacion select,
+.fila_partida input,
+.fila_partida textarea,
+.fila_partida select {
+    font-size: 0.75rem;
+}
+
+.fila_tarea .btnQuitar,
+.fila_partida .btnQuitar {
+    right: -20px;
+    top: -10px;
+    width: 25px;
+    height: 25px;
+    font-size: 0.85rem;
+}
+
 .contenedor_tabla .card-header,
 .contenedor_tabla .card-body {
     padding: 10px;
@@ -820,27 +838,6 @@ export default {
 
 .contenedor_tabla .card-body {
     overflow: auto;
-}
-
-.tabla_detalle tbody tr td {
-    padding: 0px;
-    font-size: 0.9rem;
-    vertical-align: middle;
-}
-
-.tabla_detalle tbody tr td input,
-.tabla_detalle tbody tr td select,
-.tabla_detalle tbody tr td textarea {
-    font-size: 0.7rem;
-}
-
-.tabla_detalle thead tr th {
-    padding: 1px;
-    font-size: 0.75rem;
-}
-
-.tabla_detalle tbody tr td input {
-    min-width: 45px;
 }
 
 .titulo_destalle {
@@ -866,5 +863,13 @@ td.eliminar .btnQuitar {
     font-size: 0.7rem;
     top: -15px;
     left: 12px;
+}
+
+textarea[readonly] {
+    background: #ebebeb;
+}
+
+.contenedor_operacion hr {
+    border-top: solid 3px black;
 }
 </style>

@@ -45,26 +45,26 @@ class FormularioCincoController extends Controller
                     "responsable" => mb_strtoupper($lugar_responsable["responsable"]),
                 ]);
                 foreach ($lugar_responsable["actividad_tareas"] as $tarea) {
-                    $nuevo_lugar_responsable->actividad_tareas()->create([
+                    $nueva_tarea = $nuevo_lugar_responsable->actividad_tareas()->create([
                         "fco_id" => $nueva_operacion->id,
                         "detalle_operacion_id" => $tarea["detalle_operacion_id"]
                     ]);
-                }
-
-                foreach ($lugar_responsable["partidas"] as $partida) {
-                    $nueva_partida = $nuevo_lugar_responsable->partidas()->create([
-                        "partida" => $partida["partida"],
-                        "descripcion" => mb_strtoupper($partida["descripcion"]),
-                        "cantidad" => $partida["cantidad"],
-                        "unidad" => $partida["unidad"],
-                        "costo" => $partida["costo"],
-                        "t42" => $partida["t42"],
-                        "ue" => $partida["ue"],
-                        "prog" => $partida["prog"],
-                        "act" => $partida["act"],
-                        "otros" => $partida["otros"],
-                    ]);
-                    $total_formulario += (float)$nueva_partida->cantidad * (float)$nueva_partida->costo;
+                    foreach ($tarea["partidas"] as $partida) {
+                        $nueva_partida = $nueva_tarea->partidas()->create([
+                            "lugar_responsable_id" => $nueva_tarea->lugar_responsable_id,
+                            "partida" => $partida["partida"],
+                            "descripcion" => mb_strtoupper($partida["descripcion"]),
+                            "cantidad" => $partida["cantidad"],
+                            "unidad" => $partida["unidad"],
+                            "costo" => $partida["costo"],
+                            "t42" => $partida["t42"],
+                            "ue" => $partida["ue"],
+                            "prog" => $partida["prog"],
+                            "act" => $partida["act"],
+                            "otros" => $partida["otros"],
+                        ]);
+                        $total_formulario += (float)$nueva_partida->cantidad * (float)$nueva_partida->costo;
+                    }
                 }
             }
         }
@@ -147,7 +147,7 @@ class FormularioCincoController extends Controller
                 }
                 foreach ($lugar_responsable["actividad_tareas"] as $tarea) {
                     if ($tarea["id"] == 0 || $tarea["id"] == "") {
-                        $nuevo_lugar_responsable->actividad_tareas()->create([
+                        $nueva_tarea = $nuevo_lugar_responsable->actividad_tareas()->create([
                             "fco_id" => $nueva_operacion->id,
                             "detalle_operacion_id" => $tarea["detalle_operacion_id"]
                         ]);
@@ -157,40 +157,42 @@ class FormularioCincoController extends Controller
                             "fco_id" => $nueva_operacion->id,
                             "detalle_operacion_id" => $tarea["detalle_operacion_id"]
                         ]);
+                        $nueva_tarea = $t;
                     }
-                }
-
-                foreach ($lugar_responsable["partidas"] as $partida) {
-                    if ($partida["id"] == 0 || $partida["id"] == "") {
-                        $nueva_partida = $nuevo_lugar_responsable->partidas()->create([
-                            "partida" => $partida["partida"],
-                            "descripcion" => mb_strtoupper($partida["descripcion"]),
-                            "cantidad" => $partida["cantidad"],
-                            "unidad" => $partida["unidad"],
-                            "costo" => $partida["costo"],
-                            "t42" => $partida["t42"],
-                            "ue" => $partida["ue"],
-                            "prog" => $partida["prog"],
-                            "act" => $partida["act"],
-                            "otros" => $partida["otros"],
-                        ]);
-                    } else {
-                        $p = Partida::find($partida["id"]);
-                        $p->update([
-                            "partida" => $partida["partida"],
-                            "descripcion" => mb_strtoupper($partida["descripcion"]),
-                            "cantidad" => $partida["cantidad"],
-                            "unidad" => $partida["unidad"],
-                            "costo" => $partida["costo"],
-                            "t42" => $partida["t42"],
-                            "ue" => $partida["ue"],
-                            "prog" => $partida["prog"],
-                            "act" => $partida["act"],
-                            "otros" => $partida["otros"],
-                        ]);
-                        $nueva_partida = $p;
+                    foreach ($tarea["partidas"] as $partida) {
+                        if ($partida["id"] == 0 || $partida["id"] == "") {
+                            $nueva_partida = $nueva_tarea->partidas()->create([
+                                "lugar_responsable_id" => $nueva_tarea->lugar_responsable_id,
+                                "partida" => $partida["partida"],
+                                "descripcion" => mb_strtoupper($partida["descripcion"]),
+                                "cantidad" => $partida["cantidad"],
+                                "unidad" => $partida["unidad"],
+                                "costo" => $partida["costo"],
+                                "t42" => $partida["t42"],
+                                "ue" => $partida["ue"],
+                                "prog" => $partida["prog"],
+                                "act" => $partida["act"],
+                                "otros" => $partida["otros"],
+                            ]);
+                        } else {
+                            $p = Partida::find($partida["id"]);
+                            $p->update([
+                                "lugar_responsable_id" => $nueva_tarea->lugar_responsable_id,
+                                "partida" => $partida["partida"],
+                                "descripcion" => mb_strtoupper($partida["descripcion"]),
+                                "cantidad" => $partida["cantidad"],
+                                "unidad" => $partida["unidad"],
+                                "costo" => $partida["costo"],
+                                "t42" => $partida["t42"],
+                                "ue" => $partida["ue"],
+                                "prog" => $partida["prog"],
+                                "act" => $partida["act"],
+                                "otros" => $partida["otros"],
+                            ]);
+                            $nueva_partida = $p;
+                        }
+                        $total_formulario += (float)$nueva_partida->cantidad * (float)$nueva_partida->costo;
                     }
-                    $total_formulario += (float)$nueva_partida->cantidad * (float)$nueva_partida->costo;
                 }
             }
         }
@@ -238,5 +240,10 @@ class FormularioCincoController extends Controller
             return response()->JSON($operaciones);
         }
         return response()->JSON([]);
+    }
+    public function getTabla(FormularioCinco $formulario_cinco)
+    {
+        $html = view("parcial.formulario_cinco", compact("formulario_cinco"))->render();
+        return response()->JSON($html);
     }
 }
