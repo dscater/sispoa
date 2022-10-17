@@ -92,6 +92,47 @@
                                                 class="form-group col-md-12"
                                                 v-if="
                                                     oReporte.filtro ==
+                                                    'Unidad Organizacional'
+                                                "
+                                            >
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.filtro,
+                                                    }"
+                                                    >Unidad
+                                                    Organizacional*</label
+                                                >
+                                                <el-select
+                                                    v-model="oReporte.unidad_id"
+                                                    filterable
+                                                    placeholder="Seleccione"
+                                                    class="d-block"
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.unidad_id,
+                                                    }"
+                                                >
+                                                    <el-option
+                                                        v-for="item in listUnidades"
+                                                        :key="item.id"
+                                                        :label="item.nombre"
+                                                        :value="item.id"
+                                                    >
+                                                    </el-option>
+                                                </el-select>
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.unidad_id"
+                                                    v-text="
+                                                        errors.unidad_ido[0]
+                                                    "
+                                                ></span>
+                                            </div>
+                                            <div
+                                                class="form-group col-md-12"
+                                                v-if="
+                                                    oReporte.filtro ==
                                                     'Rango de fechas'
                                                 "
                                             >
@@ -179,12 +220,26 @@ export default {
             aFechas: [],
             enviando: false,
             textoBtn: "Generar Reporte",
-            listFiltro: ["Todos", "Rango de fechas"],
-            listTipos: ["ADMINISTRADOR", "PERSONAL", "TÉCNICO"],
+            listFiltro: [
+                "Todos",
+                "Tipo de usuario",
+                "Unidad Organizacional",
+                "Rango de fechas",
+            ],
+            listTipos: ["ADMINISTRADOR", "AUXILIAR"],
             errors: [],
+            listUnidades: [],
         };
     },
+    mounted() {
+        this.getUnidades();
+    },
     methods: {
+        getUnidades() {
+            axios.get("/admin/unidads").then((response) => {
+                this.listUnidades = response.data.unidads;
+            });
+        },
         limpiarFormulario() {
             this.oReporte.filtro = "Todos";
         },

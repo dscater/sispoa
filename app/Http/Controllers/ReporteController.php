@@ -25,9 +25,16 @@ class ReporteController extends Controller
 
         if ($filtro == 'Tipo de usuario') {
             $request->validate([
-                'tipo' => 'required|in:ADMINISTRADOR,PERSONAL,TÉCNICO',
+                'tipo' => 'required',
             ]);
             $usuarios = User::where('id', '!=', 1)->where('tipo', $request->tipo)->get();
+        }
+
+        if ($filtro == 'Unidad Organizacional') {
+            $request->validate([
+                'tipo' => 'required',
+            ]);
+            $usuarios = User::where('id', '!=', 1)->where('unidad_id', $request->unidad_id)->get();
         }
 
         $pdf = PDF::loadView('reportes.usuarios', compact('usuarios'))->setPaper('legal', 'landscape');
