@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header bg-gray-dark">
+                            <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h3
@@ -33,6 +33,8 @@
                                         </h3>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-12">
                                         <label
@@ -69,47 +71,45 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <Operacion
-                                    v-for="(operacion, index) in listOperacions"
-                                    :operacion="operacion"
-                                    :formulario_id="formulario_id.toString()"
-                                    :index="index"
-                                    @quitar="quitarOperacion"
-                                    @quitar_tarea="addEliminadosTareas"
-                                    @quitar_partida="addEliminadosPartidas"
-                                    :accion="'edit'"
-                                    :key="index"
-                                ></Operacion>
+                        </div>
+                        <Operacion
+                            v-for="(operacion, index) in listOperacions"
+                            :operacion="operacion"
+                            :formulario_id="formulario_id.toString()"
+                            :index="index"
+                            @quitar="quitarOperacion"
+                            @quitar_tarea="addEliminadosTareas"
+                            @quitar_partida="addEliminadosPartidas"
+                            :accion="'edit'"
+                            :key="index"
+                        ></Operacion>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-12 border p-2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <button
-                                                    class="btn btn-primary btn-flat btn-block"
-                                                    @click="agregarOperacion"
-                                                    :disabled="!agregaOperacion"
-                                                >
-                                                    <i class="fa fa-plus"></i>
-                                                    Agregar Operación
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-md-3 p-0">
-                                        <el-button
-                                            class="btn btn-primary bg-primary btn-flat btn-block"
-                                            :loading="enviando"
-                                            @click="enviarRegistro"
-                                            :disabled="!enviable"
-                                            ><i class="fa fa-save"></i>
-                                            Actualizar registro</el-button
+                                    <div class="col-md-12">
+                                        <button
+                                            class="btn btn-primary btn-flat btn-block"
+                                            @click="agregarOperacion"
+                                            :disabled="!agregaOperacion"
                                         >
+                                            <i class="fa fa-plus"></i>
+                                            Agregar Operación
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 mb-3">
+                            <div class="col-md-3">
+                                <el-button
+                                    class="btn btn-primary bg-primary btn-flat btn-block"
+                                    :loading="enviando"
+                                    @click="enviarRegistro"
+                                    :disabled="!enviable"
+                                    ><i class="fa fa-save"></i> Actualizar
+                                    registro</el-button
+                                >
                             </div>
                         </div>
                     </div>

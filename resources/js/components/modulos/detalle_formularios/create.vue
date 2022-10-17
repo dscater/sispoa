@@ -69,42 +69,41 @@
                                         ></span>
                                     </div>
                                 </div>
-                                <Operacion
-                                    v-for="(operacion, index) in listOperacions"
-                                    :operacion="operacion"
-                                    :index="index"
-                                    @quitar="quitarOperacion"
-                                    :key="index"
-                                ></Operacion>
+                            </div>
+                        </div>
+                        <Operacion
+                            v-for="(operacion, index) in listOperacions"
+                            :operacion="operacion"
+                            :index="index"
+                            @quitar="quitarOperacion"
+                            :key="index"
+                        ></Operacion>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-12 border p-2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <button
-                                                    class="btn btn-primary btn-flat btn-block"
-                                                    @click="agregarOperacion"
-                                                    :disabled="!agregaOperacion"
-                                                >
-                                                    <i class="fa fa-plus"></i>
-                                                    Agregar Operación
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-md-3 p-0">
-                                        <el-button
-                                            class="btn btn-primary bg-primary btn-flat btn-block"
-                                            :loading="enviando"
-                                            @click="enviarRegistro"
-                                            :disabled="!enviable"
-                                            ><i class="fa fa-save"></i>
-                                            Registrar</el-button
+                                    <div class="col-md-12">
+                                        <button
+                                            class="btn btn-primary btn-flat btn-block"
+                                            @click="agregarOperacion"
+                                            :disabled="!agregaOperacion"
                                         >
+                                            <i class="fa fa-plus"></i>
+                                            Agregar Operación
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 mb-3">
+                            <div class="col-md-3">
+                                <el-button
+                                    class="btn btn-primary bg-primary btn-flat btn-block"
+                                    :loading="enviando"
+                                    @click="enviarRegistro"
+                                    :disabled="!enviable"
+                                    ><i class="fa fa-save"></i>
+                                    Registrar</el-button
+                                >
                             </div>
                         </div>
                     </div>
