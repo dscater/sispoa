@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
+use App\Models\Partida;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -42,6 +43,9 @@ class CertificacionController extends Controller
         }
         $request->validate($this->validacion);
         $request["fecha_registro"] = date("Y-m-d");
+        $partida = Partida::find($request->partida_id);
+        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$partida->costo;
+        $request["presupuesto_usarse"] = $presupuesto_usarse;
         $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
         if ($request->hasFile('archivo')) {
             $file = $request->archivo;
@@ -79,6 +83,9 @@ class CertificacionController extends Controller
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
+        $partida = Partida::find($request->partida_id);
+        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$partida->costo;
+        $request["presupuesto_usarse"] = $presupuesto_usarse;
         $certificacion->update(array_map("mb_strtoupper", $request->except("archivo")));
 
         if ($request->hasFile('archivo')) {
@@ -102,6 +109,13 @@ class CertificacionController extends Controller
         \File::delete(public_path() . '/archivos/' . $antiguo);
         $certificacion->delete();
         return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
+    }
+
+    public function aprobar(Certificacion $certificacion)
+    {
+        $certificacion->estado = "APROBADO";
+        $certificacion->save();
+        return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se aprobó correctamente"]);
     }
 
     public function getNroCorrelativo()

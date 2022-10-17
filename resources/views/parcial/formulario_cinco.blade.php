@@ -84,8 +84,10 @@
                             }
                         @endphp
                         @if ($muestra)
-                            <td rowspan="{{$partida->total_por_actividad}}">{{ $partida->actividad_tarea->detalle_operacion->codigo_tarea }}</td>
-                            <td rowspan="{{$partida->total_por_actividad}}">{{ $partida->actividad_tarea->descripcion }}</td>
+                            <td rowspan="{{ $partida->total_por_actividad }}">
+                                {{ $partida->actividad_tarea->detalle_operacion->codigo_tarea }}</td>
+                            <td rowspan="{{ $partida->total_por_actividad }}">
+                                {{ $partida->actividad_tarea->descripcion }}</td>
                         @endif
                         @if ($index_partida == 0)
                             <td rowspan="{{ count($lugar->partidas) }}">
@@ -96,19 +98,28 @@
                             </td>
                         @endif
                         <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
-                        <td>{{ $partida->partida }}</td>
+                        <td>{{ $partida->descripcion }}</td>
+                        <td>{{ $partida->cantidad }}</td>
+                        <td>{{ $partida->unidad }}</td>
+                        <td>{{ $partida->costo }}</td>
+                        <td>{{ $partida->t42 }}</td>
+                        <td>{{ $partida->ue }}</td>
+                        <td>{{ $partida->prog }}</td>
+                        <td>{{ $partida->act }}</td>
+                        <td>{{ $partida->otros }}</td>
+                        @if ($index_lugar == 0 && $index_partida == 0)
+                            <td rowspan="{{ $operacion->total_partidas }}">
+                                {{ number_format($operacion->total_operacion, 2) }}</td>
+                        @endif
                     </tr>
                 @endforeach
             @endforeach
         @endforeach
     </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="16">TOTAL</th>
+            <th>{{ number_format($formulario_cinco->total_formulario, 2) }}</th>
+        </tr>
+    </tfoot>
 </table>

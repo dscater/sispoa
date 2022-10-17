@@ -82,6 +82,7 @@ Route::prefix('admin')->group(function () {
 
     // CERTIFICACION
     Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);
+    Route::POST("certificacions/aprobar/{certificacion}", [CertificacionController::class, "aprobar"]);
     Route::POST("certificacions/pdf/{certificacion}", [CertificacionController::class, "pdf"]);
     Route::resource('certificacions', CertificacionController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
@@ -89,6 +90,8 @@ Route::prefix('admin')->group(function () {
 
     // REPORTES
     Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);
+    Route::post('reportes/ejecucion_presupuestos', [ReporteController::class, 'ejecucion_presupuestos']);
+    Route::post('reportes/ejecucion_presupuestos_g', [ReporteController::class, 'ejecucion_presupuestos_g']);
 });
 
 // ---------------------------------------

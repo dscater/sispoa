@@ -11,11 +11,9 @@ class Certificacion extends Model
 
     protected $fillable = [
         'formulario_id', 'fco_id', 'actividad_tarea_id', 'partida_id',
-        'cantidad_usar', 'justificacion', 'archivo', 'correlativo', 'solicitante_id', 'superior_id',
+        'cantidad_usar','presupuesto_usarse', 'justificacion', 'archivo', 'correlativo', 'solicitante_id', 'superior_id',
         'ue', 'prog', 'proy', 'act', 'ff', 'of', 'codigo', 'accion', 'estado', 'fecha_registro',
     ];
-
-    protected $append = ["presupuesto_usarse"];
 
     protected $with = ["formulario", "operacion", "actividad_tarea", "partida"];
 
@@ -49,10 +47,4 @@ class Certificacion extends Model
         return $this->belongsTo(User::class, 'superior_id');
     }
 
-    // APPENDS
-    public function getPresupuestoUsarseAttribute()
-    {
-        $partida = Partida::find($this->partida_id);
-        return (float)$this->cantidad_usar * (float)$partida->costo;
-    }
 }

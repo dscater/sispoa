@@ -89,7 +89,9 @@
                                                     <strong
                                                         >Código de operación: </strong
                                                     >{{
-                                                        row.item.operacion.operacion.codigo_operacion
+                                                        row.item.operacion
+                                                            .operacion
+                                                            .codigo_operacion
                                                     }}<br />
                                                     <strong>Operación: </strong
                                                     >{{
@@ -117,6 +119,27 @@
                                                     }}<br />
                                                 </template>
 
+                                                <template #cell(estado)="row">
+                                                    <span
+                                                        :title="row.item.estado"
+                                                        class="badge bg-danger"
+                                                        v-if="
+                                                            row.item.estado ==
+                                                            'PENDIENTE'
+                                                        "
+                                                        >{{
+                                                            row.item.estado
+                                                        }}</span
+                                                    >
+                                                    <span
+                                                        :title="row.item.estado"
+                                                        class="badge bg-success"
+                                                        v-else
+                                                        >{{
+                                                            row.item.estado
+                                                        }}</span
+                                                    >
+                                                </template>
                                                 <template
                                                     #cell(fecha_registro)="row"
                                                 >
@@ -177,6 +200,65 @@
                                                         >
                                                             <i
                                                                 class="fa fa-edit"
+                                                            ></i>
+                                                        </b-button>
+                                                        <b-button
+                                                            v-if="
+                                                                row.item
+                                                                    .estado ==
+                                                                    'PENDIENTE' &&
+                                                                row.item
+                                                                    .superior_id ==
+                                                                    user.id
+                                                            "
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-success"
+                                                            class="btn-flat btn-block"
+                                                            title="Aprobar"
+                                                            @click="
+                                                                aprobarCertificacion(
+                                                                    row.item.id,
+                                                                    row.item
+                                                                        .formulario
+                                                                        .codigo_pei +
+                                                                        ' con fecha de registro ' +
+                                                                        formatoFecha(
+                                                                            row
+                                                                                .item
+                                                                                .fecha_registro
+                                                                        )
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-check"
+                                                            ></i>
+                                                        </b-button>
+
+                                                        <b-button
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-danger"
+                                                            class="btn-flat btn-block"
+                                                            title="Anular"
+                                                            @click="
+                                                                anularCertificacion(
+                                                                    row.item.id,
+                                                                    row.item
+                                                                        .formulario
+                                                                        .codigo_pei +
+                                                                        ' con fecha de registro ' +
+                                                                        formatoFecha(
+                                                                            row
+                                                                                .item
+                                                                                .fecha_registro
+                                                                        )
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-times"
                                                             ></i>
                                                         </b-button>
                                                         <b-button
@@ -252,6 +334,7 @@ export default {
     data() {
         return {
             permisos: localStorage.getItem("permisos"),
+            user: JSON.parse(localStorage.getItem("user")),
             search: "",
             listRegistros: [],
             showOverlay: false,
@@ -295,6 +378,7 @@ export default {
         };
     },
     mounted() {
+        console.log(this.user);
         this.loadingWindow.close();
         this.getCertificacions();
     },
@@ -343,6 +427,48 @@ export default {
                                 timer: 1500,
                             });
                         });
+                }
+            });
+        },
+        aprobarCertificacion(id, descripcion) {
+            Swal.fire({
+                title: "¿Quierés aprobar este registro?",
+                html: `<strong>${descripcion}</strong>`,
+                showCancelButton: true,
+                confirmButtonColor: "#28a745",
+                confirmButtonText: "Si, aprobar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    axios
+                        .post("/admin/certificacions/aprobar/" + id)
+                        .then((res) => {
+                            this.getCertificacions();
+                            this.filter = "";
+                            Swal.fire({
+                                icon: "success",
+                                title: res.data.msj,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        });
+                }
+            });
+        },
+        anularCertificacion(id, descripcion) {
+            Swal.fire({
+                title: "¿Quierés anular este registro?",
+                html: `<strong>${descripcion}</strong>`,
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Si, anular",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
                 }
             });
         },

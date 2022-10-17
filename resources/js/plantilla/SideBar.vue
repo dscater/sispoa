@@ -239,6 +239,30 @@
                             <p>Lista de Usuarios</p>
                         </router-link>
                     </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.ejecucion_presupuestos')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.ejecucion_presupuestos' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Ejecución de presupuestos</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.ejecucion_presupuestos_g')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.ejecucion_presupuestos_g' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <p>G. Ejecución de presupuestos</p>
+                        </router-link>
+                    </li>
                     <li class="nav-header">PERFIL</li>
                     <li class="nav-item">
                         <router-link

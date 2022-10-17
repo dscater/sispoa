@@ -134,6 +134,18 @@ export default new Router({
             component: require('./components/modulos/reportes/usuarios.vue').default,
             props: true
         },
+        {
+            path: '/reportes/ejecucion_presupuestos',
+            name: 'reportes.ejecucion_presupuestos',
+            component: require('./components/modulos/reportes/ejecucion_presupuestos.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/ejecucion_presupuestos_g',
+            name: 'reportes.ejecucion_presupuestos_g',
+            component: require('./components/modulos/reportes/ejecucion_presupuestos_g.vue').default,
+            props: true
+        },
 
         // PÁGINA NO ENCONTRADA
         {

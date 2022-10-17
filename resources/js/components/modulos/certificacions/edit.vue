@@ -65,6 +65,40 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col-md-6 ml-auto mr-auto">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <el-button
+                                                    v-if="nro_paso > 1"
+                                                    class="btn btn-primary bg-light btn-flat btn-block"
+                                                    :loading="enviando"
+                                                    @click="
+                                                        cambiaPaso(nro_paso - 1)
+                                                    "
+                                                    ><i
+                                                        class="fa fa-arrow-left"
+                                                    ></i>
+                                                    Anterior</el-button
+                                                >
+                                            </div>
+                                            <div class="col-md-6">
+                                                <el-button
+                                                    v-if="nro_paso < 13"
+                                                    class="btn btn-primary bg-light btn-flat btn-block"
+                                                    :loading="enviando"
+                                                    @click="
+                                                        cambiaPaso(nro_paso + 1)
+                                                    "
+                                                    >Siguiente
+                                                    <i
+                                                        class="fa fa-arrow-right"
+                                                    ></i
+                                                ></el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div
                                         v-if="nro_paso == 1"
                                         class="form-group col-md-6 ml-auto mr-auto"
@@ -588,46 +622,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 ml-auto mr-auto">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <el-button
-                                                    v-if="nro_paso > 1"
-                                                    class="btn btn-primary bg-light btn-flat btn-block"
-                                                    :loading="enviando"
-                                                    @click="
-                                                        cambiaPaso(nro_paso - 1)
-                                                    "
-                                                    ><i
-                                                        class="fa fa-arrow-left"
-                                                    ></i>
-                                                    Anterior</el-button
-                                                >
-                                            </div>
-                                            <div class="col-md-6">
-                                                <el-button
-                                                    v-if="nro_paso < 13"
-                                                    class="btn btn-primary bg-light btn-flat btn-block"
-                                                    :loading="enviando"
-                                                    @click="
-                                                        cambiaPaso(nro_paso + 1)
-                                                    "
-                                                    >Siguiente
-                                                    <i
-                                                        class="fa fa-arrow-right"
-                                                    ></i
-                                                ></el-button>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <el-button
-                                                    class="btn btn-primary bg-primary btn-flat btn-block m-0 mt-1"
-                                                    :loading="enviando"
-                                                    @click="enviaRegistro()"
-                                                    ><i class="fa fa-save"></i>
-                                                    Actualizar
-                                                    Registro</el-button
-                                                >
-                                            </div>
-                                        </div>
+                                        <el-button
+                                            class="btn btn-primary bg-primary btn-flat btn-block m-0 mt-1"
+                                            :loading="enviando"
+                                            @click="enviaRegistro()"
+                                            ><i class="fa fa-save"></i>
+                                            Actualizar Registro</el-button
+                                        >
                                     </div>
                                 </div>
                             </div>
@@ -910,9 +911,7 @@ export default {
         },
         setTextTarea() {
             this.text_tarea = this.listOperaciones
-                .filter(
-                    (item) => item.id == this.oCertificacion.fco_id
-                )[0]
+                .filter((item) => item.id == this.oCertificacion.fco_id)[0]
                 .actividad_tareas.filter(
                     (item_tarea) =>
                         item_tarea.id == this.oCertificacion.actividad_tarea_id

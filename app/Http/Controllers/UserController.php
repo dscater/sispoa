@@ -81,6 +81,9 @@ class UserController extends Controller
             'configuracion.edit',
 
             'reportes.usuarios',
+            'reportes.ejecucion_presupuestos',
+            'reportes.ejecucion_presupuestos_g',
+            
         ],
         'AUXILIAR' => [],
     ];

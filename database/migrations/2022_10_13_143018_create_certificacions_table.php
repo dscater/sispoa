@@ -20,6 +20,7 @@ class CreateCertificacionsTable extends Migration
             $table->unsignedBigInteger("actividad_tarea_id");
             $table->unsignedBigInteger("partida_id");
             $table->double("cantidad_usar");
+            $table->decimal("presupuesto_usarse", 24, 2);
             $table->text("justificacion");
             $table->string("archivo", 255)->nullable();
             $table->bigInteger("correlativo");
