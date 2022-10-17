@@ -72,6 +72,11 @@ class UserController extends Controller
             'formulario_cinco.edit',
             'formulario_cinco.destroy',
 
+            'certificacions.index',
+            'certificacions.create',
+            'certificacions.edit',
+            'certificacions.destroy',
+
             'configuracion.index',
             'configuracion.edit',
 

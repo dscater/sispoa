@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ActividadTareaController;
+use App\Http\Controllers\CertificacionController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DetalleFormularioController;
 use App\Http\Controllers\FormularioCincoController;
@@ -61,17 +63,28 @@ Route::prefix('admin')->group(function () {
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 
-    Route::get('operacions/getTareas', [OperacionController::class,"getTareas"]);
+    // operacions
+    Route::get('operacions/getTareas', [OperacionController::class, "getTareas"]);
 
     Route::resource('operacions', OperacionController::class)->only([
         'store', 'update', 'destroy'
     ]);
 
+    // tareas-partidas
+    Route::get("actividad_tareas/getPartidas", [ActividadTareaController::class, 'getPartidas']);
+
     // FORMULARIO CINCO
+    Route::get("formulario_cinco/getOperaciones", [FormularioCincoController::class, "getOperaciones"]);
     Route::resource('formulario_cinco', FormularioCincoController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 
+    // CERTIFICACION
+    Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);
+    Route::POST("certificacions/pdf/{certificacion}", [CertificacionController::class, "pdf"]);
+    Route::resource('certificacions', CertificacionController::class)->only([
+        'index', 'store', 'update', 'destroy', 'show'
+    ]);
 
     // REPORTES
     Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);

@@ -86,9 +86,7 @@
                             permisos.includes('unidads.index') ||
                             permisos.includes('formulario_cuatro.index') ||
                             permisos.includes('formulario_cinco.index') ||
-                            permisos.includes('nota_cobranzas.index') ||
-                            permisos.includes('certificado_collect.index') ||
-                            permisos.includes('tconts.index') ||
+                            permisos.includes('certificacions.index') ||
                             permisos.includes('configuracion.index')
                         "
                     >
@@ -193,6 +191,18 @@
                         >
                             <i class="nav-icon fa fa-file-contract"></i>
                             <p>Formulario 5</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('certificacions.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'certificacions.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Certificaciones</p>
                         </router-link>
                     </li>
                     <li

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActividadTarea;
 use App\Models\FCOperacion;
 use App\Models\FormularioCinco;
+use App\Models\FormularioCuatro;
 use App\Models\LugarResponsable;
 use App\Models\Partida;
 use Illuminate\Http\Request;
@@ -40,8 +41,8 @@ class FormularioCincoController extends Controller
             ]);
             foreach ($d["lugar_responsables"] as $lugar_responsable) {
                 $nuevo_lugar_responsable = $nueva_operacion->lugar_responsables()->create([
-                    "lugar" => $lugar_responsable["lugar"],
-                    "responsable" => $lugar_responsable["responsable"],
+                    "lugar" => mb_strtoupper($lugar_responsable["lugar"]),
+                    "responsable" => mb_strtoupper($lugar_responsable["responsable"]),
                 ]);
                 foreach ($lugar_responsable["actividad_tareas"] as $tarea) {
                     $nuevo_lugar_responsable->actividad_tareas()->create([
@@ -53,7 +54,7 @@ class FormularioCincoController extends Controller
                 foreach ($lugar_responsable["partidas"] as $partida) {
                     $nueva_partida = $nuevo_lugar_responsable->partidas()->create([
                         "partida" => $partida["partida"],
-                        "descripcion" => $partida["descripcion"],
+                        "descripcion" => mb_strtoupper($partida["descripcion"]),
                         "cantidad" => $partida["cantidad"],
                         "unidad" => $partida["unidad"],
                         "costo" => $partida["costo"],
@@ -133,14 +134,14 @@ class FormularioCincoController extends Controller
             foreach ($d["lugar_responsables"] as $lugar_responsable) {
                 if ($lugar_responsable["id"] == 0 || $lugar_responsable["id"] == "") {
                     $nuevo_lugar_responsable = $nueva_operacion->lugar_responsables()->create([
-                        "lugar" => $lugar_responsable["lugar"],
-                        "responsable" => $lugar_responsable["responsable"],
+                        "lugar" => mb_strtoupper($lugar_responsable["lugar"]),
+                        "responsable" => mb_strtoupper($lugar_responsable["responsable"]),
                     ]);
                 } else {
                     $lr = LugarResponsable::find($lugar_responsable["id"]);
                     $lr->update([
-                        "lugar" => $lugar_responsable["lugar"],
-                        "responsable" => $lugar_responsable["responsable"],
+                        "lugar" => mb_strtoupper($lugar_responsable["lugar"]),
+                        "responsable" => mb_strtoupper($lugar_responsable["responsable"]),
                     ]);
                     $nuevo_lugar_responsable = $lr;
                 }
@@ -163,7 +164,7 @@ class FormularioCincoController extends Controller
                     if ($partida["id"] == 0 || $partida["id"] == "") {
                         $nueva_partida = $nuevo_lugar_responsable->partidas()->create([
                             "partida" => $partida["partida"],
-                            "descripcion" => $partida["descripcion"],
+                            "descripcion" => mb_strtoupper($partida["descripcion"]),
                             "cantidad" => $partida["cantidad"],
                             "unidad" => $partida["unidad"],
                             "costo" => $partida["costo"],
@@ -177,7 +178,7 @@ class FormularioCincoController extends Controller
                         $p = Partida::find($partida["id"]);
                         $p->update([
                             "partida" => $partida["partida"],
-                            "descripcion" => $partida["descripcion"],
+                            "descripcion" => mb_strtoupper($partida["descripcion"]),
                             "cantidad" => $partida["cantidad"],
                             "unidad" => $partida["unidad"],
                             "costo" => $partida["costo"],
@@ -226,5 +227,16 @@ class FormularioCincoController extends Controller
             'sw' => true,
             'msj' => 'El registro se eliminó correctamente'
         ], 200);
+    }
+
+    public function getOperaciones(Request $request)
+    {
+        $formulario_cuatro = FormularioCuatro::find($request->formulario_id);
+        $formulario_cinco = $formulario_cuatro->formulario_cinco;
+        if ($formulario_cinco) {
+            $operaciones = $formulario_cinco->operacions;
+            return response()->JSON($operaciones);
+        }
+        return response()->JSON([]);
     }
 }

@@ -10,4 +10,11 @@ class Partida extends Model
     use HasFactory;
 
     protected $fillable = ['lugar_responsable_id', 'partida', 'descripcion', 'cantidad', 'unidad', 'costo', 't42', 'ue', 'prog', 'act', 'otros'];
+
+    protected $append = ["presupuesto"];
+
+    public function getPresupuestoAttribute()
+    {
+        return (float)$this->cantidad * (float)$this->costo;
+    }
 }

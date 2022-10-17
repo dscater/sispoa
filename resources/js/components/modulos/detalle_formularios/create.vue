@@ -233,14 +233,16 @@ export default {
                     item.codigo_operacion == ""
                 ) {
                     array_errors.push(
-                        "Debes ingresar el <b>código de operación</b> en el elemento " +
-                            (index + 1)
+                        'Debes ingresar el <b>código de operación</b> en el elemento <span class="font-weight-bold text-lg text-primary">' +
+                            (index + 1) +
+                            "</span>"
                     );
                 }
                 if (item.operacion == null || item.operacion == "") {
                     array_errors.push(
-                        "Debes ingresar la <b>descripción de operación</b> en el elemento " +
-                            (index + 1)
+                        'Debes ingresar la <b>descripción de operación</b> en el elemento <span class="text-primary font-weight-bold text-lg">' +
+                            (index + 1) +
+                            "</span>"
                     );
                 }
                 item.detalle_operaciones.forEach(
@@ -250,10 +252,11 @@ export default {
                             item_detalle.ponderacion == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar la <b>ponderación</b> en el elemento  " +
+                                'Debes ingresar la <b>ponderación</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                         if (
@@ -261,10 +264,11 @@ export default {
                             item_detalle.resultado_esperado == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar el <b>resultado intermedio esperado</b> en el elemento  " +
+                                'Debes ingresar el <b>resultado intermedio esperado</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                         if (
@@ -272,10 +276,11 @@ export default {
                             item_detalle.medios_verificacion == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar los <b>medios de verificación</b> en el elemento  " +
+                                'Debes ingresar los <b>medios de verificación</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                         if (
@@ -283,10 +288,11 @@ export default {
                             item_detalle.codigo_tarea == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar el <b>código de tarea</b> en el elemento  " +
+                                'Debes ingresar el <b>código de tarea</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                         if (
@@ -294,10 +300,11 @@ export default {
                             item_detalle.actividad_tarea == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar la <b>actividad/tarea</b> en el elemento  " +
+                                'Debes ingresar la <b>actividad/tarea</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                         if (
@@ -305,10 +312,11 @@ export default {
                             item_detalle.inicio == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar el <b>inicio</b> en el elemento  " +
+                                'Debes ingresar el <b>inicio</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                         if (
@@ -316,10 +324,11 @@ export default {
                             item_detalle.final == ""
                         ) {
                             array_errors.push(
-                                "Debes ingresar el <b>final</b> en el elemento  " +
+                                'Debes ingresar el <b>final</b> en el elemento  <span class="text-secondary font-weight-bold text-lg">' +
                                     (index + 1) +
                                     "-" +
-                                    (index_detalle + 1)
+                                    (index_detalle + 1) +
+                                    "</span>"
                             );
                         }
                     }

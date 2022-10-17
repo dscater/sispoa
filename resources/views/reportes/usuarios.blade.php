@@ -172,6 +172,7 @@
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>Celular</th>
+                <th>Cargo</th>
                 <th>Tipo de Usuario</th>
                 <th>Fecha Registro</th>
             </tr>
@@ -191,6 +192,7 @@
                     <td>{{ $user->correo }}</td>
                     <td>{{ $user->fono }}</td>
                     <td>{{ $user->cel }}</td>
+                    <td>{{ $user->cargo }}</td>
                     <td>{{ $user->tipo }}</td>
                     <td>{{ $user->fecha_registro }}</td>
                 </tr>

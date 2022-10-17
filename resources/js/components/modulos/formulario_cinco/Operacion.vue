@@ -1,82 +1,91 @@
 <template>
     <div
-        class="row border mb-3 p-2 detalle"
+        class="row border mb-3 p-2 detalle contenedor_operacion"
         :class="[(index + 1) % 2 == 0 ? 'bg-gray-light' : 'bg-light']"
     >
         <span class="rounded-circle numero_detalle" v-text="index + 1"></span>
         <button class="btn btn-danger rounded-circle btnQuitar" @click="quitar">
             X
         </button>
-        <div class="form-group col-md-6">
-            <label
-                :class="{
-                    'text-danger': errors.codigo_operacion,
-                }"
-                >Código de Operación.*</label
-            >
-            <el-select
-                filterable
-                class="w-100 d-block"
-                :class="{
-                    'is-invalid': errors.operacion_id,
-                }"
-                v-model="o_Operacion.operacion_id"
-                clearable
-                @change="getTextoOperacion"
-            >
-                <el-option
-                    v-for="item in listOperaciones"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.codigo_operacion"
+        <div class="row">
+            <div class="form-group col-md-3 mt-3">
+                <label
+                    :class="{
+                        'text-danger': errors.codigo_operacion,
+                    }"
+                    >Código de Operación*</label
                 >
-                </el-option>
-            </el-select>
-            <span
-                class="error invalid-feedback"
-                v-if="errors.codigo_operacion"
-                v-text="errors.codigo_operacion[0]"
-            ></span>
+                <el-select
+                    filterable
+                    class="w-100 d-block"
+                    :class="{
+                        'is-invalid': errors.operacion_id,
+                    }"
+                    v-model="o_Operacion.operacion_id"
+                    clearable
+                    @change="getTextoOperacion"
+                >
+                    <el-option
+                        v-for="item in listOperaciones"
+                        :key="item.id"
+                        :value="item.id"
+                        :label="item.codigo_operacion"
+                    >
+                    </el-option>
+                </el-select>
+                <span
+                    class="error invalid-feedback"
+                    v-if="errors.codigo_operacion"
+                    v-text="errors.codigo_operacion[0]"
+                ></span>
+            </div>
+
+            <div class="form-group col-md-9 mt-3">
+                <label
+                    :class="{
+                        'text-danger': errors.operacion,
+                    }"
+                    >Operación*</label
+                >
+
+                <el-input
+                    type="textarea"
+                    autosize
+                    placeholder="Operación"
+                    :class="{
+                        'is-invalid': errors.operacion,
+                    }"
+                    v-model="texto_operacion"
+                    clearable
+                    readonly
+                >
+                </el-input>
+                <span
+                    class="error invalid-feedback"
+                    v-if="errors.operacion"
+                    v-text="errors.operacion[0]"
+                ></span>
+            </div>
         </div>
-
-        <div class="form-group col-md-6">
-            <label
-                :class="{
-                    'text-danger': errors.operacion,
-                }"
-                >Operación*</label
-            >
-
-            <el-input
-                type="textarea"
-                autosize
-                placeholder="Operación"
-                :class="{
-                    'is-invalid': errors.operacion,
-                }"
-                v-model="texto_operacion"
-                clearable
-                readonly
-            >
-            </el-input>
-            <span
-                class="error invalid-feedback"
-                v-if="errors.operacion"
-                v-text="errors.operacion[0]"
-            ></span>
-        </div>
-
         <div
             class="row"
-            v-for="(detalle_lr, index) in o_Operacion.lugar_responsables"
+            v-for="(
+                detalle_lr, index_detalle
+            ) in o_Operacion.lugar_responsables"
         >
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body text-black">
+                        <span
+                            class="rounded-circle numero_operacion_detalle"
+                            v-text="index + 1 + '-' + (index_detalle + 1)"
+                        ></span>
                         <button
                             class="btn btn-danger rounded-circle btnQuitar"
-                            @click="quitarDetalleLR(index, detalle_lr.id)"
-                            v-if="index > 0"
+                            @click="
+                                quitarDetalleLR(index_detalle, detalle_lr.id)
+                            "
+                            v-if="index_detalle > 0"
                         >
                             X
                         </button>
@@ -84,14 +93,16 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors['lugar.' + index],
+                                        'text-danger':
+                                            errors['lugar.' + index_detalle],
                                     }"
                                     >Lugar de ejecución de la Operación*</label
                                 >
                                 <el-input
                                     placeholder="Lugar de ejecución de la Operación"
                                     :class="{
-                                        'is-invalid': errors['lugar.' + index],
+                                        'is-invalid':
+                                            errors['lugar.' + index_detalle],
                                     }"
                                     v-model="detalle_lr.lugar"
                                     clearable
@@ -99,15 +110,17 @@
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors['lugar.' + index]"
-                                    v-text="errors['lugar.' + index][0]"
+                                    v-if="errors['lugar.' + index_detalle]"
+                                    v-text="errors['lugar.' + index_detalle][0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
                                         'text-danger':
-                                            errors['responsable.' + index],
+                                            errors[
+                                                'responsable.' + index_detalle
+                                            ],
                                     }"
                                     >Responsable de ejecución de la operación
                                     Tarea*</label
@@ -116,7 +129,9 @@
                                     placeholder="Responsable de ejecución de la operación Tarea"
                                     :class="{
                                         'is-invalid':
-                                            errors['responsable.' + index],
+                                            errors[
+                                                'responsable.' + index_detalle
+                                            ],
                                     }"
                                     v-model="detalle_lr.responsable"
                                     clearable
@@ -124,33 +139,38 @@
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors['responsable.' + index]"
-                                    v-text="errors['responsable.' + index][0]"
+                                    v-if="
+                                        errors['responsable.' + index_detalle]
+                                    "
+                                    v-text="
+                                        errors[
+                                            'responsable.' + index_detalle
+                                        ][0]
+                                    "
                                 ></span>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-12">
                                     <div class="card contenedor_tabla">
-                                        <div
-                                            class="card-header d-flex justify-content-between"
-                                        >
-                                            <button
-                                                class="btn btn-sm bg-teal"
-                                                @click="
-                                                    agregarTarea(
-                                                        index,
-                                                        detalle_lr
-                                                    )
-                                                "
-                                            >
-                                                <i class="fa fa-plus"></i>
-                                                Agregar
-                                            </button>
-                                            <h4 class="titulo_destalle">
-                                                Actividades/Tareas
-                                            </h4>
-                                        </div>
                                         <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button
+                                                        class="btn btn-sm bg-teal"
+                                                        @click="
+                                                            agregarTarea(
+                                                                index_detalle,
+                                                                detalle_lr
+                                                            )
+                                                        "
+                                                    >
+                                                        <i
+                                                            class="fa fa-plus"
+                                                        ></i>
+                                                        Agregar
+                                                    </button>
+                                                </div>
+                                            </div>
                                             <table
                                                 class="table table-bordered tabla_detalle"
                                             >
@@ -182,7 +202,7 @@
                                                                 class="form-control"
                                                                 @change="
                                                                     setTextoTarea(
-                                                                        index,
+                                                                        index_detalle,
                                                                         index_tarea,
                                                                         $event
                                                                     )
@@ -222,7 +242,7 @@
                                                                 "
                                                                 @click="
                                                                     quitarTarea(
-                                                                        index,
+                                                                        index_detalle,
                                                                         index_tarea,
                                                                         tarea.id
                                                                     )
@@ -237,7 +257,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-12">
                                     <div class="card contenedor_tabla">
                                         <div
                                             class="card-header d-flex justify-content-between"
@@ -246,7 +266,7 @@
                                                 class="btn btn-sm bg-teal"
                                                 @click="
                                                     agregarPartida(
-                                                        index,
+                                                        index_detalle,
                                                         detalle_lr
                                                     )
                                                 "
@@ -447,7 +467,7 @@
                                                                 "
                                                                 @click="
                                                                     quitarPartida(
-                                                                        index,
+                                                                        index_detalle,
                                                                         index_partida,
                                                                         partida.id
                                                                     )
@@ -677,6 +697,7 @@ export default {
             if (id != 0) {
                 this.$emit("quitar_detalle", id);
             }
+            this.calculaTotales();
         },
 
         // ACCIONES PARA AGREGAR TAREAS Y PARTIDAS
@@ -768,6 +789,21 @@ export default {
     font-size: 1.2rem;
 }
 
+.numero_operacion_detalle {
+    padding: 5px 0px;
+    background: var(--secondary);
+    width: 37px;
+    height: 37px;
+    position: absolute;
+    z-index: 100;
+    left: -15px;
+    top: -15px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
 .btnQuitar {
     padding: 0px;
     width: 30px;
@@ -793,14 +829,14 @@ export default {
 }
 
 .tabla_detalle tbody tr td input,
+.tabla_detalle tbody tr td select,
 .tabla_detalle tbody tr td textarea {
-    padding: 2px;
     font-size: 0.7rem;
 }
 
 .tabla_detalle thead tr th {
     padding: 1px;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
 }
 
 .tabla_detalle tbody tr td input {
@@ -822,5 +858,13 @@ td.eliminar .btnQuitar {
     font-size: 0.8rem;
     right: -13px;
     top: 0px;
+}
+
+.contenedor_operacion label {
+    margin: 0px;
+    position: absolute;
+    font-size: 0.7rem;
+    top: -15px;
+    left: 12px;
 }
 </style>

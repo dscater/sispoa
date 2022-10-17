@@ -1,78 +1,73 @@
 <template>
     <div
-        class="row border mb-3 p-2 detalle"
+        class="row border mb-3 p-2 detalle contenedor_operacion"
         :class="[(index + 1) % 2 == 0 ? 'bg-gray-light' : 'bg-light']"
     >
         <span class="rounded-circle numero_detalle" v-text="index + 1"></span>
         <button class="btn btn-danger rounded-circle btnQuitar" @click="quitar">
             X
         </button>
-        <div class="form-group col-md-6">
-            <label
-                :class="{
-                    'text-danger': errors.codigo_operacion,
-                }"
-                >Código de Operación.*</label
-            >
-            <el-input
-                placeholder="Código de Operación"
-                :class="{
-                    'is-invalid': errors.codigo_operacion,
-                }"
-                v-model="o_Operacion.codigo_operacion"
-                clearable
-                maxlength="200"
-            >
-            </el-input>
-            <span
-                class="error invalid-feedback"
-                v-if="errors.codigo_operacion"
-                v-text="errors.codigo_operacion[0]"
-            ></span>
+        <div class="row">
+            <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"
+                        >Código de Operación</span
+                    >
+                </div>
+                <input
+                    placeholder="Código de Operación"
+                    class="form-control"
+                    :class="{
+                        'is-invalid': errors.codigo_operacion,
+                    }"
+                    v-model="o_Operacion.codigo_operacion"
+                />
+                <span
+                    class="error invalid-feedback"
+                    v-if="errors.codigo_operacion"
+                    v-text="errors.codigo_operacion[0]"
+                ></span>
+            </div>
+
+            <div class="input-group col-md-6">
+                <el-input
+                    type="textarea"
+                    autosize
+                    placeholder="Operación"
+                    :class="{
+                        'is-invalid': errors.operacion,
+                    }"
+                    v-model="o_Operacion.operacion"
+                    clearable
+                >
+                </el-input>
+                <span
+                    class="error invalid-feedback"
+                    v-if="errors.operacion"
+                    v-text="errors.operacion[0]"
+                ></span>
+            </div>
         </div>
-
-        <div class="form-group col-md-6">
-            <label
-                :class="{
-                    'text-danger': errors.operacion,
-                }"
-                >Operación*</label
-            >
-
-            <el-input
-                type="textarea"
-                autosize
-                placeholder="Operación"
-                :class="{
-                    'is-invalid': errors.operacion,
-                }"
-                v-model="o_Operacion.operacion"
-                clearable
-            >
-            </el-input>
-            <span
-                class="error invalid-feedback"
-                v-if="errors.operacion"
-                v-text="errors.operacion[0]"
-            ></span>
-        </div>
-
         <div
-            class="row"
-            v-for="(detalle, index) in o_Operacion.detalle_operaciones"
+            class="row detalle"
+            v-for="(detalle, index_detalle) in o_Operacion.detalle_operaciones"
         >
+            <span
+                class="rounded-circle numero_operacion_detalle"
+                v-text="index + 1 + '-' + (index_detalle + 1)"
+            ></span>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body text-black">
                         <button
                             class="btn btn-danger rounded-circle btnQuitar"
-                            @click="quitarDetalle(index, detalle.id)"
-                            v-if="index > 0"
+                            @click="quitarDetalle(index_detalle, detalle.id)"
+                            v-if="index_detalle > 0"
                         >
                             X
                         </button>
                         <div class="row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-2">
                                 <input
                                     type="number"
                                     placeholder="Ponderación %"
@@ -81,13 +76,21 @@
                                     step="0.01"
                                     :class="{
                                         'is-invalid':
-                                            errors['ponderacion.' + index],
+                                            errors[
+                                                'ponderacion.' + index_detalle
+                                            ],
                                     }"
                                 />
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors['ponderacion.' + index]"
-                                    v-text="errors['ponderacion.' + index][0]"
+                                    v-if="
+                                        errors['ponderacion.' + index_detalle]
+                                    "
+                                    v-text="
+                                        errors[
+                                            'ponderacion.' + index_detalle
+                                        ][0]
+                                    "
                                 ></span>
                             </div>
                             <div class="form-group col-md-4">
@@ -98,7 +101,8 @@
                                     :class="{
                                         'is-invalid':
                                             errors[
-                                                'resultado_esperado.' + index
+                                                'resultado_esperado.' +
+                                                    index_detalle
                                             ],
                                     }"
                                     v-model="detalle.resultado_esperado"
@@ -107,9 +111,17 @@
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors['resultado_esperado.' + index]"
+                                    v-if="
+                                        errors[
+                                            'resultado_esperado.' +
+                                                index_detalle
+                                        ]
+                                    "
                                     v-text="
-                                        errors['resultado_esperado.' + index][0]
+                                        errors[
+                                            'resultado_esperado.' +
+                                                index_detalle
+                                        ][0]
                                     "
                                 ></span>
                             </div>
@@ -119,7 +131,8 @@
                                     :class="{
                                         'is-invalid':
                                             errors[
-                                                'medios_verificacion.' + index
+                                                'medios_verificacion.' +
+                                                    index_detalle
                                             ],
                                     }"
                                     v-model="detalle.medios_verificacion"
@@ -130,21 +143,27 @@
                                 <span
                                     class="error invalid-feedback"
                                     v-if="
-                                        errors['medios_verificacion.' + index]
+                                        errors[
+                                            'medios_verificacion.' +
+                                                index_detalle
+                                        ]
                                     "
                                     v-text="
                                         errors[
-                                            'medios_verificacion.' + index
+                                            'medios_verificacion.' +
+                                                index_detalle
                                         ][0]
                                     "
                                 ></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-2">
                                 <el-input
                                     placeholder="Código tarea"
                                     :class="{
                                         'is-invalid':
-                                            errors['codigo_tarea.' + index],
+                                            errors[
+                                                'codigo_tarea.' + index_detalle
+                                            ],
                                     }"
                                     v-model="detalle.codigo_tarea"
                                     clearable
@@ -153,8 +172,14 @@
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors['codigo_tarea.' + index]"
-                                    v-text="errors['codigo_tarea.' + index][0]"
+                                    v-if="
+                                        errors['codigo_tarea.' + index_detalle]
+                                    "
+                                    v-text="
+                                        errors[
+                                            'codigo_tarea.' + index_detalle
+                                        ][0]
+                                    "
                                 ></span>
                             </div>
                             <div class="form-group col-md-4">
@@ -164,7 +189,10 @@
                                     placeholder="Actividad/Tarea"
                                     :class="{
                                         'is-invalid':
-                                            errors['actividad_tarea.' + index],
+                                            errors[
+                                                'actividad_tarea.' +
+                                                    index_detalle
+                                            ],
                                     }"
                                     v-model="detalle.actividad_tarea"
                                     clearable
@@ -172,10 +200,64 @@
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors['actividad_tarea.' + index]"
-                                    v-text="
-                                        errors['actividad_tarea.' + index][0]
+                                    v-if="
+                                        errors[
+                                            'actividad_tarea.' + index_detalle
+                                        ]
                                     "
+                                    v-text="
+                                        errors[
+                                            'actividad_tarea.' + index_detalle
+                                        ][0]
+                                    "
+                                ></span>
+                            </div>
+                            <div class="input-group col-md-4">
+                                <div class="input-group-prepend">
+                                    <span
+                                        class="input-group-text"
+                                        id="basic-addon1"
+                                        >Inicio</span
+                                    >
+                                </div>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid':
+                                            errors['inicio.' + index_detalle],
+                                    }"
+                                    v-model="detalle.inicio"
+                                />
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors['inicio.' + index_detalle]"
+                                    v-text="
+                                        errors['inicio.' + index_detalle][0]
+                                    "
+                                ></span>
+                            </div>
+                            <div class="input-group col-md-4">
+                                <div class="input-group-prepend">
+                                    <span
+                                        class="input-group-text"
+                                        id="basic-addon1"
+                                        >Final</span
+                                    >
+                                </div>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid':
+                                            errors['final.' + index_detalle],
+                                    }"
+                                    v-model="detalle.final"
+                                />
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors['final.' + index_detalle]"
+                                    v-text="errors['final.' + index_detalle][0]"
                                 ></span>
                             </div>
 
@@ -217,7 +299,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'pt_e.' + index
+                                                                'pt_e.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.pt_e,
@@ -233,7 +316,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'pt_f.' + index
+                                                                'pt_f.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.pt_f,
@@ -249,7 +333,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'pt_m.' + index
+                                                                'pt_m.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.pt_m,
@@ -265,7 +350,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'st_a.' + index
+                                                                'st_a.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.st_a,
@@ -281,7 +367,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'st_m.' + index
+                                                                'st_m.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.st_m,
@@ -297,7 +384,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'st_j.' + index
+                                                                'st_j.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.st_j,
@@ -313,7 +401,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'tt_j.' + index
+                                                                'tt_j.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.tt_j,
@@ -329,7 +418,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'tt_a.' + index
+                                                                'tt_a.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.tt_a,
@@ -345,7 +435,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'tt_s.' + index
+                                                                'tt_s.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.tt_s,
@@ -361,7 +452,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'ct_o.' + index
+                                                                'ct_o.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.ct_o,
@@ -377,7 +469,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'ct_n.' + index
+                                                                'ct_n.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.ct_n,
@@ -393,7 +486,8 @@
                                                     :class="{
                                                         'is-invalid':
                                                             errors[
-                                                                'ct_d.' + index
+                                                                'ct_d.' +
+                                                                    index_detalle
                                                             ],
                                                         'bg-teal font-weight-bold':
                                                             detalle.ct_d,
@@ -403,50 +497,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger':
-                                            errors['inicio.' + index],
-                                    }"
-                                    >Inicio*</label
-                                >
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors['inicio.' + index],
-                                    }"
-                                    v-model="detalle.inicio"
-                                />
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors['inicio.' + index]"
-                                    v-text="errors['inicio.' + index][0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors['final.' + index],
-                                    }"
-                                    >Final*</label
-                                >
-                                <input
-                                    type="date"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors['final.' + index],
-                                    }"
-                                    v-model="detalle.final"
-                                />
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors['final.' + index]"
-                                    v-text="errors['final.' + index][0]"
-                                ></span>
                             </div>
                         </div>
                     </div>
@@ -594,6 +644,7 @@ export default {
     position: absolute;
     right: -10px;
     top: -10px;
+    z-index: 100;
 }
 
 .numero_detalle {
@@ -602,6 +653,7 @@ export default {
     width: 37px;
     height: 37px;
     position: absolute;
+    z-index: 100;
     left: -15px;
     top: -15px;
     color: white;
@@ -610,11 +662,32 @@ export default {
     font-size: 1.2rem;
 }
 
+.numero_operacion_detalle {
+    padding: 5px 0px;
+    background: var(--secondary);
+    width: 37px;
+    height: 37px;
+    position: absolute;
+    z-index: 100;
+    left: 0px;
+    top: 0px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
 .detalle_trimestres tr td {
     padding: 0px;
 }
 
 .detalle_trimestres tr td input {
     min-width: 45px;
+}
+
+.input-group-text {
+    padding: 4px;
+    min-height: 38px;
+    height: 38px;
 }
 </style>

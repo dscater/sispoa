@@ -28,4 +28,9 @@ class FormularioCuatro extends Model
     {
         return $this->hasOne(DetalleFormulario::class, 'formulario_id');
     }
+
+    public function formulario_cinco()
+    {
+        return $this->hasOne(FormularioCinco::class, 'formulario_id');
+    }
 }

@@ -13,7 +13,7 @@ class LugarResponsable extends Model
         'fco_id', 'lugar', 'responsable',
     ];
 
-    protected $with = ["actividad_tareas", "partidas"];
+    protected $with = ["partidas", "actividad_tareas"];
 
     public function actividad_tareas()
     {

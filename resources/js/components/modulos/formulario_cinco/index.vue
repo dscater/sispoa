@@ -105,7 +105,7 @@
                                                             class="btn-flat btn-block"
                                                             title="Ver detalle"
                                                             @click="
-                                                                editar(
+                                                                show(
                                                                     row.item.id
                                                                 )
                                                             "
@@ -118,7 +118,7 @@
                                                     <div
                                                         class="row justify-content-between"
                                                     >
-                                                        <b-button
+                                                        <!-- <b-button
                                                             size="sm"
                                                             pill
                                                             variant="outline-primary"
@@ -131,7 +131,7 @@
                                                             <i
                                                                 class="fa fa-file-pdf"
                                                             ></i>
-                                                        </b-button>
+                                                        </b-button> -->
 
                                                         <b-button
                                                             size="sm"
@@ -278,18 +278,11 @@ export default {
             this.showOverlay = true;
             this.muestra_modal = false;
             let url = "/admin/formulario_cinco";
-            if (this.pagina != 0) {
-                url += "?page=" + this.pagina;
-            }
-            axios
-                .get(url, {
-                    params: { per_page: this.per_page },
-                })
-                .then((res) => {
-                    this.showOverlay = false;
-                    this.listRegistros = res.data.listado;
-                    this.totalRows = res.data.total;
-                });
+            axios.get(url).then((res) => {
+                this.showOverlay = false;
+                this.listRegistros = res.data.listado;
+                this.totalRows = res.data.total;
+            });
         },
         eliminaFormularioCinco(id, descripcion) {
             Swal.fire({
@@ -323,6 +316,12 @@ export default {
         editar(id) {
             this.$router.push({
                 name: "formulario_cinco.edit",
+                params: { id: id },
+            });
+        },
+        show(id) {
+            this.$router.push({
+                name: "formulario_cinco.show",
                 params: { id: id },
             });
         },

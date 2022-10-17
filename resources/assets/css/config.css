@@ -2,6 +2,17 @@
     --principal: #0062A5;
     --secundario: #0062A5;
     --correcto: #d2e7c9;
+    --secondary: #6e7e66;
+
+}
+
+.secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.text-secondary {
+    color: var(--secondary);
 }
 
 .login-page .login-box .card .card-header img {

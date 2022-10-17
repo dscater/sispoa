@@ -65,6 +65,12 @@ export default new Router({
             props: true,
             component: require('./components/modulos/detalle_formularios/edit.vue').default,
         },
+        {
+            path: '/detalle_formularios/show/:id',
+            name: 'detalle_formularios.show',
+            props: true,
+            component: require('./components/modulos/detalle_formularios/show.vue').default,
+        },
 
         // FORMULARIO CINCO
         {
@@ -84,6 +90,33 @@ export default new Router({
             name: 'formulario_cinco.edit',
             props: true,
             component: require('./components/modulos/formulario_cinco/edit.vue').default,
+        },
+
+        {
+            path: '/formulario_cinco/show/:id',
+            name: 'formulario_cinco.show',
+            props: true,
+            component: require('./components/modulos/formulario_cinco/show.vue').default,
+        },
+
+        // CERTIFICACIONS
+        {
+            path: '/certificacions',
+            name: 'certificacions.index',
+            component: require('./components/modulos/certificacions/index.vue').default,
+        },
+
+        {
+            path: '/certificacions/create',
+            name: 'certificacions.create',
+            component: require('./components/modulos/certificacions/create.vue').default,
+        },
+
+        {
+            path: '/certificacions/edit/:id',
+            name: 'certificacions.edit',
+            props: true,
+            component: require('./components/modulos/certificacions/edit.vue').default,
         },
 
         // CONFIGURACIÓN

@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Detalle Formulario 4</h1>
+                        <h1>Certificaciones</h1>
                     </div>
                 </div>
             </div>
@@ -19,11 +19,11 @@
                                     <div class="col-md-3">
                                         <router-link
                                             :to="{
-                                                name: 'detalle_formularios.create',
+                                                name: 'certificacions.create',
                                             }"
                                             v-if="
                                                 permisos.includes(
-                                                    'detalle_formularios.create'
+                                                    'certificacions.create'
                                                 )
                                             "
                                             class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
@@ -84,6 +84,40 @@
                                                 :filter="filter"
                                             >
                                                 <template
+                                                    #cell(operacion_id)="row"
+                                                >
+                                                    <strong
+                                                        >Código de operación: </strong
+                                                    >{{
+                                                        row.item.operacion.operacion.codigo_operacion
+                                                    }}<br />
+                                                    <strong>Operación: </strong
+                                                    >{{
+                                                        row.item.operacion
+                                                            .operacion
+                                                            .operacion
+                                                    }}<br />
+                                                    <strong
+                                                        >Código de tarea: </strong
+                                                    >{{
+                                                        row.item.actividad_tarea
+                                                            .detalle_operacion
+                                                            .codigo_tarea
+                                                    }}<br />
+                                                    <strong>Tarea: </strong
+                                                    >{{
+                                                        row.item.actividad_tarea
+                                                            .detalle_operacion
+                                                            .actividad_tarea
+                                                    }}<br />
+                                                    <strong>Partida: </strong
+                                                    >{{
+                                                        row.item.partida
+                                                            .partida
+                                                    }}<br />
+                                                </template>
+
+                                                <template
                                                     #cell(fecha_registro)="row"
                                                 >
                                                     {{
@@ -93,32 +127,28 @@
                                                         )
                                                     }}
                                                 </template>
-
-                                                <template #cell(detalles)="row">
-                                                    <div
-                                                        class="row justify-content-between"
+                                                <!-- <template #cell(detalles)="row">
+                                                    <b-button
+                                                        size="sm"
+                                                        pill
+                                                        variant="outline-warning"
+                                                        class="btn-flat btn-block"
+                                                        title="Editar registro"
+                                                        @click="
+                                                            editar(row.item.id)
+                                                        "
                                                     >
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-primary"
-                                                            class="btn-flat btn-block"
-                                                            title="Ver detalle"
-                                                            @click="
-                                                                show(
-                                                                    row.item.id
-                                                                )
-                                                            "
-                                                        >
-                                                            Ver detalles
-                                                        </b-button>
-                                                    </div>
-                                                </template>
+                                                        <i
+                                                            class="fa fa-edit"
+                                                        ></i>
+                                                    </b-button>
+                                                </template> -->
+
                                                 <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-between"
                                                     >
-                                                        <!-- <b-button
+                                                        <b-button
                                                             size="sm"
                                                             pill
                                                             variant="outline-primary"
@@ -131,7 +161,7 @@
                                                             <i
                                                                 class="fa fa-file-pdf"
                                                             ></i>
-                                                        </b-button> -->
+                                                        </b-button>
 
                                                         <b-button
                                                             size="sm"
@@ -156,7 +186,7 @@
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
                                                             @click="
-                                                                eliminaDetalleFormulario(
+                                                                eliminaCertificacion(
                                                                     row.item.id,
                                                                     row.item
                                                                         .formulario
@@ -232,16 +262,17 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: "operacions.length",
-                    label: "Total operaciones",
+                    key: "operacion_id",
+                    label: "Descripción Operación",
                     sortable: true,
                 },
                 {
-                    key: "fecha_registro",
-                    label: "Fecha de registro",
+                    key: "estado",
+                    label: "Estado",
                     sortable: true,
                 },
-                { key: "detalles", label: "Ver más" },
+                { key: "fecha_registro", label: "Fecha de registro" },
+                // { key: "detalles", label: "Ver más" },
                 { key: "accion", label: "Acción" },
             ],
             loading: true,
@@ -265,14 +296,14 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
-        this.getDetalleFormularios();
+        this.getCertificacions();
     },
     methods: {
-        // Listar DetalleFormularios
-        getDetalleFormularios() {
+        // Listar Certificacions
+        getCertificacions() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/detalle_formularios";
+            let url = "/admin/certificacions";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -282,11 +313,11 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.detalle_formularios;
+                    this.listRegistros = res.data.certificacions;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaDetalleFormulario(id, descripcion) {
+        eliminaCertificacion(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
                 html: `<strong>${descripcion}</strong>`,
@@ -299,11 +330,11 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/detalle_formularios/" + id, {
+                        .post("/admin/certificacions/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getDetalleFormularios();
+                            this.getCertificacions();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -317,13 +348,7 @@ export default {
         },
         editar(id) {
             this.$router.push({
-                name: "detalle_formularios.edit",
-                params: { id: id },
-            });
-        },
-        show(id) {
-            this.$router.push({
-                name: "detalle_formularios.show",
+                name: "certificacions.edit",
                 params: { id: id },
             });
         },
@@ -332,7 +357,7 @@ export default {
                 responseType: "blob",
             };
             axios
-                .post("/admin/detalle_formularios/pdf/" + id, null, config)
+                .post("/admin/certificacions/pdf/" + id, null, config)
                 .then((res) => {
                     this.errors = [];
                     this.enviando = false;
