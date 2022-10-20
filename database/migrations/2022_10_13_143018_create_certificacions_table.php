@@ -32,6 +32,8 @@ class CreateCertificacionsTable extends Migration
             $table->string("act");
             $table->string("ff");
             $table->string("of");
+            $table->date("inicio");
+            $table->date("final");
             $table->string("codigo", 255);
             $table->string("accion", 255);
             $table->string("estado", 255);

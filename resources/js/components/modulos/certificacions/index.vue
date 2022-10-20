@@ -117,6 +117,18 @@
                                                         row.item.partida
                                                             .partida
                                                     }}<br />
+                                                    <strong>Inicio: </strong
+                                                    >{{
+                                                        formatoFecha(
+                                                            row.item.inicio
+                                                        )
+                                                    }}<br />
+                                                    <strong>Final: </strong
+                                                    >{{
+                                                        formatoFecha(
+                                                            row.item.final
+                                                        )
+                                                    }}<br />
                                                 </template>
 
                                                 <template #cell(estado)="row">

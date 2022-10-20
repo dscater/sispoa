@@ -253,7 +253,7 @@
             </tr>
             <tr>
                 <td class="centreado">
-                    {{ date('d/m/Y', strtotime($certificacion->actividad_tarea->detalle_operacion->inicio)) }}</td>
+                    {{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
             </tr>
         </tbody>
     </table>
@@ -265,7 +265,7 @@
             </tr>
             <tr>
                 <td class="centreado">
-                    {{ date('d/m/Y', strtotime($certificacion->actividad_tarea->detalle_operacion->final)) }}</td>
+                    {{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
             </tr>
         </tbody>
     </table>

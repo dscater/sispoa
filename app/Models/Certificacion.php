@@ -11,8 +11,8 @@ class Certificacion extends Model
 
     protected $fillable = [
         'formulario_id', 'fco_id', 'actividad_tarea_id', 'partida_id',
-        'cantidad_usar','presupuesto_usarse', 'justificacion', 'archivo', 'correlativo', 'solicitante_id', 'superior_id',
-        'ue', 'prog', 'proy', 'act', 'ff', 'of', 'codigo', 'accion', 'estado', 'fecha_registro',
+        'cantidad_usar', 'presupuesto_usarse', 'justificacion', 'archivo', 'correlativo', 'solicitante_id', 'superior_id',
+        'ue', 'prog', 'proy', 'act', 'ff', 'of', 'inicio', 'final', 'codigo', 'accion', 'estado', 'fecha_registro',
     ];
 
     protected $with = ["formulario", "operacion", "actividad_tarea", "partida"];
@@ -46,5 +46,4 @@ class Certificacion extends Model
     {
         return $this->belongsTo(User::class, 'superior_id');
     }
-
 }

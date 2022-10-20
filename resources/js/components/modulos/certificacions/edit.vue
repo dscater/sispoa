@@ -83,7 +83,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <el-button
-                                                    v-if="nro_paso < 13"
+                                                    v-if="nro_paso < 14"
                                                     class="btn btn-primary bg-light btn-flat btn-block"
                                                     :loading="enviando"
                                                     @click="
@@ -572,6 +572,63 @@
                                         v-if="nro_paso == 12"
                                         class="form-group col-md-6 ml-auto mr-auto"
                                     >
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.inicio,
+                                                    }"
+                                                    >Fecha inicio*</label
+                                                >
+                                                <input
+                                                    type="date"
+                                                    class="form-control"
+                                                    v-model="
+                                                        oCertificacion.inicio
+                                                    "
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.inicio,
+                                                    }"
+                                                />
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.inicio"
+                                                    v-text="errors.inicio[0]"
+                                                ></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.final,
+                                                    }"
+                                                    >Fecha final*</label
+                                                >
+                                                <input
+                                                    type="date"
+                                                    class="form-control"
+                                                    v-model="
+                                                        oCertificacion.final
+                                                    "
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.final,
+                                                    }"
+                                                />
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.final"
+                                                    v-text="errors.final[0]"
+                                                ></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        v-if="nro_paso == 13"
+                                        class="form-group col-md-6 ml-auto mr-auto"
+                                    >
                                         <label
                                             :class="{
                                                 'text-danger': errors.codigo,
@@ -593,7 +650,7 @@
                                         ></span>
                                     </div>
                                     <div
-                                        v-if="nro_paso == 13"
+                                        v-if="nro_paso == 14"
                                         class="form-group col-md-6 ml-auto mr-auto"
                                     >
                                         <label
@@ -744,8 +801,14 @@ export default {
                     error: false,
                 },
                 { nro: 11, label: "SIGEP", key: "sigep", error: false },
-                { nro: 12, label: "Código", key: "codigo", error: false },
-                { nro: 13, label: "Acción", key: "accion", error: false },
+                {
+                    nro: 12,
+                    label: "Inicio y Final",
+                    key: "inicio_final",
+                    error: false,
+                },
+                { nro: 13, label: "Código", key: "codigo", error: false },
+                { nro: 14, label: "Acción", key: "accion", error: false },
             ],
         };
     },
@@ -841,6 +904,9 @@ export default {
                 formdata.append("act", this.oCertificacion.act);
                 formdata.append("ff", this.oCertificacion.ff);
                 formdata.append("of", this.oCertificacion.of);
+                formdata.append("inicio", this.oCertificacion.inicio);
+                formdata.append("final", this.oCertificacion.final);
+
                 formdata.append("codigo", this.oCertificacion.codigo);
                 formdata.append("accion", this.oCertificacion.accion);
                 formdata.append("estado", this.oCertificacion.estado);
@@ -894,8 +960,8 @@ export default {
             if (this.nro_paso < 1) {
                 this.nro_paso = 1;
             }
-            if (this.nro_paso > 13) {
-                this.nro_paso = 13;
+            if (this.nro_paso > 14) {
+                this.nro_paso = 14;
             }
         },
         // textos codigos
@@ -958,6 +1024,12 @@ export default {
                         msj_errores += "Tienes un error en SIGEP<br/>";
                     }
                 }
+                if (paso.key == "inicio_final") {
+                    if (this.errors.inicio || this.errors.final) {
+                        paso.error = true;
+                        msj_errores += "Tienes un error en Inicio y Final<br/>";
+                    }
+                }
             });
             Swal.fire({
                 icon: "error",
@@ -991,7 +1063,7 @@ export default {
     overflow: auto;
     padding: 0px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 .paso {
     display: flex;

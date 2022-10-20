@@ -25,6 +25,8 @@ class CertificacionController extends Controller
         'act' => 'required',
         'ff' => 'required',
         'of' => 'required',
+        'inicio' => 'required|date',
+        'final' => 'required|date',
         'codigo' => 'required',
         'accion' => 'required',
         'estado' => 'required',
@@ -38,7 +40,7 @@ class CertificacionController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->hasFile('foto')) {
+        if ($request->hasFile('archivo')) {
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
@@ -79,7 +81,7 @@ class CertificacionController extends Controller
 
     public function update(Certificacion $certificacion, Request $request)
     {
-        if ($request->hasFile('foto')) {
+        if ($request->hasFile('archivo')) {
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
