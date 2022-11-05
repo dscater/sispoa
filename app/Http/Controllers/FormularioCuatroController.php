@@ -7,6 +7,7 @@ use App\Models\DetalleFormulario;
 use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FormularioCuatroController extends Controller
 {
@@ -26,7 +27,12 @@ class FormularioCuatroController extends Controller
 
     public function index(Request $request)
     {
-        $listado = FormularioCuatro::all();
+        $listado = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        } else {
+            $listado = FormularioCuatro::all();
+        }
         return response()->JSON(['listado' => $listado, 'total' => count($listado)], 200);
     }
 

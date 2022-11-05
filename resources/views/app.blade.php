@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ mix('css/plantilla.css') }}">
 </head>
 
-<body class="sidebar-mini layout-fixed control-sidebar-slide-open layout-navbar-fixed">
+<body class="sidebar-mini layout-fixed control-sidebar-slide-open layout-navbar-fixed text-sm">
     <div id="app">
         @if (Auth::check())
             <App ruta="{{ route('base_path') }}" configuracion="{{ $configuracion->first() }}"
@@ -28,7 +28,7 @@
     <script>
         $(document).ready(function() {
             $(document).on("click", "aside nav ul li a", function() {
-                if ($("body").hasClass("sidebar-open")) {
+                if ($("body").hasClass("sidebar-open") && !$(this).parent().hasClass("menu")) {
                     $("body").addClass("sidebar-collapse");
                     $("body").addClass("sidebar-close");
                     $("body").removeClass("sidebar-open");

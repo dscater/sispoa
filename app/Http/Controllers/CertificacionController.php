@@ -6,6 +6,7 @@ use App\Models\Certificacion;
 use App\Models\MemoriaOperacion;
 use App\Models\Partida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 
@@ -26,7 +27,15 @@ class CertificacionController extends Controller
 
     public function index()
     {
-        $certificacions = Certificacion::all();
+        $certificacions = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+            $certificacions = Certificacion::select("certificacions.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->get();
+        } else {
+            $certificacions = Certificacion::all();
+        }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
     }
 

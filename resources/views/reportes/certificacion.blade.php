@@ -14,7 +14,7 @@
             margin-bottom: 1cm;
             margin-left: 2cm;
             margin-right: 1cm;
-            font-size: 9pt;
+            font-size: 7.5pt;
         }
 
         .logo {
@@ -25,6 +25,7 @@
         }
 
         .titulo {
+            margin-top:2px;
             position: absolute;
             border: solid 1px;
             width: 350px;
@@ -146,7 +147,7 @@
 
         .texto_unidad {
             width: 50%;
-            margin-top: 55px;
+            margin-top: 40px;
             margin-left: auto;
             text-align: right;
         }

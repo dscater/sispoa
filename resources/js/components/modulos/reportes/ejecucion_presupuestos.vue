@@ -214,6 +214,7 @@
 export default {
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             errors: [],
             oReporte: {
                 filtro: "Todos",
@@ -239,6 +240,13 @@ export default {
     mounted() {
         this.getUnidades();
         this.getFormularios();
+        if (
+            this.user.tipo == "JEFES DE UNIDAD" ||
+            this.user.tipo == "DIRECTORES" ||
+            this.user.tipo == "JEFES DE ÁREAS"
+        ) {
+            this.listFiltro = ["Todos", "Código PEI", "Rango de fechas"];
+        }
     },
     methods: {
         getUnidades() {
@@ -261,7 +269,11 @@ export default {
                 responseType: "blob",
             };
             axios
-                .post("/admin/reportes/ejecucion_presupuestos", this.oReporte, config)
+                .post(
+                    "/admin/reportes/ejecucion_presupuestos",
+                    this.oReporte,
+                    config
+                )
                 .then((res) => {
                     this.errors = [];
                     this.enviando = false;

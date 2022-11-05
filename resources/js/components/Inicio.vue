@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row" v-if="configuracion">
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card border border-primary">
                             <div class="card-body">
                                 <h2
                                     style="
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div
                         class="col-12 col-sm-6 col-md-3"
                         v-for="(item, index) in listInfoBox"
@@ -40,6 +40,49 @@
                                 <span class="info-box-number">{{
                                     item.cantidad
                                 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card border border-primary">
+                            <div class="card-header">
+                                <h4>Misión</h4>
+                            </div>
+                            <div class="card-body overflow-auto">
+                                <div class="row">
+                                    <div
+                                        class="col-md-12"
+                                        v-html="htmlMision"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border border-primary">
+                            <div class="card-header">
+                                <h4>Visión</h4>
+                            </div>
+                            <div class="card-body overflow-auto">
+                                <div class="row">
+                                    <div
+                                        class="col-md-12"
+                                        v-html="htmlVision"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border border-primary">
+                            <div class="card-header">
+                                <h4>Objetivos estratégicos</h4>
+                            </div>
+                            <div class="card-body overflow-auto">
+                                <div class="row">
+                                    <div
+                                        class="col-md-12"
+                                        v-html="htmlObjetivos"
+                                    ></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -62,16 +105,37 @@ export default {
             configuracion: JSON.parse(localStorage.getItem("configuracion")),
             user: JSON.parse(localStorage.getItem("user")),
             listInfoBox: [],
+            htmlMision: "",
+            htmlVision: "",
+            htmlObjetivos: "",
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getInfoBox();
+        this.getMision();
+        this.getVision();
+        this.getObjetivos();
     },
     methods: {
         getInfoBox() {
             axios.get("/admin/usuarios/getInfoBox").then((res) => {
                 this.listInfoBox = res.data;
+            });
+        },
+        getMision() {
+            axios.get("/pei/mision").then((response) => {
+                this.htmlMision = response.data;
+            });
+        },
+        getVision() {
+            axios.get("/pei/vision").then((response) => {
+                this.htmlVision = response.data;
+            });
+        },
+        getObjetivos() {
+            axios.get("/pei/objetivos").then((response) => {
+                this.htmlObjetivos = response.data;
             });
         },
     },

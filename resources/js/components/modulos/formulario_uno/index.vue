@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Formulario 2</h1>
+                        <h1>Formulario 1</h1>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         getFormulario() {
-            axios.get("/admin/formulario_dos").then((response) => {
+            axios.get("/admin/formulario_uno").then((response) => {
                 this.formulario = response.data;
             });
         },

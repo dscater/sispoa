@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActividadRealizadaController;
 use App\Http\Controllers\ActividadTareaController;
 use App\Http\Controllers\CertificacionController;
 use App\Http\Controllers\ConfiguracionController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\FormularioUnoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemoriaCalculoController;
 use App\Http\Controllers\OperacionController;
+use App\Http\Controllers\PeiController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SemaforoController;
 use App\Http\Controllers\UnidadController;
@@ -41,6 +43,10 @@ Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
 Route::post('/configuracion/update', [ConfiguracionController::class, 'update']);
 
+// PEI
+Route::get('/pei/mision', [PeiController::class, "mision"]);
+Route::get('/pei/vision', [PeiController::class, "vision"]);
+Route::get('/pei/objetivos', [PeiController::class, "objetivos"]);
 
 Route::prefix('admin')->group(function () {
     // USUARIOS
@@ -67,6 +73,7 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // DETALLE FORMULARIO CUATRO
+    Route::get('detalle_formularios/seguimiento_trimestral/{detalle_formulario}', [DetalleFormularioController::class, "seguimiento_trimestral"]);
     Route::resource('detalle_formularios', DetalleFormularioController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);
@@ -109,7 +116,6 @@ Route::prefix('admin')->group(function () {
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 
-
     // VERIFICACION ACTIVIDAD
     Route::get('/verificacion_actividads/getVerificacionActividad', [VerificacionActividadController::class, 'getVerificacionActividad']);
     Route::resource('verificacion_actividads', VerificacionActividadController::class)->only([
@@ -131,10 +137,25 @@ Route::prefix('admin')->group(function () {
         'index', 'store', 'update', 'destroy'
     ]);
 
+    // ACTIVIDAD REALIZADA
+    Route::post('actividad_realizadas/archivo/{actividad_realizada}', [ActividadRealizadaController::class, 'archivo']);
+    Route::resource('actividad_realizadas', ActividadRealizadaController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
+
     // REPORTES
     Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);
+    Route::post('reportes/saldo_presupuesto', [ReporteController::class, 'saldo_presupuesto']);
     Route::post('reportes/ejecucion_presupuestos', [ReporteController::class, 'ejecucion_presupuestos']);
     Route::post('reportes/ejecucion_presupuestos_g', [ReporteController::class, 'ejecucion_presupuestos_g']);
+    Route::post('reportes/formulario_cuatro', [ReporteController::class, 'formulario_cuatro']);
+    Route::post('reportes/formulario_cinco', [ReporteController::class, 'formulario_cinco']);
+    Route::post('reportes/memoria_calculos', [ReporteController::class, 'memoria_calculos']);
+    Route::post('reportes/saldos_actividad', [ReporteController::class, 'saldos_actividad']);
+    Route::post('reportes/saldos_partida', [ReporteController::class, 'saldos_partida']);
+    Route::post('reportes/fisicos', [ReporteController::class, 'fisicos']);
+    Route::post('reportes/financieros', [ReporteController::class, 'financieros']);
+    Route::post('reportes/semaforos', [ReporteController::class, 'semaforos']);
 });
 
 // ---------------------------------------

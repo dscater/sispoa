@@ -29,7 +29,7 @@
                                             class="card-title w-full font-weight-bold"
                                         >
                                             <i class="fas fa-edit"></i>
-                                            Nuevo Registro
+                                            Modifcar Registro
                                         </h3>
                                     </div>
                                 </div>

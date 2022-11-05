@@ -5,6 +5,11 @@
     --secondary: #da1900;
 }
 
+.bg-azul{
+    background-color: #2198e7;
+    color:white!important;
+}
+
 .secondary {
     background: var(--secondary);
     color: white;

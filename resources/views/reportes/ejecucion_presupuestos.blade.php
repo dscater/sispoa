@@ -209,9 +209,9 @@
                 <tr>
                     <th>Cantidad</th>
                     <th>Costo Unitario</th>
-                    <th>TRANSF 42</th>
+                    <th>PRESUPUESTO VIGENTE</th>
                     <th>Cantidad</th>
-                    <th>TRANSF 42</th>
+                    <th>PRESUPUESTO VIGENTE</th>
                 </tr>
             </thead>
             <tbody>
@@ -219,34 +219,30 @@
                     $suma_ejecutados = 0;
                     $suma_saldos = 0;
                 @endphp
-                @if ($formulario->formulario_cinco)
-                    @foreach ($formulario->formulario_cinco->operacions as $operacion)
-                        @foreach ($operacion->actividad_tareas as $tarea)
-                            @foreach ($tarea->partidas as $partida)
-                                <tr>
-                                    <td class="centreado">
-                                        {{ $partida->actividad_tarea->detalle_operacion->codigo_tarea }}
-                                    </td>
-                                    <td>{{ $partida->actividad_tarea->descripcion }}</td>
-                                    <td class="centreado">{{ $partida->partida }}</td>
-                                    <td class="centreado">{{ $partida->cantidad }}</td>
-                                    <td class="centreado">{{ $partida->costo }}</td>
-                                    <td class="centreado">{{ $partida->t42 }}</td>
-                                    @php
-                                        $cantidad_usado = $o_certificacion->where('partida_id', $partida->id)->sum('cantidad_usar');
-                                        $total_usado = $o_certificacion->where('partida_id', $partida->id)->sum('presupuesto_usarse');
-                                        $saldo = (float) $partida->t42 - (float) $total_usado;
-                                    @endphp
-                                    <td class="centreado">{{ $cantidad_usado }}</td>
-                                    <td class="centreado">{{ $total_usado }}</td>
-                                    <td class="centreado">{{ $saldo }}</td>
-                                </tr>
-                                @php
-                                    $suma_ejecutados += $total_usado;
-                                    $suma_saldos += $saldo;
-                                @endphp
-                            @endforeach
-                        @endforeach
+                @if ($formulario->memoria_calculo)
+                    @foreach ($formulario->memoria_calculo->operacions as $operacion)
+                        <tr>
+                            <td class="centreado">
+                                {{ $operacion->codigo_actividad }}
+                            </td>
+                            <td>{{ $operacion->descripcion_actividad }}</td>
+                            <td class="centreado">{{ $operacion->partida }}</td>
+                            <td class="centreado">{{ $operacion->cantidad }}</td>
+                            <td class="centreado">{{ $operacion->costo }}</td>
+                            <td class="centreado">{{ $operacion->total }}</td>
+                            @php
+                                $cantidad_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('cantidad_usar');
+                                $total_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('presupuesto_usarse');
+                                $saldo = (float) $operacion->total - (float) $total_usado;
+                            @endphp
+                            <td class="centreado">{{ $cantidad_usado }}</td>
+                            <td class="centreado">{{ $total_usado }}</td>
+                            <td class="centreado">{{ $saldo }}</td>
+                        </tr>
+                        @php
+                            $suma_ejecutados += $total_usado;
+                            $suma_saldos += $saldo;
+                        @endphp
                     @endforeach
                 @else
                     <tr>
@@ -257,8 +253,8 @@
             <tfoot>
                 <tr>
                     <th colspan="5">TOTAL</th>
-                    @if ($formulario->formulario_cinco)
-                        <th>{{ number_format($formulario->formulario_cinco->total_formulario, 2) }}</th>
+                    @if ($formulario->memoria_calculo)
+                        <th>{{ number_format($formulario->memoria_calculo->total_final, 2) }}</th>
                     @else
                         <th>0.00</th>
                     @endif

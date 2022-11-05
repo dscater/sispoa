@@ -25,7 +25,7 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     <img
-                        :src="user.path_image"
+                        :src="user_sidebar.path_image"
                         class="img-circle elevation-2"
                         alt="User Image"
                     />
@@ -35,10 +35,10 @@
                         exact
                         :to="{
                             name: 'usuarios.perfil',
-                            params: { id: user.id },
+                            params: { id: user_sidebar.id },
                         }"
                         class="d-block"
-                        v-text="user.full_name"
+                        v-text="user_sidebar.full_name"
                     ></router-link>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                         </router-link>
                     </li>
                     <li
-                        class="nav-header"
+                        class="nav-header bg-navy"
                         v-if="
                             permisos.includes('unidads.index') ||
                             permisos.includes('formulario_uno.index') ||
@@ -93,13 +93,10 @@
                     >
                         FORMULACIÓN
                     </li>
-                    <li
-                        class="nav-item"
-                        v-if="permisos.includes('usuarios.index')"
-                    >
+                    <li class="nav-item" v-if="permisos.includes('pei.index')">
                         <router-link
                             exact
-                            :to="{ name: 'usuarios.index' }"
+                            :to="{ name: 'pei.index' }"
                             class="nav-link"
                             v-loading.fullscreen.lock="fullscreenLoading"
                         >
@@ -160,12 +157,16 @@
                         </router-link>
                     </li>
                     <li
-                        class="nav-item"
+                        class="nav-item menu"
                         :class="{
                             'menu-open':
                                 $route.name == 'formulario_cuatro.index' ||
                                 $route.name == 'detalle_formularios.index',
                         }"
+                        v-if="
+                            permisos.includes('formulario_cuatro.index') ||
+                            permisos.includes('detalle_formularios.index')
+                        "
                     >
                         <a
                             href="#"
@@ -247,14 +248,14 @@
                         </router-link>
                     </li>
                     <li
-                        class="nav-header"
+                        class="nav-header bg-navy"
                         v-if="
                             permisos.includes(
                                 'verificacion_actividads.index'
                             ) ||
                             permisos.includes('certificacions.index') ||
                             permisos.includes('seguimiento_trimestral.index') ||
-                            permisos.includes('informe_actividad.index')
+                            permisos.includes('actividad_realizadas.index')
                         "
                     >
                         SEGUIMIENTO
@@ -300,10 +301,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('informe_actividad.index')"
+                        v-if="permisos.includes('actividad_realizadas.index')"
                     >
                         <router-link
-                            :to="{ name: 'informe_actividad.index' }"
+                            :to="{ name: 'actividad_realizadas.index' }"
                             class="nav-link"
                         >
                             <i class="nav-icon fa fa-file-alt"></i>
@@ -311,17 +312,25 @@
                         </router-link>
                     </li>
                     <li
-                        class="nav-header"
+                        class="nav-header bg-navy"
                         v-if="
-                            permisos.includes('memoria_calculos.edit') ||
-                            permisos.includes('memoria_calculos.index')
+                            (user_sidebar.tipo != 'JEFES DE UNIDAD' &&
+                                user_sidebar.tipo != 'DIRECTORES' &&
+                                user_sidebar.tipo != 'JEFES DE ÁREAS' &&
+                                permisos.includes('memoria_calculos.edit')) ||
+                            permisos.includes('saldo_presupuesto.index')
                         "
                     >
                         MODIFICACIÓN POA
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('memoria_calculos.edit')"
+                        v-if="
+                            permisos.includes('memoria_calculos.edit') &&
+                            user_sidebar.tipo != 'JEFES DE UNIDAD' &&
+                            user_sidebar.tipo != 'DIRECTORES' &&
+                            user_sidebar.tipo != 'JEFES DE ÁREAS'
+                        "
                     >
                         <router-link
                             :to="{ name: 'memoria_calculos.modificaciones' }"
@@ -333,10 +342,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('detalle_formularios.index')"
+                        v-if="permisos.includes('saldo_presupuesto.index')"
                     >
                         <router-link
-                            :to="{ name: 'informe_actividad.index' }"
+                            :to="{ name: 'saldo_presupuesto.index' }"
                             class="nav-link"
                         >
                             <i class="nav-icon fa fa-file-alt"></i>
@@ -344,16 +353,27 @@
                         </router-link>
                     </li>
                     <li
-                        class="nav-header"
+                        class="nav-header bg-navy"
                         v-if="
-                            permisos.includes('reportes.usuarios') ||
-                            permisos.includes('reportes.clientes') ||
-                            permisos.includes('reportes.ingresos_egresos')
+                            permisos.includes('reportes.formulario_cuatro') ||
+                            permisos.includes('reportes.formulario_cinco') ||
+                            permisos.includes('reportes.memoria_calculos') ||
+                            permisos.includes('reportes.saldos_actividad') ||
+                            permisos.includes('reportes.saldos_partida') ||
+                            permisos.includes(
+                                'reportes.ejecucion_presupuestos'
+                            ) ||
+                            permisos.includes(
+                                'reportes.ejecucion_presupuestos_g'
+                            ) ||
+                            permisos.includes('reportes.fisicos') ||
+                            permisos.includes('reportes.financieros') ||
+                            permisos.includes('reportes.semaforos')
                         "
                     >
                         REPORTES
                     </li>
-                    <li
+                    <!-- <li
                         class="nav-item"
                         v-if="permisos.includes('reportes.usuarios')"
                     >
@@ -364,13 +384,13 @@
                             <i class="fas fa-file-pdf nav-icon"></i>
                             <p>Lista de Usuarios</p>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.formulario_cuatro')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.formulario_cuatro' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -379,10 +399,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.formulario_cinco')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.formulario_cinco' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -391,10 +411,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.memoria_calculos')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.memoria_calculos' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -403,10 +423,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.saldos_actividad')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.saldos_actividad' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -415,10 +435,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.saldos_partida')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.saldos_partida' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -457,10 +477,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.fisicos')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.fisicos' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -469,10 +489,10 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.financieros')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.financieros' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -481,17 +501,17 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.semaforos')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.semaforos' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
                             <p>Semáforos</p>
                         </router-link>
                     </li>
-                    <li class="nav-header">OTRAS OPCIONES</li>
+                    <li class="nav-header bg-navy">OTRAS OPCIONES</li>
                     <li
                         class="nav-item"
                         v-if="permisos.includes('fisicos.index')"
@@ -513,7 +533,7 @@
                             class="nav-link"
                         >
                             <i class="nav-icon fas fa-list-alt"></i>
-                            <p>Financiera</p>
+                            <p>Financiero</p>
                         </router-link>
                     </li>
                     <li
@@ -559,12 +579,12 @@
                             exact
                             :to="{
                                 name: 'usuarios.perfil',
-                                params: { id: user.id },
+                                params: { id: user_sidebar.id },
                             }"
                             class="nav-link"
                         >
                             <i class="nav-icon fas fa-user"></i>
-                            <p>Ver Perfil</p>
+                            <p>Perfil</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
@@ -588,9 +608,10 @@
 
 <script>
 export default {
-    props: ["user", "configuracion"],
+    props: ["user_sidebar", "configuracion"],
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             fullscreenLoading: false,
             permisos: localStorage.getItem("permisos"),
         };

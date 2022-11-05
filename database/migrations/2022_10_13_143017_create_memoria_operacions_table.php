@@ -44,6 +44,7 @@ class CreateMemoriaOperacionsTable extends Migration
             $table->decimal("nov", 24, 2)->nullable();
             $table->decimal("dic", 24, 2)->nullable();
             $table->decimal("total_operacion", 24, 2);
+            $table->date("fecha_registro");
             $table->timestamps();
 
             $table->foreign("memoria_id")->on("memoria_calculos")->references("id");

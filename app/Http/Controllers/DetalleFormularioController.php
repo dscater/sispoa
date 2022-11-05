@@ -6,6 +6,7 @@ use App\Models\DetalleFormulario;
 use App\Models\DetalleOperacion;
 use App\Models\Operacion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DetalleFormularioController extends Controller
@@ -18,7 +19,15 @@ class DetalleFormularioController extends Controller
 
     public function index(Request $request)
     {
-        $detalle_formularios = DetalleFormulario::all();
+        $detalle_formularios = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+            $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->get();
+        } else {
+            $detalle_formularios = DetalleFormulario::all();
+        }
         return response()->JSON(['detalle_formularios' => $detalle_formularios, 'total' => count($detalle_formularios)], 200);
     }
 
@@ -181,5 +190,11 @@ class DetalleFormularioController extends Controller
             'sw' => true,
             'msj' => 'El registro se eliminó correctamente'
         ], 200);
+    }
+
+    public function seguimiento_trimestral(DetalleFormulario $detalle_formulario)
+    {
+        $html = view("parcial.seguimiento_trimestral", compact("detalle_formulario"))->render();
+        return response()->JSON($html);
     }
 }

@@ -4,7 +4,7 @@
         <SideBar
             :ruta="ruta"
             :configuracion="oConfiguracion"
-            :user="oUser"
+            :user_sidebar="oUser"
         ></SideBar>
         <transition name="fade" mode="out-in">
             <router-view></router-view>

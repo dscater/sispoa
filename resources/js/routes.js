@@ -133,9 +133,16 @@ export default new Router({
             component: require('./components/modulos/memoria_calculos/show.vue').default,
         },
         {
-            path: '/memoria_calculos/modificaciones',
+            path: '/modificaciones/memoria_calculos',
             name: 'memoria_calculos.modificaciones',
             component: require('./components/modulos/memoria_calculos/modificaciones.vue').default,
+        },
+
+        // SALDO PRESUPUESTO
+        {
+            path: '/saldo_presupuesto',
+            name: 'saldo_presupuesto.index',
+            component: require('./components/modulos/saldo_presupuesto/index.vue').default,
         },
 
         // CERTIFICACIONS
@@ -156,6 +163,28 @@ export default new Router({
             name: 'certificacions.edit',
             props: true,
             component: require('./components/modulos/certificacions/edit.vue').default,
+        },
+
+        // PEI
+        {
+            path: '/pei',
+            name: 'pei.index',
+            component: require('./components/modulos/pei/index.vue').default,
+        },
+
+        // SEGUIMIENTO TRIMESTRAL
+        {
+            path: '/seguimiento_trimestral',
+            name: 'seguimiento_trimestral.index',
+            component: require('./components/modulos/seguimiento_trimestral/index.vue').default,
+        },
+
+
+        // ACTIVIDAD REALIZADA
+        {
+            path: '/actividad_realizadas',
+            name: 'actividad_realizadas.index',
+            component: require('./components/modulos/actividad_realizadas/index.vue').default,
         },
 
         // FISICOS
@@ -228,6 +257,54 @@ export default new Router({
             path: '/reportes/ejecucion_presupuestos_g',
             name: 'reportes.ejecucion_presupuestos_g',
             component: require('./components/modulos/reportes/ejecucion_presupuestos_g.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/formulario_cuatro',
+            name: 'reportes.formulario_cuatro',
+            component: require('./components/modulos/reportes/formulario_cuatro.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/formulario_cinco',
+            name: 'reportes.formulario_cinco',
+            component: require('./components/modulos/reportes/formulario_cinco.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/memoria_calculos',
+            name: 'reportes.memoria_calculos',
+            component: require('./components/modulos/reportes/memoria_calculos.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/saldos_actividad',
+            name: 'reportes.saldos_actividad',
+            component: require('./components/modulos/reportes/saldos_actividad.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/saldos_partida',
+            name: 'reportes.saldos_partida',
+            component: require('./components/modulos/reportes/saldos_partida.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/fisicos',
+            name: 'reportes.fisicos',
+            component: require('./components/modulos/reportes/fisicos.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/financieros',
+            name: 'reportes.financieros',
+            component: require('./components/modulos/reportes/financieros.vue').default,
+            props: true
+        },
+        {
+            path: '/reportes/semaforos',
+            name: 'reportes.semaforos',
+            component: require('./components/modulos/reportes/semaforos.vue').default,
             props: true
         },
 

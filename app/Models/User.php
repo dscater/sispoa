@@ -33,6 +33,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = ['full_name', 'full_ci', 'path_image'];
+    protected $with = ['unidad'];
 
     public static function getNombreUsuario($nom, $apep)
     {
@@ -58,5 +59,10 @@ class User extends Authenticatable
             return asset('imgs/users/' . $this->foto);
         }
         return asset('imgs/users/default.png');
+    }
+
+    public function unidad()
+    {
+        return $this->belongsTo(Unidad::class, 'unidad_id');
     }
 }

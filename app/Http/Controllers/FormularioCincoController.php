@@ -9,6 +9,7 @@ use App\Models\FormularioCuatro;
 use App\Models\LugarResponsable;
 use App\Models\Partida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FormularioCincoController extends Controller
@@ -21,7 +22,16 @@ class FormularioCincoController extends Controller
 
     public function index(Request $request)
     {
-        $listado = FormularioCinco::all();
+        $listado = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+            $listado = FormularioCinco::select("formulario_cinco.*")
+                ->join("memoria_calculos", "memoria_calculos.id", "=", "formulario_cinco.memoria_id")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                ->where("unidad_id", Auth::user()->unidad_id)
+                ->get();
+        } else {
+            $listado = FormularioCinco::all();
+        }
         return response()->JSON(['listado' => $listado, 'total' => count($listado)], 200);
     }
 

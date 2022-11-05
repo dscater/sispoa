@@ -88,7 +88,7 @@
                                                 </th>
                                             </tr>
                                             <tr>
-                                                <th>TRANSF 42</th>
+                                                <th>PRESUPUESTO VIGENTE</th>
                                                 <th>UE</th>
                                                 <th>PROG</th>
                                                 <th>ACT</th>

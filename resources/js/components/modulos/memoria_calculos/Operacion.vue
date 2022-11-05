@@ -702,6 +702,7 @@ export default {
                 this.o_Operacion.total =
                     parseFloat(this.o_Operacion.cantidad) *
                     parseFloat(this.o_Operacion.costo);
+                this.o_Operacion.total = this.o_Operacion.total.toFixed(2);
             }
         },
     },

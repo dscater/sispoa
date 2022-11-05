@@ -89,6 +89,17 @@
                                     ><i
                                         class="fas fa-envelope-open-text mr-1"
                                     ></i>
+                                    Unidad Organizacional</strong
+                                >
+                                <p
+                                    class="text-muted"
+                                    v-text="oUsuario?.unidad.nombre"
+                                ></p>
+                                <hr />
+                                <strong
+                                    ><i
+                                        class="fas fa-envelope-open-text mr-1"
+                                    ></i>
                                     Correo</strong
                                 >
                                 <p
@@ -107,15 +118,11 @@
                                 <hr />
                                 <strong
                                     ><i class="fas fa-phone mr-1"></i
-                                    >Teléfono/Celular:</strong
+                                    >Teléfono:</strong
                                 >
                                 <p
                                     class="text-muted"
-                                    v-text="
-                                        `${oUsuario ? oUsuario.fono : ''} - ${
-                                            oUsuario ? oUsuario.cel : ''
-                                        }`
-                                    "
+                                    v-text="`${oUsuario ? oUsuario.fono : ''}`"
                                 ></p>
                                 <hr />
                                 <strong

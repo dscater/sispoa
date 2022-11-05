@@ -19,4 +19,9 @@ class Operacion extends Model
     {
         return $this->hasMany(DetalleOperacion::class, 'operacion_id');
     }
+
+    public function detalle_formulario()
+    {
+        return $this->belongsTo(DetalleFormulario::class, 'detalle_formulario_id');
+    }
 }

@@ -77,10 +77,14 @@ class UserController extends Controller
             'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
+            'saldo_presupuesto.index',
+
             'certificacions.index',
             'certificacions.create',
             'certificacions.edit',
             'certificacions.destroy',
+
+            'pei.index',
 
             'fisicos.index',
             'fisicos.create',
@@ -97,27 +101,263 @@ class UserController extends Controller
             'semaforos.edit',
             'semaforos.destroy',
 
+            'actividad_realizadas.index',
+            'actividad_realizadas.create',
+            'actividad_realizadas.edit',
+            'actividad_realizadas.destroy',
+
             'verificacion_actividads.index',
             'verificacion_actividads.edit',
 
             "seguimiento_trimestral.index",
-            
+
             "informe_actividad.index",
 
             'configuracion.index',
             'configuracion.edit',
 
-            'reportes.usuarios',
-            'reportes.ejecucion_presupuestos',
-            'reportes.ejecucion_presupuestos_g',
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cinco",
+            "reportes.memoria_calculos",
+            "reportes.saldos_actividad",
+            "reportes.saldos_partida",
+            "reportes.ejecucion_presupuestos",
+            "reportes.ejecucion_presupuestos_g",
+            "reportes.fisicos",
+            "reportes.financieros",
+            "reportes.semaforos",
 
         ],
-        'ENLACE' => [],
-        'JEFES DE UNIDAD' => [],
-        'DIRECTORES' => [],
-        'JEFES DE ÁREAS' => [],
-        'FINANCIERA' => [],
-        'MAE' => [],
+        'ENLACE' => [
+            'unidads.index',
+            'unidads.create',
+            'unidads.edit',
+            'unidads.destroy',
+
+            'formulario_uno.index',
+
+            'formulario_dos.index',
+
+            'formulario_tres.index',
+
+            'formulario_cuatro.index',
+            'formulario_cuatro.create',
+            'formulario_cuatro.edit',
+            'formulario_cuatro.destroy',
+
+            'detalle_formularios.index',
+            'detalle_formularios.create',
+            'detalle_formularios.edit',
+            'detalle_formularios.destroy',
+
+            'formulario_cinco.index',
+            'formulario_cinco.create',
+            'formulario_cinco.edit',
+            'formulario_cinco.destroy',
+
+            'memoria_calculos.index',
+            'memoria_calculos.create',
+            'memoria_calculos.edit',
+            'memoria_calculos.destroy',
+
+            'saldo_presupuesto.index',
+
+            'certificacions.index',
+            'certificacions.create',
+            'certificacions.edit',
+            'certificacions.destroy',
+
+            ' pei.index',
+
+            'fisicos.index',
+            'fisicos.create',
+            'fisicos.edit',
+            'fisicos.destroy',
+
+            'financieras.index',
+            'financieras.create',
+            'financieras.edit',
+            'financieras.destroy',
+
+            'semaforos.index',
+            'semaforos.create',
+            'semaforos.edit',
+            'semaforos.destroy',
+
+            'actividad_realizadas.index',
+            'actividad_realizadas.create',
+            'actividad_realizadas.edit',
+            'actividad_realizadas.destroy',
+
+            'verificacion_actividads.index',
+            'verificacion_actividads.edit',
+
+            "seguimiento_trimestral.index",
+
+            "informe_actividad.index",
+
+            'configuracion.index',
+            'configuracion.edit',
+
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cinco",
+            "reportes.memoria_calculos",
+            "reportes.saldos_actividad",
+            "reportes.saldos_partida",
+            "reportes.ejecucion_presupuestos",
+            "reportes.ejecucion_presupuestos_g",
+            "reportes.fisicos",
+            "reportes.financieros",
+            "reportes.semaforos",
+        ],
+        'JEFES DE UNIDAD' => [
+            'pei.index',
+
+            'formulario_uno.index',
+
+            'formulario_dos.index',
+
+            'formulario_tres.index',
+
+            'formulario_cuatro.index',
+            'formulario_cuatro.create',
+            'formulario_cuatro.edit',
+            'formulario_cuatro.destroy',
+
+            'detalle_formularios.index',
+            'detalle_formularios.create',
+            'detalle_formularios.edit',
+            'detalle_formularios.destroy',
+
+            'formulario_cinco.index',
+            'formulario_cinco.create',
+            'formulario_cinco.edit',
+            'formulario_cinco.destroy',
+
+            'memoria_calculos.index',
+            'memoria_calculos.create',
+            'memoria_calculos.edit',
+            'memoria_calculos.destroy',
+
+            'certificacions.index',
+            'certificacions.create',
+            'certificacions.edit',
+            'certificacions.destroy',
+
+            "seguimiento_trimestral.index",
+
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cinco",
+            "reportes.memoria_calculos",
+            "reportes.saldos_actividad",
+            "reportes.saldos_partida",
+            "reportes.ejecucion_presupuestos",
+            "reportes.ejecucion_presupuestos_g",
+        ],
+        'DIRECTORES' => [
+            'pei.index',
+
+            'formulario_uno.index',
+
+            'formulario_dos.index',
+
+            'formulario_tres.index',
+
+            'formulario_cuatro.index',
+            'formulario_cuatro.create',
+            'formulario_cuatro.edit',
+            'formulario_cuatro.destroy',
+
+            'detalle_formularios.index',
+            'detalle_formularios.create',
+            'detalle_formularios.edit',
+            'detalle_formularios.destroy',
+
+            'formulario_cinco.index',
+            'formulario_cinco.create',
+            'formulario_cinco.edit',
+            'formulario_cinco.destroy',
+
+            'memoria_calculos.index',
+            'memoria_calculos.create',
+            'memoria_calculos.edit',
+            'memoria_calculos.destroy',
+
+            'certificacions.index',
+            'certificacions.create',
+            'certificacions.edit',
+            'certificacions.destroy',
+
+            "seguimiento_trimestral.index",
+
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cinco",
+            "reportes.memoria_calculos",
+            "reportes.saldos_actividad",
+            "reportes.saldos_partida",
+            "reportes.ejecucion_presupuestos",
+            "reportes.ejecucion_presupuestos_g",
+        ],
+        'JEFES DE ÁREAS' => [
+            'pei.index',
+
+            'formulario_uno.index',
+
+            'formulario_dos.index',
+
+            'formulario_tres.index',
+
+            'formulario_cuatro.index',
+            'formulario_cuatro.create',
+            'formulario_cuatro.edit',
+            'formulario_cuatro.destroy',
+
+            'detalle_formularios.index',
+            'detalle_formularios.create',
+            'detalle_formularios.edit',
+            'detalle_formularios.destroy',
+
+            'formulario_cinco.index',
+            'formulario_cinco.create',
+            'formulario_cinco.edit',
+            'formulario_cinco.destroy',
+
+            'memoria_calculos.index',
+            'memoria_calculos.create',
+            'memoria_calculos.edit',
+            'memoria_calculos.destroy',
+
+            'certificacions.index',
+            'certificacions.create',
+            'certificacions.edit',
+            'certificacions.destroy',
+
+            "seguimiento_trimestral.index",
+
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cinco",
+            "reportes.memoria_calculos",
+            "reportes.saldos_actividad",
+            "reportes.saldos_partida",
+            "reportes.ejecucion_presupuestos",
+            "reportes.ejecucion_presupuestos_g",
+        ],
+        'FINANCIERA' => [
+            'formulario_cinco.index',
+            'formulario_cinco.create',
+            'formulario_cinco.edit',
+            'formulario_cinco.destroy',
+
+            'memoria_calculos.index',
+            'memoria_calculos.create',
+            'memoria_calculos.edit',
+            'memoria_calculos.destroy',
+        ],
+        'MAE' => [
+            "reportes.fisicos",
+            "reportes.financieros",
+            "reportes.semaforos",
+        ],
     ];
 
 

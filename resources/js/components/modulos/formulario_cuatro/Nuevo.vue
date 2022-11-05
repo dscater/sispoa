@@ -209,7 +209,14 @@
                                     v-text="errors.ponderacion[0]"
                                 ></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div
+                                class="form-group col-md-6"
+                                v-if="
+                                    user.tipo != 'JEFES DE UNIDAD' &&
+                                    user.tipo != 'DIRECTORES' &&
+                                    user.tipo != 'JEFES DE ÁREAS'
+                                "
+                            >
                                 <label
                                     :class="{
                                         'text-danger': errors.unidad_id,
@@ -394,12 +401,24 @@ export default {
                         ? this.formulario_cuatro.ponderacion
                         : ""
                 );
-                formdata.append(
-                    "unidad_id",
-                    this.formulario_cuatro.unidad_id
-                        ? this.formulario_cuatro.unidad_id
-                        : ""
-                );
+
+                if (
+                    this.user.tipo == "JEFES DE UNIDAD" ||
+                    this.user.tipo == "DIRECTORES" ||
+                    this.user.tipo == "JEFES DE ÁREAS"
+                ) {
+                    formdata.append(
+                        "unidad_id",
+                        this.user.unidad_id ? this.user.unidad_id : ""
+                    );
+                } else {
+                    formdata.append(
+                        "unidad_id",
+                        this.formulario_cuatro.unidad_id
+                            ? this.formulario_cuatro.unidad_id
+                            : ""
+                    );
+                }
                 if (this.accion == "edit") {
                     url =
                         "/admin/formulario_cuatro/" + this.formulario_cuatro.id;

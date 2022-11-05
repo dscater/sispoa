@@ -14,10 +14,10 @@ class MemoriaOperacion extends Model
         "lugar", "responsable", "partida", "nro", "descripcion", "cantidad",
         "unidad", "costo", "total", "justificacion",
         "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic",
-        "total_operacion",
+        "total_operacion", "fecha_registro"
     ];
 
-    protected $appends = ["presupuesto","descripcion_actividad", "descripcion_operacion", "codigo_operacion", "codigo_actividad"];
+    protected $appends = ["presupuesto", "descripcion_actividad", "descripcion_operacion", "codigo_operacion", "codigo_actividad"];
     protected $with = ["detalle_operacion"];
 
     public function getPresupuestoAttribute()

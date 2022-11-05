@@ -175,6 +175,7 @@
 export default {
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             errors: [],
             oReporte: {
                 filtro: "Todos",
@@ -193,6 +194,13 @@ export default {
     },
     mounted() {
         this.getUnidades();
+        if (
+            this.user.tipo == "JEFES DE UNIDAD" ||
+            this.user.tipo == "DIRECTORES" ||
+            this.user.tipo == "JEFES DE ÁREAS"
+        ) {
+            this.listFiltro = ["Todos", "Rango de fechas"];
+        }
     },
     methods: {
         getUnidades() {

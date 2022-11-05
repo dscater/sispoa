@@ -6,6 +6,7 @@ use App\Models\FormularioCuatro;
 use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MemoriaCalculoController extends Controller
 {
@@ -17,7 +18,15 @@ class MemoriaCalculoController extends Controller
 
     public function index(Request $request)
     {
-        $listado = MemoriaCalculo::all();
+        $listado = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+            $listado = MemoriaCalculo::select("memoria_calculos.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->get();
+        } else {
+            $listado = MemoriaCalculo::all();
+        }
         return response()->JSON(['listado' => $listado, 'total' => count($listado)], 200);
     }
 
@@ -87,8 +96,9 @@ class MemoriaCalculoController extends Controller
                 "nov" => $d["nov"],
                 "dic" => $d["dic"],
                 "total_operacion" => $d["total_operacion"],
+                "fecha_registro" => date("Y-m-d")
             ]);
-            $total_actividades += (float)$nueva_operacion->cantidad * (float)$nueva_operacion->costo;
+            $total_actividades += (float)$nueva_operacion->total;
             $total_ene += $nueva_operacion->ene ? (float)$nueva_operacion->ene : 0;
             $total_feb += $nueva_operacion->feb ? (float)$nueva_operacion->feb : 0;
             $total_mar += $nueva_operacion->mar ? (float)$nueva_operacion->mar : 0;
@@ -104,7 +114,7 @@ class MemoriaCalculoController extends Controller
             $total_final += (float)$nueva_operacion->total_operacion;
         }
 
-        $nuevo_memoria_calculo->total_actividades = $total_actividades;
+        $nuevo_memoria_calculo->total_actividades = number_format($total_actividades, 2, ".", "");
         $nuevo_memoria_calculo->total_ene = $total_ene;
         $nuevo_memoria_calculo->total_feb = $total_feb;
         $nuevo_memoria_calculo->total_mar = $total_mar;
@@ -207,6 +217,7 @@ class MemoriaCalculoController extends Controller
                     "nov" => $d["nov"],
                     "dic" => $d["dic"],
                     "total_operacion" => $d["total_operacion"],
+                    "fecha_registro" => date("Y-m-d")
                 ]);
             } else {
                 // actualizar
@@ -245,7 +256,7 @@ class MemoriaCalculoController extends Controller
             }
 
 
-            $total_actividades += (float)$nueva_operacion->cantidad * (float)$nueva_operacion->costo;
+            $total_actividades += (float)$nueva_operacion->total;
             $total_ene += $nueva_operacion->ene ? (float)$nueva_operacion->ene : 0;
             $total_feb += $nueva_operacion->feb ? (float)$nueva_operacion->feb : 0;
             $total_mar += $nueva_operacion->mar ? (float)$nueva_operacion->mar : 0;
@@ -261,7 +272,7 @@ class MemoriaCalculoController extends Controller
             $total_final += (float)$nueva_operacion->total_operacion;
         }
 
-        $memoria_calculo->total_actividades = $total_actividades;
+        $memoria_calculo->total_actividades = number_format($total_actividades, 2, ".", "");
         $memoria_calculo->total_ene = $total_ene;
         $memoria_calculo->total_feb = $total_feb;
         $memoria_calculo->total_mar = $total_mar;
