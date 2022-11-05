@@ -15,11 +15,10 @@ class CreateFormularioCincoTable extends Migration
     {
         Schema::create('formulario_cinco', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("formulario_id");
-            $table->decimal("total_formulario", 24, 2);
+            $table->unsignedBigInteger("memoria_id");
             $table->date("fecha_registro");
             $table->timestamps();
-            $table->foreign("formulario_id")->on("formulario_cuatro")->references("id");
+            $table->foreign("memoria_id")->on("memoria_calculos")->references("id");
         });
     }
 

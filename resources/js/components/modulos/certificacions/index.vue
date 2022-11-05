@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Certificaciones</h1>
+                        <h1>Certificación POA</h1>
                     </div>
                 </div>
             </div>
@@ -83,40 +83,57 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template
-                                                    #cell(operacion_id)="row"
-                                                >
+                                                <template #cell(mo_id)="row">
                                                     <strong
                                                         >Código de operación: </strong
                                                     >{{
-                                                        row.item.operacion
-                                                            .operacion
+                                                        row.item
+                                                            .memoria_operacion
                                                             .codigo_operacion
                                                     }}<br />
                                                     <strong>Operación: </strong
                                                     >{{
-                                                        row.item.operacion
-                                                            .operacion
-                                                            .operacion
+                                                        row.item
+                                                            .memoria_operacion
+                                                            .descripcion_operacion
                                                     }}<br />
                                                     <strong
                                                         >Código de tarea: </strong
                                                     >{{
-                                                        row.item.actividad_tarea
-                                                            .detalle_operacion
-                                                            .codigo_tarea
+                                                        row.item
+                                                            .memoria_operacion
+                                                            .codigo_actividad
                                                     }}<br />
-                                                    <strong>Tarea: </strong
+                                                    <strong
+                                                        >Actividad/Tarea: </strong
                                                     >{{
-                                                        row.item.actividad_tarea
-                                                            .detalle_operacion
-                                                            .actividad_tarea
+                                                        row.item
+                                                            .memoria_operacion
+                                                            .descripcion_actividad
                                                     }}<br />
                                                     <strong>Partida: </strong
                                                     >{{
-                                                        row.item.partida
+                                                        row.item
+                                                            .memoria_operacion
                                                             .partida
-                                                    }}<br />
+                                                    }}
+                                                </template>
+
+                                                <template
+                                                    #cell(cantidad_usar)="row"
+                                                >
+                                                    <strong
+                                                        >Cantidad a usar: </strong
+                                                    >{{
+                                                        row.item.cantidad_usar
+                                                    }}
+                                                    <br />
+                                                    <strong
+                                                        >Total a usar: </strong
+                                                    >{{
+                                                        row.item.presupuesto_usarse
+                                                    }}
+                                                    <br />
                                                     <strong>Inicio: </strong
                                                     >{{
                                                         formatoFecha(
@@ -128,9 +145,8 @@
                                                         formatoFecha(
                                                             row.item.final
                                                         )
-                                                    }}<br />
+                                                    }}
                                                 </template>
-
                                                 <template #cell(estado)="row">
                                                     <span
                                                         :title="row.item.estado"
@@ -357,8 +373,13 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: "operacion_id",
+                    key: "mo_id",
                     label: "Descripción Operación",
+                    sortable: true,
+                },
+                {
+                    key: "cantidad_usar",
+                    label: "Certificación",
                     sortable: true,
                 },
                 {

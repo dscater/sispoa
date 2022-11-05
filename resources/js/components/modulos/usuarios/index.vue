@@ -94,6 +94,13 @@
                                                 </template>
 
                                                 <template
+                                                    #cell(acceso)="row"
+                                                >
+                                                    <span class="badge badge-success" v-if="row.item.acceso == 1">HABILITADO</span>
+                                                    <span class="badge badge-danger" v-else>DESHABILITADO</span>
+                                                </template>
+
+                                                <template
                                                     #cell(fecha_registro)="row"
                                                 >
                                                     {{
@@ -106,13 +113,13 @@
 
                                                 <template #cell(accion)="row">
                                                     <div
-                                                        class="row justify-content-between"
+                                                        class="row justify-content-center"
                                                     >
                                                         <b-button
                                                             size="sm"
                                                             pill
                                                             variant="outline-warning"
-                                                            class="btn-flat btn-block"
+                                                            class="btn-flat mb-1"
                                                             title="Editar registro"
                                                             @click="
                                                                 editarRegistro(
@@ -123,12 +130,12 @@
                                                             <i
                                                                 class="fa fa-edit"
                                                             ></i>
-                                                        </b-button>
+                                                        </b-button><br>
                                                         <b-button
                                                             size="sm"
                                                             pill
                                                             variant="outline-danger"
-                                                            class="btn-flat btn-block"
+                                                            class="btn-flat"
                                                             title="Eliminar registro"
                                                             @click="
                                                                 eliminaUsuario(
@@ -213,27 +220,17 @@ export default {
                 { key: "full_name", label: "Nombre", sortable: true },
                 { key: "full_ci", label: "C.I.", sortable: true },
                 {
-                    key: "dir",
-                    label: "Dirección",
-                    sortable: true,
-                },
-                {
-                    key: "correo",
-                    label: "Correo",
-                    sortable: true,
-                },
-                {
-                    key: "cel",
-                    label: "Celular",
-                    sortable: true,
-                },
-                {
                     key: "fono",
                     label: "Teléfono",
                     sortable: true,
                 },
                 { key: "tipo", label: "Tipo Usuario", sortable: true },
                 { key: "foto", label: "Foto" },
+                {
+                    key: "acceso",
+                    label: "Acceso",
+                    sortable: true,
+                },
                 {
                     key: "fecha_registro",
                     label: "Fecha de registro",
@@ -255,14 +252,12 @@ export default {
                 materno: "",
                 ci: "",
                 ci_exp: "",
-                dir: "",
-                correo: "",
                 fono: "",
-                cel: "",
                 cargo: "",
                 unidad_id: "",
                 tipo: "",
                 foto: null,
+                acceso: "0",
             },
             currentPage: 1,
             perPage: 5,
@@ -291,13 +286,11 @@ export default {
             this.oUsuario.materno = item.materno ? item.materno : "";
             this.oUsuario.ci = item.ci ? item.ci : "";
             this.oUsuario.ci_exp = item.ci_exp ? item.ci_exp : "";
-            this.oUsuario.dir = item.dir ? item.dir : "";
-            this.oUsuario.correo = item.correo ? item.correo : "";
             this.oUsuario.fono = item.fono ? item.fono : "";
-            this.oUsuario.cel = item.cel ? item.cel : "";
             this.oUsuario.cargo = item.cargo ? item.cargo : "";
             this.oUsuario.unidad_id = item.unidad_id ? item.unidad_id : "";
             this.oUsuario.tipo = item.tipo ? item.tipo : "";
+            this.oUsuario.acceso = item.acceso ? ""+item.acceso : "0";
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
@@ -367,14 +360,12 @@ export default {
             this.oUsuario.materno = "";
             this.oUsuario.ci = "";
             this.oUsuario.ci_exp = "";
-            this.oUsuario.dir = "";
-            this.oUsuario.correo = "";
             this.oUsuario.fono = "";
-            this.oUsuario.cel = "";
             this.oUsuario.cargo = "";
             this.oUsuario.unidad_id = "";
             this.oUsuario.tipo = "";
             this.oUsuario.foto = null;
+            this.oUsuario.acceso = "0";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

@@ -21,15 +21,13 @@ class CreateUsersTable extends Migration
             $table->string("materno", 255)->nullable();
             $table->string("ci", 40);
             $table->string("ci_exp", 20);
-            $table->string("dir", 255);
-            $table->string('correo')->nullable();
             $table->string("fono", 155);
-            $table->string("cel", 155);
             $table->string("cargo", 255);
             $table->unsignedBigInteger("unidad_id")->nullable();
             $table->string("tipo", 255);
             $table->string("foto", 255)->nullable();
             $table->string('password');
+            $table->integer('acceso');
             $table->date("fecha_registro");
             $table->timestamps();
             $table->foreign("unidad_id")->on("unidads")->references("id");

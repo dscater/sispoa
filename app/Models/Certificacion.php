@@ -10,31 +10,21 @@ class Certificacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'formulario_id', 'fco_id', 'actividad_tarea_id', 'partida_id',
-        'cantidad_usar', 'presupuesto_usarse', 'justificacion', 'archivo', 'correlativo', 'solicitante_id', 'superior_id',
-        'ue', 'prog', 'proy', 'act', 'ff', 'of', 'inicio', 'final', 'codigo', 'accion', 'estado', 'fecha_registro',
+        "formulario_id", "mo_id", "cantidad_usar", "presupuesto_usarse", "archivo",
+        "correlativo", "solicitante_id", "superior_id", "inicio", "final",
+        "estado", "fecha_registro",
     ];
 
-    protected $with = ["formulario", "operacion", "actividad_tarea", "partida"];
+    protected $with = ["formulario", "memoria_operacion"];
 
     public function formulario()
     {
         return $this->belongsTo(FormularioCuatro::class, 'formulario_id');
     }
 
-    public function operacion()
+    public function memoria_operacion()
     {
-        return $this->belongsTo(FCOperacion::class, 'fco_id');
-    }
-
-    public function actividad_tarea()
-    {
-        return $this->belongsTo(ActividadTarea::class, 'actividad_tarea_id');
-    }
-
-    public function partida()
-    {
-        return $this->belongsTo(Partida::class, 'partida_id');
+        return $this->belongsTo(MemoriaOperacion::class, 'mo_id');
     }
 
     public function solicitante()

@@ -14,26 +14,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <router-link
-                                            :to="{
-                                                name: 'formulario_cinco.create',
-                                            }"
-                                            v-if="
-                                                permisos.includes(
-                                                    'formulario_cinco.create'
-                                                )
-                                            "
-                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                            Nuevo
-                                        </router-link>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
@@ -93,8 +73,7 @@
                                                         )
                                                     }}
                                                 </template>
-
-                                                <template #cell(detalles)="row">
+                                                <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-between"
                                                     >
@@ -111,68 +90,6 @@
                                                             "
                                                         >
                                                             Ver detalles
-                                                        </b-button>
-                                                    </div>
-                                                </template>
-                                                <template #cell(accion)="row">
-                                                    <div
-                                                        class="row justify-content-between"
-                                                    >
-                                                        <!-- <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-primary"
-                                                            class="btn-flat btn-block"
-                                                            title="Archivo PDF"
-                                                            @click="
-                                                                pdf(row.item.id)
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-file-pdf"
-                                                            ></i>
-                                                        </b-button> -->
-
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-warning"
-                                                            class="btn-flat btn-block"
-                                                            title="Editar registro"
-                                                            @click="
-                                                                editar(
-                                                                    row.item.id
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-edit"
-                                                            ></i>
-                                                        </b-button>
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-danger"
-                                                            class="btn-flat btn-block"
-                                                            title="Eliminar registro"
-                                                            @click="
-                                                                eliminaFormularioCinco(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .formulario
-                                                                        .codigo_pei +
-                                                                        ' con fecha de registro ' +
-                                                                        formatoFecha(
-                                                                            row
-                                                                                .item
-                                                                                .fecha_registro
-                                                                        )
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-trash"
-                                                            ></i>
                                                         </b-button>
                                                     </div>
                                                 </template>
@@ -227,17 +144,17 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "formulario.codigo_pei",
+                    key: "memoria.formulario.codigo_pei",
                     label: "Código PEI",
                     sortable: true,
                 },
                 {
-                    key: "operacions.length",
+                    key: "memoria.operacions.length",
                     label: "Total operaciones",
                     sortable: true,
                 },
                 {
-                    key: "total_formulario",
+                    key: "memoria.total_final",
                     label: "Total monto formulario",
                     sortable: true,
                 },
@@ -246,7 +163,6 @@ export default {
                     label: "Fecha de registro",
                     sortable: true,
                 },
-                { key: "detalles", label: "Ver más" },
                 { key: "accion", label: "Acción" },
             ],
             loading: true,
@@ -313,36 +229,11 @@ export default {
                 }
             });
         },
-        editar(id) {
-            this.$router.push({
-                name: "formulario_cinco.edit",
-                params: { id: id },
-            });
-        },
         show(id) {
             this.$router.push({
                 name: "formulario_cinco.show",
                 params: { id: id },
             });
-        },
-        pdf(id) {
-            let config = {
-                responseType: "blob",
-            };
-            axios
-                .post("/admin/formulario_cinco/pdf/" + id, null, config)
-                .then((res) => {
-                    this.errors = [];
-                    this.enviando = false;
-                    let pdfBlob = new Blob([res.data], {
-                        type: "application/pdf",
-                    });
-                    let urlReporte = URL.createObjectURL(pdfBlob);
-                    window.open(urlReporte);
-                })
-                .catch(async (error) => {
-                    console.log(error);
-                });
         },
         onFiltered(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering

@@ -25,6 +25,18 @@
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/plantilla.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $(document).on("click", "aside nav ul li a", function() {
+                if ($("body").hasClass("sidebar-open")) {
+                    $("body").addClass("sidebar-collapse");
+                    $("body").addClass("sidebar-close");
+                    $("body").removeClass("sidebar-open");
+                }
+
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -3,33 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
+use App\Models\MemoriaOperacion;
 use App\Models\Partida;
 use Illuminate\Http\Request;
 use PDF;
+
 
 class CertificacionController extends Controller
 {
     public $validacion = [
         'formulario_id' => 'required',
-        'fco_id' => 'required',
-        'actividad_tarea_id' => 'required',
-        'partida_id' => 'required',
-        'cantidad_usar' => 'required',
-        'justificacion' => 'required',
-        'correlativo' => 'required',
-        'solicitante_id' => 'required',
-        'superior_id' => 'required',
-        'ue' => 'required',
-        'prog' => 'required',
-        'proy' => 'required',
-        'act' => 'required',
-        'ff' => 'required',
-        'of' => 'required',
-        'inicio' => 'required|date',
-        'final' => 'required|date',
-        'codigo' => 'required',
-        'accion' => 'required',
-        'estado' => 'required',
+        "mo_id" => "required",
+        "cantidad_usar" => "required",
+        "archivo" => "required",
+        "correlativo" => "required",
+        "solicitante_id" => "required",
+        "superior_id" => "required",
+        "inicio" => "required",
+        "final" => "required",
+        "estado" => "required",
     ];
 
     public function index()
@@ -45,8 +37,8 @@ class CertificacionController extends Controller
         }
         $request->validate($this->validacion);
         $request["fecha_registro"] = date("Y-m-d");
-        $partida = Partida::find($request->partida_id);
-        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$partida->costo;
+        $memoria_operacion = MemoriaOperacion::find($request->mo_id);
+        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion->costo;
         $request["presupuesto_usarse"] = $presupuesto_usarse;
         $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
         if ($request->hasFile('archivo')) {
@@ -66,7 +58,6 @@ class CertificacionController extends Controller
 
     public function pdf(Certificacion $certificacion)
     {
-
         $pdf = PDF::loadView('reportes.certificacion', compact('certificacion'))->setPaper('letter', 'portrait');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
@@ -85,8 +76,8 @@ class CertificacionController extends Controller
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
-        $partida = Partida::find($request->partida_id);
-        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$partida->costo;
+        $memoria_operacion = MemoriaOperacion::find($request->mo_id);
+        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion->costo;
         $request["presupuesto_usarse"] = $presupuesto_usarse;
         $certificacion->update(array_map("mb_strtoupper", $request->except("archivo")));
 

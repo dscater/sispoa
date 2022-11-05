@@ -16,12 +16,11 @@ class UserController extends Controller
         'paterno' => 'required|min:4',
         'ci' => 'required|numeric|digits_between:4, 20|unique:users,ci',
         'ci_exp' => 'required',
-        'dir' => 'required|min:4',
-        'cel' => 'required|min:4',
         'fono' => 'required|min:4',
         'cargo' => 'required',
         'unidad_id' => 'required',
         'tipo' => 'required',
+        'acceso' => 'required',
     ];
 
     public $mensajes = [
@@ -33,20 +32,15 @@ class UserController extends Controller
         'ci.numeric' => 'Debes ingresar un valor númerico',
         'ci.unique' => 'Este número de C.I. ya fue registrado',
         'ci_exp.required' => 'Este campo es obligatorio',
-        'dir.required' => 'Este campo es obligatorio',
-        'dir.min' => 'Debes ingresar al menos 4 carácteres',
         'fono.required' => 'Este campo es obligatorio',
         'fono.min' => 'Debes ingresar al menos 4 carácteres',
-        'cel.required' => 'Este campo es obligatorio',
-        'cel.min' => 'Debes ingresar al menos 4 carácteres',
         'cargo.required' => 'Debes ingresar un cargo',
         'unidad_id.required' => 'Debes seleccionar una unidad',
         'tipo.required' => 'Este campo es obligatorio',
-        'correo' => 'nullable|email|unique:users,correo',
     ];
 
     public $permisos = [
-        'ADMINISTRADOR' => [
+        'SUPER USUARIO' => [
             'usuarios.index',
             'usuarios.create',
             'usuarios.edit',
@@ -56,6 +50,12 @@ class UserController extends Controller
             'unidads.create',
             'unidads.edit',
             'unidads.destroy',
+
+            'formulario_uno.index',
+
+            'formulario_dos.index',
+
+            'formulario_tres.index',
 
             'formulario_cuatro.index',
             'formulario_cuatro.create',
@@ -72,10 +72,37 @@ class UserController extends Controller
             'formulario_cinco.edit',
             'formulario_cinco.destroy',
 
+            'memoria_calculos.index',
+            'memoria_calculos.create',
+            'memoria_calculos.edit',
+            'memoria_calculos.destroy',
+
             'certificacions.index',
             'certificacions.create',
             'certificacions.edit',
             'certificacions.destroy',
+
+            'fisicos.index',
+            'fisicos.create',
+            'fisicos.edit',
+            'fisicos.destroy',
+
+            'financieras.index',
+            'financieras.create',
+            'financieras.edit',
+            'financieras.destroy',
+
+            'semaforos.index',
+            'semaforos.create',
+            'semaforos.edit',
+            'semaforos.destroy',
+
+            'verificacion_actividads.index',
+            'verificacion_actividads.edit',
+
+            "seguimiento_trimestral.index",
+            
+            "informe_actividad.index",
 
             'configuracion.index',
             'configuracion.edit',
@@ -83,9 +110,14 @@ class UserController extends Controller
             'reportes.usuarios',
             'reportes.ejecucion_presupuestos',
             'reportes.ejecucion_presupuestos_g',
-            
+
         ],
-        'AUXILIAR' => [],
+        'ENLACE' => [],
+        'JEFES DE UNIDAD' => [],
+        'DIRECTORES' => [],
+        'JEFES DE ÁREAS' => [],
+        'FINANCIERA' => [],
+        'MAE' => [],
     ];
 
 
@@ -124,7 +156,7 @@ class UserController extends Controller
             $nuevo_usuario->foto = $nom_foto;
             $file->move(public_path() . '/imgs/users/', $nom_foto);
         }
-        $nuevo_usuario->correo = mb_strtolower($nuevo_usuario->correo);
+
         $nuevo_usuario->save();
         return response()->JSON([
             'sw' => true,
@@ -136,7 +168,6 @@ class UserController extends Controller
     public function update(Request $request, User $usuario)
     {
         $this->validacion['ci'] = 'required|min:4|numeric|unique:users,ci,' . $usuario->id;
-        $this->validacion['correo'] = 'nullable|email|unique:users,correo,' . $usuario->id;
         if ($request->hasFile('foto')) {
             $this->validacion['foto'] = 'image|mimes:jpeg,jpg,png|max:2048';
         }
@@ -144,9 +175,6 @@ class UserController extends Controller
         $request->validate($this->validacion, $this->mensajes);
 
         $usuario->update(array_map('mb_strtoupper', $request->except('foto')));
-        if ($usuario->correo == "") {
-            $usuario->correo = NULL;
-        }
 
         if ($request->hasFile('foto')) {
             $antiguo = $usuario->foto;
@@ -158,7 +186,6 @@ class UserController extends Controller
             $usuario->foto = $nom_foto;
             $file->move(public_path() . '/imgs/users/', $nom_foto);
         }
-        $usuario->correo = mb_strtolower($usuario->correo);
         $usuario->save();
         return response()->JSON([
             'sw' => true,

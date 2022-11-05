@@ -136,46 +136,6 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.dir,
-                                    }"
-                                    >Dirección*</label
-                                >
-                                <el-input
-                                    placeholder="Dirección"
-                                    :class="{ 'is-invalid': errors.dir }"
-                                    v-model="usuario.dir"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.dir"
-                                    v-text="errors.dir[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.correo,
-                                    }"
-                                    >Correo</label
-                                >
-                                <el-input
-                                    placeholder="Correo"
-                                    :class="{ 'is-invalid': errors.correo }"
-                                    v-model="usuario.correo"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.correo"
-                                    v-text="errors.correo[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
                                         'text-danger': errors.fono,
                                     }"
                                     >Teléfono*</label
@@ -191,26 +151,6 @@
                                     class="error invalid-feedback"
                                     v-if="errors.fono"
                                     v-text="errors.fono[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.cel,
-                                    }"
-                                    >Celular*</label
-                                >
-                                <el-input
-                                    placeholder="Celular"
-                                    :class="{ 'is-invalid': errors.cel }"
-                                    v-model="usuario.cel"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.cel"
-                                    v-text="errors.cel[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -313,6 +253,34 @@
                                     v-text="errors.foto[0]"
                                 ></span>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.acceso,
+                                    }"
+                                    >Acceso*</label
+                                >
+                                <el-switch
+                                    :class="{
+                                        'is-invalid': errors.acceso,
+                                    }"
+                                    style="display: block"
+                                    v-model="usuario.acceso"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                                    active-text="HABILITADO"
+                                    inactive-text="DESHABILITADO"
+                                    active-value="1"
+                                    inactive-value="0"
+                                >
+                                    >
+                                </el-switch>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.acceso"
+                                    v-text="errors.acceso[0]"
+                                ></span>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -358,12 +326,10 @@ export default {
                 materno: "",
                 ci: "",
                 ci_exp: "",
-                dir: "",
-                correo: "",
                 fono: "",
-                cel: "",
                 tipo: "",
                 foto: null,
+                acceso: "0",
             },
         },
     },
@@ -410,7 +376,15 @@ export default {
                 { value: "PD", label: "Pando" },
                 { value: "BN", label: "Beni" },
             ],
-            listRoles: ["ADMINISTRADOR", "AUXILIAR"],
+            listRoles: [
+                "SUPER USUARIO",
+                "MAE",
+                "FINANCIERA",
+                "JEFES DE ÁREAS",
+                "DIRECTORES",
+                "JEFES DE UNIDAD",
+                "ENLACE",
+            ],
             listUnidades: [],
             errors: [],
         };
@@ -454,20 +428,8 @@ export default {
                     this.usuario.ci_exp ? this.usuario.ci_exp : ""
                 );
                 formdata.append(
-                    "dir",
-                    this.usuario.dir ? this.usuario.dir : ""
-                );
-                formdata.append(
-                    "correo",
-                    this.usuario.correo ? this.usuario.correo : ""
-                );
-                formdata.append(
                     "fono",
                     this.usuario.fono ? this.usuario.fono : ""
-                );
-                formdata.append(
-                    "cel",
-                    this.usuario.cel ? this.usuario.cel : ""
                 );
                 formdata.append(
                     "cargo",
@@ -485,6 +447,12 @@ export default {
                     "foto",
                     this.usuario.foto ? this.usuario.foto : ""
                 );
+
+                formdata.append(
+                    "acceso",
+                    this.usuario.acceso ? this.usuario.acceso : "0"
+                );
+
                 if (this.accion == "edit") {
                     url = "/admin/usuarios/" + this.usuario.id;
                     formdata.append("_method", "PUT");
@@ -541,14 +509,12 @@ export default {
             this.usuario.materno = "";
             this.usuario.ci = "";
             this.usuario.ci_exp = "";
-            this.usuario.dir = "";
-            this.usuario.correo = "";
             this.usuario.fono = "";
-            this.usuario.cel = "";
             this.usuario.cargo = "";
             this.usuario.unidad_id = "";
             this.usuario.tipo = "";
             this.usuario.foto = null;
+            this.usuario.acceso = "0";
             this.$refs.input_file.value = null;
         },
     },

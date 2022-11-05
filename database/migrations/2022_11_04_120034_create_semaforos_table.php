@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLugarResponsablesTable extends Migration
+class CreateSemaforosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateLugarResponsablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lugar_responsables', function (Blueprint $table) {
+        Schema::create('semaforos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("fco_id");
-            $table->string("lugar", 255);
-            $table->string("responsable", 255);
+            $table->text("descripcion");
+            $table->string("archivo", 255)->nullable();
+            $table->date("fecha_registro");
             $table->timestamps();
-            $table->foreign("fco_id")->on("f_c_operacions")->references("id");
         });
     }
 
@@ -30,6 +29,6 @@ class CreateLugarResponsablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lugar_responsables');
+        Schema::dropIfExists('semaforos');
     }
 }

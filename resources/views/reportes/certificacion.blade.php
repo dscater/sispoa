@@ -150,11 +150,18 @@
             margin-left: auto;
             text-align: right;
         }
+
+        .qr{
+            width: 200px;
+            margin-left: auto;
+            text-align: right;
+        }
     </style>
 </head>
 
 <body>
     @inject('configuracion', 'App\Models\Configuracion')
+    @inject('verificacion_actividad', 'App\Models\VerificacionActividad')
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
     <div class="titulo">CERTIFICACIÓN POA<br />GESTIÓN {{ date('Y') }}</div>
     <div class="correlativo">N° Correlativo<div class="nro">{{ $certificacion->correlativo }}</div>
@@ -236,12 +243,12 @@
                 <td class="centreado bold bg_principal">O.F.</td>
             </tr>
             <tr>
-                <td class="centreado">{{ $certificacion->ue }}</td>
-                <td class="centreado">{{ $certificacion->prog }}</td>
-                <td class="centreado">{{ $certificacion->proy }}</td>
-                <td class="centreado">{{ $certificacion->act }}</td>
-                <td class="centreado">{{ $certificacion->ff }}</td>
-                <td class="centreado">{{ $certificacion->of }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion->ue }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion->prog }}</td>
+                <td class="centreado">00</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion->act }}</td>
+                <td class="centreado">42</td>
+                <td class="centreado">230</td>
             </tr>
         </tbody>
     </table>
@@ -282,10 +289,10 @@
         </thead>
         <tbody>
             <tr>
-                <td class="bold">{{ $certificacion->codigo }}</td>
-                <td>{{ $certificacion->accion }}</td>
-                <td class="centreado">{{ $certificacion->operacion->operacion->codigo_operacion }}</td>
-                <td>{{ $certificacion->operacion->operacion->operacion }}</td>
+                <td class="bold">{{ $certificacion->memoria_operacion->memoria->formulario->codigo_pei }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion->memoria->formulario->accion_corto }}</td>
+                <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
+                <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
             </tr>
         </tbody>
     </table>
@@ -302,12 +309,12 @@
         </thead>
         <tbody>
             <tr>
-                <td class="centreado">{{ $certificacion->justificacion }}</td>
-                <td class="centreado">{{ $certificacion->partida->partida }}</td>
-                <td class="centreado">{{ number_format($certificacion->partida->presupuesto, 2) }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion->justificacion }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion->partida }}</td>
+                <td class="centreado">{{ number_format($certificacion->memoria_operacion->presupuesto, 2) }}</td>
                 <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
                 @php
-                    $saldo = number_format((float) $certificacion->partida->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
+                    $saldo = number_format((float) $certificacion->memoria_operacion->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
                     if ((float) $saldo == 0) {
                         $saldo = '-';
                     }
@@ -327,16 +334,12 @@
     <table class="collapse" style="margin-top:15px;">
         <tbody>
             <tr>
-                <td class="border bold p-5" width="40%">Verificación de la actividad en el POA {{ date('Y') }}
+                <td class="border bold p-5" width="40%">Verificación de la actividad en el POA {{$verificacion_actividad->first()->gestion}}
                 </td>
                 <td></td>
             </tr>
             <tr class="border">
-                <td class="p-5" colspan="2">La actividad se encuentra en el Plan Operativo Anual de la gestión
-                    2022 de la
-                    Autoridad de
-                    Supervisión de la Seguridad Social de Corto Plazo, aprobado mediante la Resolución Administrativa N°
-                    043 de 10 de septiembre de 2021 (Para su aprobación)</td>
+                <td class="p-5" colspan="2">{{$verificacion_actividad->first()->actividad}}</td>
             </tr>
         </tbody>
     </table>
@@ -355,6 +358,10 @@
             </tr>
         </tbody>
     </table>
+    
+    <div class="qr">
+        <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->size(150)->generate($certificacion->correlativo.'|'.$certificacion->solicitante->full_name.'|'.date('d/m/Y', strtotime($certificacion->inicio)).'|'.date('d/m/Y', strtotime($certificacion->final)))) !!}">
+    </div>
 </body>
 
 </html>

@@ -35,11 +35,139 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div
-                                    class="row"
-                                    id="contenedor_tabla"
-                                    v-html="tabla"
-                                ></div>
+                                <div class="row" id="contenedor_tabla">
+                                    <table class="tabla_detalle">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th colspan="17">
+                                                    PLAN OPERATIVO ANUAL GESTIÓN
+                                                    2022
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="3">
+                                                    Código Operación(1)
+                                                </th>
+                                                <th rowspan="3">
+                                                    Operación(2)
+                                                </th>
+                                                <th rowspan="3">
+                                                    Código tarea(3)
+                                                </th>
+                                                <th rowspan="3">
+                                                    Actividad/Tareas(4)
+                                                </th>
+                                                <th rowspan="3">
+                                                    Lugar de ejecución de la
+                                                    Operación(5)
+                                                </th>
+                                                <th rowspan="3">
+                                                    Responsable de ejecución de
+                                                    la Operación/Tarea (6)
+                                                </th>
+                                                <th colspan="11">
+                                                    Desglose Presupuestario
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="2">Partida(7)</th>
+                                                <th rowspan="2">
+                                                    Descripción(8)
+                                                </th>
+                                                <th rowspan="2">Cantidad(9)</th>
+                                                <th rowspan="2">Unida(10)</th>
+                                                <th rowspan="2">
+                                                    Costo Unitario(11)
+                                                </th>
+                                                <th colspan="4">
+                                                    Recursos Internos(12)
+                                                </th>
+                                                <th>Recursos externos(13)</th>
+                                                <th rowspan="2">
+                                                    TOTAL (por Operación)(14)
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>TRANSF 42</th>
+                                                <th>UE</th>
+                                                <th>PROG</th>
+                                                <th>ACT</th>
+                                                <th>OTROS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="item in oFormularioCinco
+                                                    .memoria.operacions"
+                                            >
+                                                <td>
+                                                    {{ item.codigo_operacion }}
+                                                </td>
+                                                <td>
+                                                    {{
+                                                        item.descripcion_operacion
+                                                    }}
+                                                </td>
+                                                <td>
+                                                    {{ item.codigo_actividad }}
+                                                </td>
+                                                <td>
+                                                    {{
+                                                        item.descripcion_actividad
+                                                    }}
+                                                </td>
+                                                <td>
+                                                    {{ item.lugar }}
+                                                </td>
+                                                <td>
+                                                    {{ item.responsable }}
+                                                </td>
+                                                <td>
+                                                    {{ item.partida }}
+                                                </td>
+                                                <td>
+                                                    {{ item.descripcion }}
+                                                </td>
+                                                <td>
+                                                    {{ item.cantidad }}
+                                                </td>
+                                                <td>
+                                                    {{ item.unidad }}
+                                                </td>
+                                                <td>
+                                                    {{ item.costo }}
+                                                </td>
+                                                <td>
+                                                    {{ item.total }}
+                                                </td>
+                                                <td>
+                                                    {{ item.ue }}
+                                                </td>
+                                                <td>
+                                                    {{ item.prog }}
+                                                </td>
+                                                <td>
+                                                    {{ item.act }}
+                                                </td>
+                                                <td>
+                                                    {{ item.justificacion }}
+                                                </td>
+                                                <td>
+                                                    {{ item.total_operacion }}
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-primary">
+                                                <th colspan="16">TOTAL</th>
+                                                <th>
+                                                    {{
+                                                        oFormularioCinco.memoria
+                                                            .total_final
+                                                    }}
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,11 +178,7 @@
 </template>
 
 <script>
-import Operacion from "./Operacion.vue";
 export default {
-    components: {
-        Operacion,
-    },
     props: ["id"],
     data() {
         return {
@@ -77,7 +201,6 @@ export default {
         getFormularioCinco() {
             axios.get("/admin/formulario_cinco/" + this.id).then((response) => {
                 this.oFormularioCinco = response.data.formulario_cinco;
-                this.getTabla();
             });
         },
         getTabla() {

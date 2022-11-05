@@ -4,13 +4,21 @@ use App\Http\Controllers\ActividadTareaController;
 use App\Http\Controllers\CertificacionController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DetalleFormularioController;
+use App\Http\Controllers\FinancieraController;
+use App\Http\Controllers\FisicoController;
 use App\Http\Controllers\FormularioCincoController;
 use App\Http\Controllers\FormularioCuatroController;
+use App\Http\Controllers\FormularioDosController;
+use App\Http\Controllers\FormularioTresController;
+use App\Http\Controllers\FormularioUnoController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MemoriaCalculoController;
 use App\Http\Controllers\OperacionController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\SemaforoController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificacionActividadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,10 +81,23 @@ Route::prefix('admin')->group(function () {
     // tareas-partidas
     Route::get("actividad_tareas/getPartidas", [ActividadTareaController::class, 'getPartidas']);
 
+    // FORMULARIO UNO
+    Route::get("formulario_uno", [FormularioUnoController::class, 'formulario_uno']);
+
+    // FORMULARIO DOS
+    Route::get("formulario_dos", [FormularioDosController::class, 'formulario_dos']);
+
+    // FORMULARIO TRES
+    Route::get("formulario_tres", [FormularioTresController::class, 'formulario_tres']);
+
     // FORMULARIO CINCO
-    Route::get("formulario_cinco/tabla/getTabla/{formulario_cinco}", [FormularioCincoController::class, "getTabla"]);
-    Route::get("formulario_cinco/getOperaciones", [FormularioCincoController::class, "getOperaciones"]);
     Route::resource('formulario_cinco', FormularioCincoController::class)->only([
+        'index', 'store', 'update', 'destroy', 'show'
+    ]);
+
+    // MEMORIA CALCULOS
+    Route::get("memoria_calculos/getOperaciones", [MemoriaCalculoController::class, "getOperaciones"]);
+    Route::resource('memoria_calculos', MemoriaCalculoController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 
@@ -86,6 +107,28 @@ Route::prefix('admin')->group(function () {
     Route::POST("certificacions/pdf/{certificacion}", [CertificacionController::class, "pdf"]);
     Route::resource('certificacions', CertificacionController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
+    ]);
+
+
+    // VERIFICACION ACTIVIDAD
+    Route::get('/verificacion_actividads/getVerificacionActividad', [VerificacionActividadController::class, 'getVerificacionActividad']);
+    Route::resource('verificacion_actividads', VerificacionActividadController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
+
+    // FISICOS
+    Route::resource('fisicos', FisicoController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
+
+    // FINANCIERAS
+    Route::resource('financieras', FinancieraController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
+
+    // SEMAFOROS
+    Route::resource('semaforos', SemaforoController::class)->only([
+        'index', 'store', 'update', 'destroy'
     ]);
 
     // REPORTES

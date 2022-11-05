@@ -39,6 +39,27 @@ export default new Router({
             component: require('./components/modulos/unidads/index.vue').default,
         },
 
+        // FORMULARIO UNO
+        {
+            path: '/formulario_uno',
+            name: 'formulario_uno.index',
+            component: require('./components/modulos/formulario_uno/index.vue').default,
+        },
+
+        // FORMULARIO DOS
+        {
+            path: '/formulario_dos',
+            name: 'formulario_dos.index',
+            component: require('./components/modulos/formulario_dos/index.vue').default,
+        },
+
+        // FORMULARIO TRES
+        {
+            path: '/formulario_tres',
+            name: 'formulario_tres.index',
+            component: require('./components/modulos/formulario_tres/index.vue').default,
+        },
+
         // FORMULARIO CUATRO
         {
             path: '/formulario_cuatro',
@@ -80,23 +101,41 @@ export default new Router({
         },
 
         {
-            path: '/formulario_cinco/create',
-            name: 'formulario_cinco.create',
-            component: require('./components/modulos/formulario_cinco/create.vue').default,
-        },
-
-        {
-            path: '/formulario_cinco/edit/:id',
-            name: 'formulario_cinco.edit',
-            props: true,
-            component: require('./components/modulos/formulario_cinco/edit.vue').default,
-        },
-
-        {
             path: '/formulario_cinco/show/:id',
             name: 'formulario_cinco.show',
             props: true,
             component: require('./components/modulos/formulario_cinco/show.vue').default,
+        },
+        // MEMORIA DE CALCULOS
+        {
+            path: '/memoria_calculos',
+            name: 'memoria_calculos.index',
+            component: require('./components/modulos/memoria_calculos/index.vue').default,
+        },
+
+        {
+            path: '/memoria_calculos/create',
+            name: 'memoria_calculos.create',
+            component: require('./components/modulos/memoria_calculos/create.vue').default,
+        },
+
+        {
+            path: '/memoria_calculos/edit/:id',
+            name: 'memoria_calculos.edit',
+            props: true,
+            component: require('./components/modulos/memoria_calculos/edit.vue').default,
+        },
+
+        {
+            path: '/memoria_calculos/show/:id',
+            name: 'memoria_calculos.show',
+            props: true,
+            component: require('./components/modulos/memoria_calculos/show.vue').default,
+        },
+        {
+            path: '/memoria_calculos/modificaciones',
+            name: 'memoria_calculos.modificaciones',
+            component: require('./components/modulos/memoria_calculos/modificaciones.vue').default,
         },
 
         // CERTIFICACIONS
@@ -117,6 +156,51 @@ export default new Router({
             name: 'certificacions.edit',
             props: true,
             component: require('./components/modulos/certificacions/edit.vue').default,
+        },
+
+        // FISICOS
+        {
+            path: '/fisicos',
+            name: 'fisicos.index',
+            component: require('./components/modulos/fisicos/index.vue').default,
+        },
+
+        // FINANCIERAS
+        {
+            path: '/financieras',
+            name: 'financieras.index',
+            component: require('./components/modulos/financieras/index.vue').default,
+        },
+
+        // SEMAFOROS
+        {
+            path: '/semaforos',
+            name: 'semaforos.index',
+            component: require('./components/modulos/semaforos/index.vue').default,
+        },
+
+        // VERIFICACION ACTIVIDAD
+        {
+            path: '/verificacion_actividads',
+            name: 'verificacion_actividads.index',
+            component: require('./components/modulos/verificacion_actividads/index.vue').default,
+            props: true
+        },
+
+        // SEGUIMIENTO TRIMESTRAL
+        {
+            path: '/seguimiento_trimestral',
+            name: 'seguimiento_trimestral.index',
+            component: require('./components/modulos/seguimiento_trimestral/index.vue').default,
+            props: true
+        },
+
+        // INFORME ACTIVIDAD
+        {
+            path: '/informe_actividad',
+            name: 'informe_actividad.index',
+            component: require('./components/modulos/informe_actividad/index.vue').default,
+            props: true
         },
 
         // CONFIGURACIÓN

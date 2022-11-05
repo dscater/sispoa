@@ -29,8 +29,13 @@ class FormularioCuatro extends Model
         return $this->hasOne(DetalleFormulario::class, 'formulario_id');
     }
 
-    public function formulario_cinco()
+    public function memoria_calculo()
     {
-        return $this->hasOne(FormularioCinco::class, 'formulario_id');
+        return $this->hasOne(MemoriaCalculo::class, 'formulario_id');
+    }
+
+    public function certificacions()
+    {
+        return $this->hasMany(Certificacion::class, 'formulario_id');
     }
 }

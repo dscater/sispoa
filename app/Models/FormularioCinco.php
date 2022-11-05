@@ -10,17 +10,12 @@ class FormularioCinco extends Model
     use HasFactory;
     protected $table = "formulario_cinco";
 
-    protected $fillable = ['formulario_id', 'total_formulario', 'fecha_registro'];
+    protected $fillable = ['memoria_id', "fecha_registro"];
 
-    protected $with = ["formulario", "operacions"];
+    protected $with = ["memoria"];
 
-    public function formulario()
+    public function memoria()
     {
-        return $this->belongsTo(FormularioCuatro::class, 'formulario_id');
-    }
-
-    public function operacions()
-    {
-        return $this->hasMany(FCOperacion::class, 'formulario_cinco_id');
+        return $this->belongsTo(MemoriaCalculo::class, 'memoria_id');
     }
 }

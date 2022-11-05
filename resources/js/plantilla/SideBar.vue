@@ -63,7 +63,7 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul
-                    class="nav nav-pills nav-sidebar flex-column text-sm nav-flat"
+                    class="nav nav-pills nav-sidebar flex-column text-xs nav-flat"
                     data-widget="treeview"
                     role="menu"
                     data-accordion="false"
@@ -82,15 +82,16 @@
                     <li
                         class="nav-header"
                         v-if="
-                            permisos.includes('usuarios.index') ||
                             permisos.includes('unidads.index') ||
+                            permisos.includes('formulario_uno.index') ||
+                            permisos.includes('formulario_dos.index') ||
+                            permisos.includes('formulario_tres.index') ||
                             permisos.includes('formulario_cuatro.index') ||
                             permisos.includes('formulario_cinco.index') ||
-                            permisos.includes('certificacions.index') ||
-                            permisos.includes('configuracion.index')
+                            permisos.includes('memoria_calculos.index')
                         "
                     >
-                        ADMINISTRACIÓN
+                        FORMULACIÓN
                     </li>
                     <li
                         class="nav-item"
@@ -102,8 +103,8 @@
                             class="nav-link"
                             v-loading.fullscreen.lock="fullscreenLoading"
                         >
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Usuarios</p>
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>PEI (Misión, Visión, Objetivos Estratégico)</p>
                         </router-link>
                     </li>
                     <li
@@ -117,6 +118,45 @@
                         >
                             <i class="nav-icon fas fa-list-alt"></i>
                             <p>Unidades Organizacionales</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('formulario_uno.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'formulario_uno.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Formulario 1</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('formulario_dos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'formulario_dos.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Formulario 2</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('formulario_tres.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'formulario_tres.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Formulario 3</p>
                         </router-link>
                     </li>
                     <li
@@ -195,6 +235,47 @@
                     </li>
                     <li
                         class="nav-item"
+                        v-if="permisos.includes('memoria_calculos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'memoria_calculos.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Memoria de cálculo</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-header"
+                        v-if="
+                            permisos.includes(
+                                'verificacion_actividads.index'
+                            ) ||
+                            permisos.includes('certificacions.index') ||
+                            permisos.includes('seguimiento_trimestral.index') ||
+                            permisos.includes('informe_actividad.index')
+                        "
+                    >
+                        SEGUIMIENTO
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="
+                            permisos.includes('verificacion_actividads.index')
+                        "
+                    >
+                        <router-link
+                            :to="{ name: 'verificacion_actividads.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Verificación de la actividad POA</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
                         v-if="permisos.includes('certificacions.index')"
                     >
                         <router-link
@@ -202,19 +283,64 @@
                             class="nav-link"
                         >
                             <i class="nav-icon fa fa-file-alt"></i>
-                            <p>Certificaciones</p>
+                            <p>Certificación POA</p>
                         </router-link>
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('configuracion.index')"
+                        v-if="permisos.includes('seguimiento_trimestral.index')"
                     >
                         <router-link
-                            :to="{ name: 'configuracion' }"
+                            :to="{ name: 'seguimiento_trimestral.index' }"
                             class="nav-link"
                         >
-                            <i class="nav-icon fas fa-cog"></i>
-                            <p>Configuración</p>
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Seguimiento trimestral</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('informe_actividad.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'informe_actividad.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Informe de actividad realizada</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-header"
+                        v-if="
+                            permisos.includes('memoria_calculos.edit') ||
+                            permisos.includes('memoria_calculos.index')
+                        "
+                    >
+                        MODIFICACIÓN POA
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('memoria_calculos.edit')"
+                    >
+                        <router-link
+                            :to="{ name: 'memoria_calculos.modificaciones' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Modificación de memorias de cálculo</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('detalle_formularios.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'informe_actividad.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Saldo presupuesto</p>
                         </router-link>
                     </li>
                     <li
@@ -241,7 +367,69 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.ejecucion_presupuestos')"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Formulario 4</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Formulario 5</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Memorias de cálculo</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Saldos de presupuestos por actividad</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Saldos por partida</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="
+                            permisos.includes('reportes.ejecucion_presupuestos')
+                        "
                     >
                         <router-link
                             :to="{ name: 'reportes.ejecucion_presupuestos' }"
@@ -253,7 +441,11 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.ejecucion_presupuestos_g')"
+                        v-if="
+                            permisos.includes(
+                                'reportes.ejecucion_presupuestos_g'
+                            )
+                        "
                     >
                         <router-link
                             :to="{ name: 'reportes.ejecucion_presupuestos_g' }"
@@ -263,7 +455,105 @@
                             <p>G. Ejecución de presupuestos</p>
                         </router-link>
                     </li>
-                    <li class="nav-header">PERFIL</li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Físicos</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Financieros</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('reportes.usuarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.usuarios' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Semáforos</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-header">OTRAS OPCIONES</li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('fisicos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'fisicos.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Físico</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('financieras.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'financieras.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Financiera</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('semaforos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'semaforos.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Semáforo</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('configuracion.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'configuracion' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>Configuración</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('usuarios.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'usuarios.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Usuarios</p>
+                        </router-link>
+                    </li>
                     <li class="nav-item">
                         <router-link
                             exact
@@ -277,7 +567,6 @@
                             <p>Ver Perfil</p>
                         </router-link>
                     </li>
-                    <li class="nav-header">SALIR</li>
                     <li class="nav-item">
                         <a
                             href="#"
@@ -286,7 +575,7 @@
                             v-loading.fullscreen.lock="fullscreenLoading"
                         >
                             <i class="fas fa-power-off nav-icon"></i>
-                            <p>Cerrar sesión</p>
+                            <p>Salir</p>
                         </a>
                     </li>
                 </ul>

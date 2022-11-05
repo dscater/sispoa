@@ -15,12 +15,8 @@
                 X
             </button>
             <div class="row">
-                <div class="input-group col-md-6">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1"
-                            >Código de Operación</span
-                        >
-                    </div>
+                <div class="form-group col-md-6">
+                    <label>Código de Operación</label>
                     <input
                         placeholder="Código de Operación"
                         class="form-control"
@@ -37,6 +33,7 @@
                 </div>
 
                 <div class="input-group col-md-6">
+                    <label>Operación</label>
                     <el-input
                         type="textarea"
                         autosize
@@ -83,8 +80,9 @@
                             >
                                 X
                             </button>
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="form-group col-md-2">
+                                    <label>Ponderación %</label>
                                     <input
                                         type="number"
                                         placeholder="Ponderación %"
@@ -114,6 +112,7 @@
                                     ></span>
                                 </div>
                                 <div class="form-group col-md-4">
+                                    <label>Resultado intermedio esperado</label>
                                     <el-input
                                         type="textarea"
                                         autosize
@@ -146,6 +145,7 @@
                                     ></span>
                                 </div>
                                 <div class="form-group col-md-4">
+                                    <label>Medios de verificación</label>
                                     <el-input
                                         placeholder="Medios de verificación"
                                         :class="{
@@ -177,6 +177,7 @@
                                     ></span>
                                 </div>
                                 <div class="form-group col-md-2">
+                                    <label>Código tarea</label>
                                     <el-input
                                         placeholder="Código tarea"
                                         :class="{
@@ -206,6 +207,7 @@
                                     ></span>
                                 </div>
                                 <div class="form-group col-md-4">
+                                    <label>Actividad/Tarea</label>
                                     <el-input
                                         type="textarea"
                                         autosize
@@ -237,14 +239,8 @@
                                         "
                                     ></span>
                                 </div>
-                                <div class="input-group col-md-4">
-                                    <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="basic-addon1"
-                                            >Inicio</span
-                                        >
-                                    </div>
+                                <div class="form-group col-md-4">
+                                    <label>Inicio</label>
                                     <input
                                         type="date"
                                         class="form-control"
@@ -264,14 +260,8 @@
                                         "
                                     ></span>
                                 </div>
-                                <div class="input-group col-md-4">
-                                    <div class="input-group-prepend">
-                                        <span
-                                            class="input-group-text"
-                                            id="basic-addon1"
-                                            >Final</span
-                                        >
-                                    </div>
+                                <div class="form-group col-md-4">
+                                    <label>Final</label>
                                     <input
                                         type="date"
                                         class="form-control"
@@ -334,9 +324,9 @@
                                         <tbody class="detalle_trimestres">
                                             <tr>
                                                 <td class="text-center">
+                                                    <label>E</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="E"
                                                         v-model="detalle.pt_e"
                                                         class="form-control"
                                                         :class="{
@@ -351,9 +341,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>F</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="F"
                                                         v-model="detalle.pt_f"
                                                         class="form-control"
                                                         :class="{
@@ -368,9 +358,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>M</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="M"
                                                         v-model="detalle.pt_m"
                                                         class="form-control"
                                                         :class="{
@@ -385,9 +375,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>A</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="A"
                                                         v-model="detalle.st_a"
                                                         class="form-control"
                                                         :class="{
@@ -402,9 +392,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>M</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="M"
                                                         v-model="detalle.st_m"
                                                         class="form-control"
                                                         :class="{
@@ -419,9 +409,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>J</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="J"
                                                         v-model="detalle.st_j"
                                                         class="form-control"
                                                         :class="{
@@ -436,9 +426,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>J</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="J"
                                                         v-model="detalle.tt_j"
                                                         class="form-control"
                                                         :class="{
@@ -453,9 +443,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>A</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="A"
                                                         v-model="detalle.tt_a"
                                                         class="form-control"
                                                         :class="{
@@ -470,9 +460,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>S</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="S"
                                                         v-model="detalle.tt_s"
                                                         class="form-control"
                                                         :class="{
@@ -487,9 +477,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>O</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="O"
                                                         v-model="detalle.ct_o"
                                                         class="form-control"
                                                         :class="{
@@ -504,9 +494,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>N</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="N"
                                                         v-model="detalle.ct_n"
                                                         class="form-control"
                                                         :class="{
@@ -521,9 +511,9 @@
                                                     />
                                                 </td>
                                                 <td class="text-center">
+                                                    <label>D</label>
                                                     <input
                                                         type="text"
-                                                        placeholder="D"
                                                         v-model="detalle.ct_d"
                                                         class="form-control"
                                                         :class="{
@@ -629,6 +619,9 @@ export default {
         detalle_formulario_id(newVal, oldVal) {
             this._detalle_formulario_id = newVal;
         },
+        operacion(newVal, oldVal) {
+            this.o_Operacion = newVal;
+        },
     },
     methods: {
         // QUITAR OPERACION
@@ -724,15 +717,31 @@ export default {
 
 .detalle_trimestres tr td {
     padding: 0px;
+    position: relative;
+}
+
+.detalle_trimestres tr td label {
+    margin: 0px;
+    position: absolute;
+    font-size: 0.9rem;
+    color: gray;
+    top: 0px;
+    left: 5px;
 }
 
 .detalle_trimestres tr td input {
     min-width: 45px;
+    text-align: center;
 }
 
 .input-group-text {
     padding: 4px;
     min-height: 38px;
     height: 38px;
+}
+
+.contenedor_tabla table thead tr th,
+.contenedor_tabla table tbody tr td {
+    font-size: 0.7em;
 }
 </style>

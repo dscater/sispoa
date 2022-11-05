@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Certificacions - <small>Nuevo</small></h1>
+                        <h1>Certificación POA - <small>Nuevo</small></h1>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                                 <div class="row">
                                     <div class="col-md-6 ml-auto mr-auto">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 p-0 mb-3">
                                                 <el-button
                                                     v-if="nro_paso > 1"
                                                     class="btn btn-primary bg-light btn-flat btn-block"
@@ -81,9 +81,12 @@
                                                     Anterior</el-button
                                                 >
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 p-0 mb-3">
                                                 <el-button
-                                                    v-if="nro_paso < 14"
+                                                    v-if="
+                                                        nro_paso <
+                                                        listPasos.length
+                                                    "
                                                     class="btn btn-primary bg-light btn-flat btn-block"
                                                     :loading="enviando"
                                                     @click="
@@ -101,7 +104,7 @@
                                 <div class="row">
                                     <div
                                         v-if="nro_paso == 1"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
@@ -121,7 +124,9 @@
                                                 oCertificacion.formulario_id
                                             "
                                             clearable
-                                            @change="getOperacionesFormCinco"
+                                            @change="
+                                                getOperacionesMemoriaCalculo
+                                            "
                                         >
                                             <el-option
                                                 v-for="item in listFormularios"
@@ -139,11 +144,11 @@
                                     </div>
                                     <div
                                         v-if="nro_paso == 2"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
-                                                'text-danger': errors.fco_id,
+                                                'text-danger': errors.mo_id,
                                             }"
                                             >Seleccionar código de
                                             operación*</label
@@ -152,128 +157,89 @@
                                             filterable
                                             class="w-100 d-block"
                                             :class="{
-                                                'is-invalid': errors.fco_id,
+                                                'is-invalid': errors.mo_id,
                                             }"
-                                            v-model="oCertificacion.fco_id"
+                                            v-model="oCertificacion.mo_id"
                                             clearable
-                                            @change="setTextOperacion"
+                                            @change="getDetalleOperacion"
                                         >
                                             <el-option
                                                 v-for="item in listOperaciones"
                                                 :key="item.id"
                                                 :value="item.id"
                                                 :label="
-                                                    item.operacion
-                                                        .codigo_operacion
+                                                    item.codigo_operacion +
+                                                    ' | ' +
+                                                    item.codigo_actividad +
+                                                    ' | ' +
+                                                    item.partida
                                                 "
                                             >
                                             </el-option>
                                         </el-select>
                                         <span
                                             class="error invalid-feedback"
-                                            v-if="errors.fco_id"
-                                            v-text="errors.fco_id[0]"
+                                            v-if="errors.mo_id"
+                                            v-text="errors.mo_id[0]"
                                         ></span>
 
-                                        <el-input
-                                            type="textarea"
-                                            autosize
-                                            placeholder="Operación"
-                                            v-model="text_operacion"
-                                            readonly
+                                        <div
+                                            class="row mt-1"
+                                            v-if="oCertificacion.mo_id != ''"
                                         >
-                                        </el-input>
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4
+                                                            class="w-full text-center"
+                                                        >
+                                                            Detalle
+                                                        </h4>
+                                                        <p>
+                                                            <strong
+                                                                >Descripción: </strong
+                                                            >{{
+                                                                oMOperacion.descripcion
+                                                            }}
+                                                        </p>
+                                                        <p>
+                                                            <strong
+                                                                >Cantidad
+                                                                requerida
+                                                                actual: </strong
+                                                            >{{
+                                                                oMOperacion.cantidad
+                                                            }}
+                                                        </p>
+                                                        <p>
+                                                            <strong
+                                                                >Unidad: </strong
+                                                            >{{
+                                                                oMOperacion.unidad
+                                                            }}
+                                                        </p>
+                                                        <p>
+                                                            <strong
+                                                                >Costo Unitario: </strong
+                                                            >{{
+                                                                oMOperacion.costo
+                                                            }}
+                                                        </p>
+                                                        <p>
+                                                            <strong
+                                                                >Total Actual: </strong
+                                                            >{{
+                                                                oMOperacion.total
+                                                            }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div
                                         v-if="nro_paso == 3"
-                                        class="form-group col-md-6 ml-auto mr-auto"
-                                    >
-                                        <label
-                                            :class="{
-                                                'text-danger':
-                                                    errors.actividad_tarea_id,
-                                            }"
-                                            >Seleccionar código de
-                                            tarea/actividad*</label
-                                        >
-                                        <el-select
-                                            filterable
-                                            class="w-100 d-block"
-                                            :class="{
-                                                'is-invalid':
-                                                    errors.actividad_tarea_id,
-                                            }"
-                                            v-model="
-                                                oCertificacion.actividad_tarea_id
-                                            "
-                                            clearable
-                                            @change="setTextTarea"
-                                        >
-                                            <el-option
-                                                v-for="item in listTareas"
-                                                :key="item.id"
-                                                :value="item.id"
-                                                :label="
-                                                    item.detalle_operacion
-                                                        .codigo_tarea
-                                                "
-                                            >
-                                            </el-option>
-                                        </el-select>
-                                        <span
-                                            class="error invalid-feedback"
-                                            v-if="errors.actividad_tarea_id"
-                                            v-text="
-                                                errors.actividad_tarea_id[0]
-                                            "
-                                        ></span>
-                                        <el-input
-                                            type="textarea"
-                                            autosize
-                                            placeholder="Operación"
-                                            v-model="text_tarea"
-                                            readonly
-                                        >
-                                        </el-input>
-                                    </div>
-                                    <div
-                                        v-if="nro_paso == 4"
-                                        class="form-group col-md-6 ml-auto mr-auto"
-                                    >
-                                        <label
-                                            :class="{
-                                                'text-danger':
-                                                    errors.partida_id,
-                                            }"
-                                            >Seleccionar partida*</label
-                                        >
-                                        <el-select
-                                            filterable
-                                            class="w-100 d-block"
-                                            :class="{
-                                                'is-invalid': errors.partida_id,
-                                            }"
-                                            v-model="oCertificacion.partida_id"
-                                            clearable
-                                            @change="asignaPartida"
-                                        >
-                                            <el-option
-                                                v-for="item in listPartidas"
-                                                :key="item.id"
-                                                :value="item.id"
-                                                :label="item.partida"
-                                            >
-                                            </el-option>
-                                        </el-select>
-                                        <span
-                                            class="error invalid-feedback"
-                                            v-if="errors.partida_id"
-                                            v-text="errors.partida_id[0]"
-                                        ></span>
-                                    </div>
-                                    <div
-                                        v-if="nro_paso == 5"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
@@ -294,6 +260,8 @@
                                             v-model="
                                                 oCertificacion.cantidad_usar
                                             "
+                                            @change="validaCantidadUsar"
+                                            @keyup="validaCantidadUsar"
                                         />
                                         <span
                                             class="error invalid-feedback"
@@ -302,39 +270,8 @@
                                         ></span>
                                     </div>
                                     <div
-                                        v-if="nro_paso == 6"
-                                        class="form-group col-md-6 ml-auto mr-auto"
-                                    >
-                                        <label
-                                            :class="{
-                                                'text-danger':
-                                                    errors.justificacion,
-                                            }"
-                                            >Justificación*</label
-                                        >
-                                        <el-input
-                                            type="textarea"
-                                            autosize
-                                            placeholder="Justificación"
-                                            :class="{
-                                                'is-invalid':
-                                                    errors.justificacion,
-                                            }"
-                                            v-model="
-                                                oCertificacion.justificacion
-                                            "
-                                            clearable
-                                        >
-                                        </el-input>
-                                        <span
-                                            class="error invalid-feedback"
-                                            v-if="errors.justificacion"
-                                            v-text="errors.justificacion[0]"
-                                        ></span>
-                                    </div>
-                                    <div
-                                        v-if="nro_paso == 7"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        v-if="nro_paso == 4"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
@@ -355,8 +292,8 @@
                                         ></span>
                                     </div>
                                     <div
-                                        v-if="nro_paso == 8"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        v-if="nro_paso == 5"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
@@ -378,8 +315,8 @@
                                         ></span>
                                     </div>
                                     <div
-                                        v-if="nro_paso == 9"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        v-if="nro_paso == 6"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
@@ -416,8 +353,8 @@
                                         ></span>
                                     </div>
                                     <div
-                                        v-if="nro_paso == 10"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        v-if="nro_paso == 7"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <label
                                             :class="{
@@ -452,125 +389,8 @@
                                         ></span>
                                     </div>
                                     <div
-                                        v-if="nro_paso == 11"
-                                        class="form-group col-md-6 ml-auto mr-auto"
-                                    >
-                                        <label
-                                            :class="{
-                                                'text-danger':
-                                                    errors.formulario_id,
-                                            }"
-                                            >Código SIGEP*</label
-                                        >
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>U.E.</label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="oCertificacion.ue"
-                                                    :class="{
-                                                        'is-invalid': errors.ue,
-                                                    }"
-                                                />
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.ue"
-                                                    v-text="errors.ue[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>PROG</label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="
-                                                        oCertificacion.prog
-                                                    "
-                                                    :class="{
-                                                        'is-invalid':
-                                                            errors.prog,
-                                                    }"
-                                                />
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.prog"
-                                                    v-text="errors.prog[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>PROY</label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="
-                                                        oCertificacion.proy
-                                                    "
-                                                    :class="{
-                                                        'is-invalid':
-                                                            errors.proy,
-                                                    }"
-                                                />
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.proy"
-                                                    v-text="errors.proy[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>ACT.</label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="oCertificacion.act"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            errors.act,
-                                                    }"
-                                                />
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.act"
-                                                    v-text="errors.act[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>F.F.</label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="oCertificacion.ff"
-                                                    :class="{
-                                                        'is-invalid': errors.ff,
-                                                    }"
-                                                />
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.ff"
-                                                    v-text="errors.ff[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>O.F.</label>
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="oCertificacion.of"
-                                                    :class="{
-                                                        'is-invalid': errors.of,
-                                                    }"
-                                                />
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.of"
-                                                    v-text="errors.of[0]"
-                                                ></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        v-if="nro_paso == 12"
-                                        class="form-group col-md-6 ml-auto mr-auto"
+                                        v-if="nro_paso == 8"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                                     >
                                         <div class="row">
                                             <div class="col-md-6">
@@ -625,62 +445,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        v-if="nro_paso == 13"
-                                        class="form-group col-md-6 ml-auto mr-auto"
-                                    >
-                                        <label
-                                            :class="{
-                                                'text-danger': errors.codigo,
-                                            }"
-                                            >Código*</label
-                                        >
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            v-model="oCertificacion.codigo"
-                                            :class="{
-                                                'is-invalid': errors.codigo,
-                                            }"
-                                        />
-                                        <span
-                                            class="error invalid-feedback"
-                                            v-if="errors.codigo"
-                                            v-text="errors.codigo[0]"
-                                        ></span>
-                                    </div>
-                                    <div
-                                        v-if="nro_paso == 14"
-                                        class="form-group col-md-6 ml-auto mr-auto"
-                                    >
-                                        <label
-                                            :class="{
-                                                'text-danger': errors.accion,
-                                            }"
-                                            >Acción de corto plazo*</label
-                                        >
-                                        <el-input
-                                            type="textarea"
-                                            autosize
-                                            placeholder="Acción de corto plazo"
-                                            :class="{
-                                                'is-invalid': errors.accion,
-                                            }"
-                                            v-model="oCertificacion.accion"
-                                            clearable
-                                        >
-                                        </el-input>
-                                        <span
-                                            class="error invalid-feedback"
-                                            v-if="errors.accion"
-                                            v-text="errors.accion[0]"
-                                        ></span>
-                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 ml-auto mr-auto">
                                         <el-button
-                                            v-if="nro_paso == 14"
+                                            v-if="nro_paso == listPasos.length"
                                             class="btn btn-primary bg-primary btn-flat btn-block"
                                             :loading="enviando"
                                             @click="enviaRegistro()"
@@ -708,25 +477,15 @@ export default {
             }),
             oCertificacion: {
                 formulario_id: "",
-                fco_id: "",
-                actividad_tarea_id: "",
-                partida_id: "",
+                mo_id: "",
                 cantidad_usar: "",
-                justificacion: "",
+                presupuesto_usarse: "",
                 archivo: null,
                 correlativo: "",
                 solicitante_id: "",
                 superior_id: "",
-                ue: "",
-                prog: "",
-                proy: "",
-                act: "",
-                ff: "",
-                of: "",
                 inicio: "",
                 final: "",
-                codigo: "",
-                accion: "",
                 estado: "PENDIENTE",
             },
             errors: [],
@@ -739,18 +498,7 @@ export default {
             nro_paso: 1,
             text_operacion: "",
             text_tarea: "",
-            oPartida: {
-                partida: "",
-                descripcion: "",
-                cantidad: "",
-                unidad: "",
-                costo: "",
-                t42: "",
-                ue: "",
-                prog: "",
-                act: "",
-                otros: "",
-            },
+            oMOperacion: null,
             listPasos: [
                 {
                     nro: 1,
@@ -760,57 +508,41 @@ export default {
                 },
                 {
                     nro: 2,
-                    label: "Operación",
-                    key: "fco_id",
+                    label: "Operación | Tarea/Actividad | Partida ",
+                    key: "mo_id",
                     error: false,
                 },
                 {
                     nro: 3,
-                    label: "Tarea/Actividad",
-                    key: "actividad_tarea_id",
-                    error: false,
-                },
-                { nro: 4, label: "Partida", key: "partida_id", error: false },
-                {
-                    nro: 5,
                     label: "Cantidad",
                     key: "cantidad_usar",
                     error: false,
                 },
+                { nro: 4, label: "Archivo", key: "archivo", error: false },
                 {
-                    nro: 6,
-                    label: "Justificación",
-                    key: "justificacion",
-                    error: false,
-                },
-                { nro: 7, label: "Archivo", key: "archivo", error: false },
-                {
-                    nro: 8,
+                    nro: 5,
                     label: "Nro. Correlativo",
                     key: "correlativo",
                     error: false,
                 },
                 {
-                    nro: 9,
+                    nro: 6,
                     label: "Solicitante",
                     key: "solicitante_id",
                     error: false,
                 },
                 {
-                    nro: 10,
+                    nro: 7,
                     label: "Inmediato Superior",
                     key: "superior_id",
                     error: false,
                 },
-                { nro: 11, label: "SIGEP", key: "sigep", error: false },
                 {
-                    nro: 12,
+                    nro: 8,
                     label: "Inicio y Final",
                     key: "inicio_final",
                     error: false,
                 },
-                { nro: 13, label: "Código", key: "codigo", error: false },
-                { nro: 14, label: "Acción", key: "accion", error: false },
             ],
         };
     },
@@ -842,18 +574,17 @@ export default {
         },
 
         // lista de operaciones deacuerdo al formulario cuatro seleccionado
-        getOperacionesFormCinco() {
+        getOperacionesMemoriaCalculo() {
             axios
-                .get("/admin/formulario_cinco/getOperaciones", {
+                .get("/admin/memoria_calculos/getOperaciones", {
                     params: {
                         formulario_id: this.oCertificacion.formulario_id,
                     },
                 })
                 .then((response) => {
                     this.text_operacion = "";
-                    this.oCertificacion.fco_id = "";
+                    this.oCertificacion.mo_id = "";
                     this.listOperaciones = response.data;
-                    console.log(this.listOperaciones);
                 });
         },
         // ENVIAR FORMULARIO
@@ -871,19 +602,14 @@ export default {
                     "formulario_id",
                     this.oCertificacion.formulario_id
                 );
-                formdata.append("fco_id", this.oCertificacion.fco_id);
-                formdata.append(
-                    "actividad_tarea_id",
-                    this.oCertificacion.actividad_tarea_id
-                );
-                formdata.append("partida_id", this.oCertificacion.partida_id);
+                formdata.append("mo_id", this.oCertificacion.mo_id);
                 formdata.append(
                     "cantidad_usar",
                     this.oCertificacion.cantidad_usar
                 );
                 formdata.append(
-                    "justificacion",
-                    this.oCertificacion.justificacion
+                    "presupuesto_usarse",
+                    this.oCertificacion.presupuesto_usarse
                 );
                 formdata.append("archivo", this.oCertificacion.archivo);
                 formdata.append("correlativo", this.oCertificacion.correlativo);
@@ -892,16 +618,8 @@ export default {
                     this.oCertificacion.solicitante_id
                 );
                 formdata.append("superior_id", this.oCertificacion.superior_id);
-                formdata.append("ue", this.oCertificacion.ue);
-                formdata.append("prog", this.oCertificacion.prog);
-                formdata.append("proy", this.oCertificacion.proy);
-                formdata.append("act", this.oCertificacion.act);
-                formdata.append("ff", this.oCertificacion.ff);
-                formdata.append("of", this.oCertificacion.of);
                 formdata.append("inicio", this.oCertificacion.inicio);
                 formdata.append("final", this.oCertificacion.final);
-                formdata.append("codigo", this.oCertificacion.codigo);
-                formdata.append("accion", this.oCertificacion.accion);
                 formdata.append("estado", this.oCertificacion.estado);
 
                 axios
@@ -952,43 +670,18 @@ export default {
             if (this.nro_paso < 1) {
                 this.nro_paso = 1;
             }
-            if (this.nro_paso > 14) {
-                this.nro_paso = 14;
+            if (this.nro_paso > this.listPasos.length) {
+                this.nro_paso = this.listPasos.length;
             }
         },
 
         // textos codigos
-        setTextOperacion() {
-            this.text_tarea = "";
-            this.oCertificacion.actividad_tarea_id = "";
-
-            this.text_operacion = this.listOperaciones.filter(
-                (item) => item.id == this.oCertificacion.fco_id
-            )[0].operacion.operacion;
-
-            this.listTareas = this.listOperaciones.filter(
-                (item) => item.id == this.oCertificacion.fco_id
-            )[0].actividad_tareas;
-        },
-        setTextTarea() {
-            this.text_tarea = this.listOperaciones
-                .filter((item) => item.id == this.oCertificacion.fco_id)[0]
-                .actividad_tareas.filter(
-                    (item_tarea) =>
-                        item_tarea.id == this.oCertificacion.actividad_tarea_id
-                )[0].descripcion;
-            this.getPartidas();
-        },
-        asignaPartida() {
-            setTimeout(() => {
-                this.oPartida = this.listPartidas.filter(
-                    (item) => item.id == this.oCertificacion.partida_id
-                )[0];
-                this.oCertificacion.cantidad_usar = this.oPartida.cantidad;
-                this.oCertificacion.ue = this.oPartida.ue;
-                this.oCertificacion.prog = this.oPartida.prog;
-                this.oCertificacion.act = this.oPartida.act;
-            }, 500);
+        getDetalleOperacion() {
+            let operacion = this.listOperaciones.filter(
+                (item) => item.id == this.oCertificacion.mo_id
+            )[0];
+            this.oMOperacion = operacion;
+            this.oCertificacion.cantidad_usar = this.oMOperacion.cantidad;
         },
         cargaArchivo(e) {
             this.oCertificacion.archivo = e.target.files[0];
@@ -1004,20 +697,6 @@ export default {
                     msj_errores += this.errors[paso.key][0] + "<br/>";
                 } else {
                     paso.error = false;
-                }
-                if (paso.key == "sigep") {
-                    if (
-                        this.errors.ue ||
-                        this.errors.prog ||
-                        this.errors.proy ||
-                        this.errors.act ||
-                        this.errors.act ||
-                        this.errors.ff ||
-                        this.errors.of
-                    ) {
-                        paso.error = true;
-                        msj_errores += "Tienes un error en SIGEP<br/>";
-                    }
                 }
                 if (paso.key == "inicio_final") {
                     if (this.errors.inicio || this.errors.final) {
@@ -1047,6 +726,20 @@ export default {
                     this.listPartidas = response.data;
                 });
         },
+        validaCantidadUsar() {
+            if (this.oCertificacion.cantidad_usar > this.oMOperacion.cantidad) {
+                this.oCertificacion.cantidad_usar = this.oMOperacion.cantidad;
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    html:
+                        "La cantidad maxima permitida es de " +
+                        this.oMOperacion.cantidad,
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        },
     },
 };
 </script>
@@ -1057,7 +750,7 @@ export default {
     overflow: auto;
     padding: 0px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(8, 1fr);
 }
 .paso {
     display: flex;
