@@ -156,6 +156,8 @@ Route::prefix('admin')->group(function () {
     Route::post('reportes/fisicos', [ReporteController::class, 'fisicos']);
     Route::post('reportes/financieros', [ReporteController::class, 'financieros']);
     Route::post('reportes/semaforos', [ReporteController::class, 'semaforos']);
+
+    Route::post('reportes/formulario_cuatro_excel', [ReporteController::class, 'formulario_cuatro_excel']);
 });
 
 // ---------------------------------------
