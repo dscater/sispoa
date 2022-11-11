@@ -266,14 +266,26 @@ export default {
                     this.oReporte,
                     config
                 )
-                .then((res) => {
-                    this.errors = [];
+                .then((response) => {
+                    // this.errors = [];
+                    // this.enviando = false;
+                    // let pdfBlob = new Blob([response.data], {
+                    //     type: "application/pdf",
+                    // });
+                    // let urlReporte = URL.createObjectURL(pdfBlob);
+                    var fileURL = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    var fileLink = document.createElement("a");
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute(
+                        "download",
+                        "saldo_presupuestario.xlsx"
+                    );
+                    document.body.appendChild(fileLink);
+
+                    fileLink.click();
                     this.enviando = false;
-                    let pdfBlob = new Blob([res.data], {
-                        type: "application/pdf",
-                    });
-                    let urlReporte = URL.createObjectURL(pdfBlob);
-                    window.open(urlReporte);
                 })
                 .catch(async (error) => {
                     let responseObj = await error.response.data.text();

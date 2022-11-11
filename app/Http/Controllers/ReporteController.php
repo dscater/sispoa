@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
+use App\Models\Configuracion;
 use App\Models\DetalleOperacion;
 use App\Models\Financiera;
 use App\Models\Fisico;
+use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
+use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
 use App\Models\Semaforo;
 use App\Models\Unidad;
@@ -19,6 +22,27 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ReporteController extends Controller
 {
+    public static function getFechaTexto()
+    {
+        $meses_text = [
+            "01" => "enero",
+            "02" => "febrero",
+            "03" => "marzo",
+            "04" => "abril",
+            "05" => "mayo",
+            "06" => "junio",
+            "07" => "julio",
+            "08" => "agosto",
+            "09" => "septiembre",
+            "10" => "octubre",
+            "11" => "noviembre",
+            "12" => "diciembre",
+        ];
+
+        $fecha = "La Paz " . date("d") . " de " . $meses_text[date("m")] . " de " . date("Y");
+        return $fecha;
+    }
+
     public function usuarios(Request $request)
     {
         $filtro =  $request->filtro;
@@ -79,16 +103,274 @@ class ReporteController extends Controller
             }
         }
 
-        $pdf = PDF::loadView('reportes.saldo_presupuesto', compact('formularios'))->setPaper('legal', 'landscape');
-        // ENUMERAR LAS PÁGINAS USANDO CANVAS
-        $pdf->output();
-        $dom_pdf = $pdf->getDomPDF();
-        $canvas = $dom_pdf->get_canvas();
-        $alto = $canvas->get_height();
-        $ancho = $canvas->get_width();
-        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()
+            ->setCreator("ADMIN")
+            ->setLastModifiedBy('Administración')
+            ->setTitle('Formularios')
+            ->setSubject('Formularios')
+            ->setDescription('Formularios')
+            ->setKeywords('PHPSpreadsheet')
+            ->setCategory('Listado');
 
-        return $pdf->download('EjecucionPresupuestos.pdf');
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+
+        $styleTexto = [
+            'font' => [
+                'bold' => true,
+                'size' => 12,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+        $estilo_conenido = [
+            'font' => [
+                'size' => 8,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $estilo_total = [
+            'font' => [
+                'bold' => true,
+                'size' => 11,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+
+        $fila = 1;
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('logo');
+        $drawing->setDescription('logo');
+        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+        $drawing->setCoordinates('A' . $fila);
+        $drawing->setOffsetX(5);
+        $drawing->setOffsetY(0);
+        $drawing->setHeight(50);
+        $drawing->setWorksheet($sheet);
+        $fila = 2;
+
+        foreach ($formularios as $formulario_cuatro) {
+            $sheet->setCellValue('A' . $fila, "SALDO PRESUPUESTARIO - GESTIÓN " . date("Y"));
+            $sheet->mergeCells("A" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':I' . $fila)->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($styleTexto);
+            $fila++;
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_pei);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'OBJETIVO ESTRATÉGICO INSTITUCIONAL');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_institucional);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'INDICADOR');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->indicador);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'CODIGO POA');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_poa);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_corto);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'RESULTADO ESPERADO GESTIÓN');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->resultado_esperado);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'PRESUPUESTO PROGRAMADO GESTIÓN');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, number_format($formulario_cuatro->presupuesto, 2) . " ");
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'PONDREACIÓN %');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, number_format($formulario_cuatro->ponderacion, 2) . " ");
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'UNIDAD ORGANIZACIONAL');
+            $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+            $sheet->setCellValue('B' . $fila, $formulario_cuatro->unidad->nombre);
+            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+
+            $fila++;
+            $fila++;
+            $sheet->setCellValue('A' . $fila, 'Código tarea');
+            $sheet->mergeCells("A" . $fila . ":A" . ($fila + 1));  //COMBINAR CELDAS
+            $sheet->setCellValue('B' . $fila, 'Actividad/Tarea');
+            $sheet->mergeCells("B" . $fila . ":B" . ($fila + 1));  //COMBINAR CELDAS
+            $sheet->setCellValue('C' . $fila, 'Partida');
+            $sheet->mergeCells("C" . $fila . ":C" . ($fila + 1));  //COMBINAR CELDAS
+            $sheet->setCellValue('D' . $fila, 'Presupuesto');
+            $sheet->mergeCells("D" . $fila . ":F" . $fila);  //COMBINAR CELDAS
+            $sheet->setCellValue('G' . $fila, 'Ejecutado');
+            $sheet->mergeCells("G" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+            $sheet->setCellValue('I' . $fila, 'Saldo');
+            $sheet->mergeCells("I" . $fila . ":I" . ($fila + 1));  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($styleArray2);
+            $fila++;
+            $sheet->setCellValue('D' . $fila, 'Cantidad');
+            $sheet->setCellValue('E' . $fila, 'Costo Unitario');
+            $sheet->setCellValue('F' . $fila, 'Presupuesto vigente');
+            $sheet->setCellValue('G' . $fila, 'Cantidad');
+            $sheet->setCellValue('H' . $fila, 'Presupuesto Vigente');
+            $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($styleArray2);
+            $fila++;
+            $suma_ejecutados = 0;
+            $suma_saldos = 0;
+            if ($formulario_cuatro->memoria_calculo) {
+                foreach ($formulario_cuatro->memoria_calculo->operacions as $operacion) {
+                    $sheet->setCellValue('A' . $fila, $operacion->codigo_actividad);
+                    $sheet->setCellValue('B' . $fila, $operacion->descripcion_actividad);
+                    $sheet->setCellValue('C' . $fila, $operacion->partida);
+                    $sheet->setCellValue('D' . $fila, $operacion->cantidad);
+                    $sheet->setCellValue('E' . $fila, $operacion->costo);
+                    $sheet->setCellValue('F' . $fila, $operacion->total);
+                    $cantidad_usado = Certificacion::where('mo_id', $operacion->id)->sum('cantidad_usar');
+                    $total_usado = Certificacion::where('mo_id', $operacion->id)->sum('presupuesto_usarse');
+                    $saldo = (float) $operacion->total - (float) $total_usado;
+                    $sheet->setCellValue('G' . $fila, $cantidad_usado);
+                    $sheet->setCellValue('H' . $fila, $total_usado);
+                    $sheet->setCellValue('I' . $fila, $saldo);
+                    $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+                    $fila++;
+                    $suma_ejecutados += $total_usado;
+                    $suma_saldos += $saldo;
+                }
+
+                $sheet->setCellValue('A' . $fila, 'TOTAL');
+                $sheet->mergeCells("A" . $fila . ":E" . $fila);  //COMBINAR CELDAS
+                $sheet->setCellValue('F' . $fila, number_format($formulario_cuatro->memoria_calculo->total_final, 2) . " ");
+                $sheet->setCellValue('H' . $fila, number_format($suma_ejecutados, 2) . " ");
+                $sheet->setCellValue('I' . $fila, number_format($suma_saldos, 2) . " ");
+                $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_total);
+            }
+
+            $sheet->getColumnDimension('A')->setWidth(30);
+            $sheet->getColumnDimension('B')->setWidth(20);
+            $sheet->getColumnDimension('C')->setWidth(20);
+            $sheet->getColumnDimension('D')->setWidth(20);
+            $sheet->getColumnDimension('E')->setWidth(20);
+            $sheet->getColumnDimension('F')->setWidth(20);
+            $sheet->getColumnDimension('G')->setWidth(20);
+            $sheet->getColumnDimension('H')->setWidth(10);
+            $sheet->getColumnDimension('I')->setWidth(10);
+            $fila++;
+            $fila++;
+            $fila++;
+        }
+        $sheet->setCellValue('G' . $fila, self::getFechaTexto());
+        $sheet->mergeCells("G" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+
+        foreach (range('A', 'I') as $columnID) {
+            $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
+        }
+
+        // DESCARGA DEL ARCHIVO
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="SaldoPresupuestario.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+
+        // $pdf = PDF::loadView('reportes.saldo_presupuesto', compact('formularios'))->setPaper('legal', 'landscape');
+        // // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        // $pdf->output();
+        // $dom_pdf = $pdf->getDomPDF();
+        // $canvas = $dom_pdf->get_canvas();
+        // $alto = $canvas->get_height();
+        // $ancho = $canvas->get_width();
+        // $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        // return $pdf->download('EjecucionPresupuestos.pdf');
+    }
+
+    public static function saldo_presupuesto_excel($formularios)
+    {
     }
 
     public function ejecucion_presupuestos(Request $request)
@@ -575,9 +857,60 @@ class ReporteController extends Controller
             ],
         ];
 
+        $estilo_conenido2 = [
+            'font' => [
+                'size' => 8,
+                'bold' => true
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'EBF1DE']
+            ],
+        ];
+
+        $estilo_conenido3 = [
+            'font' => [
+                'size' => 8,
+                'bold' => true
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'EEECE1']
+            ],
+        ];
+
         $formulario_cuatro = FormularioCuatro::find($request->id);
 
         $fila = 1;
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('logo');
+        $drawing->setDescription('logo');
+        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+        $drawing->setCoordinates('A' . $fila);
+        $drawing->setOffsetX(5);
+        $drawing->setOffsetY(0);
+        $drawing->setHeight(60);
+        $drawing->setWorksheet($sheet);
+
+        $fila = 2;
         $sheet->setCellValue('A' . $fila, "MATRIZ - PROGRAMACIÓN OPERATIVA ANUAL - GESTIÓN " . date("Y"));
         $sheet->mergeCells("A" . $fila . ":U" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':U' . $fila)->getAlignment()->setHorizontal('center');
@@ -597,55 +930,55 @@ class ReporteController extends Controller
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_pei);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'OBJETIVO ESTRATÉGICO INSTITUCIONAL');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_institucional);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'INDICADOR');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->indicador);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'CODIGO POA');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_poa);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_corto);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'RESULTADO ESPERADO GESTIÓN');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->resultado_esperado);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'PRESUPUESTO PROGRAMADO GESTIÓN');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, number_format($formulario_cuatro->presupuesto, 2) . " ");
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'PONDREACIÓN %');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, number_format($formulario_cuatro->ponderacion, 2) . " ");
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'UNIDAD ORGANIZACIONAL');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('B' . $fila, $formulario_cuatro->unidad->nombre);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
 
         $fila++;
         $fila++;
@@ -708,17 +1041,53 @@ class ReporteController extends Controller
                     $sheet->setCellValue('F' . $contador, $detalle_operacion->codigo_tarea);
                     $sheet->setCellValue('G' . $contador, $detalle_operacion->actividad_tarea);
                     $sheet->setCellValue('H' . $contador, $detalle_operacion->pt_e);
+                    if ($detalle_operacion->pt_e) {
+                        $sheet->getStyle("H" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('I' . $contador, $detalle_operacion->pt_f);
+                    if ($detalle_operacion->pt_f) {
+                        $sheet->getStyle("I" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('J' . $contador, $detalle_operacion->pt_m);
+                    if ($detalle_operacion->pt_m) {
+                        $sheet->getStyle("J" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('K' . $contador, $detalle_operacion->st_a);
+                    if ($detalle_operacion->st_a) {
+                        $sheet->getStyle("K" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('L' . $contador, $detalle_operacion->st_m);
+                    if ($detalle_operacion->st_m) {
+                        $sheet->getStyle("L" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('M' . $contador, $detalle_operacion->st_j);
+                    if ($detalle_operacion->st_j) {
+                        $sheet->getStyle("M" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('N' . $contador, $detalle_operacion->tt_j);
+                    if ($detalle_operacion->tt_j) {
+                        $sheet->getStyle("N" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('O' . $contador, $detalle_operacion->tt_a);
+                    if ($detalle_operacion->tt_a) {
+                        $sheet->getStyle("O" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('P' . $contador, $detalle_operacion->tt_s);
+                    if ($detalle_operacion->tt_s) {
+                        $sheet->getStyle("P" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('Q' . $contador, $detalle_operacion->ct_o);
+                    if ($detalle_operacion->ct_o) {
+                        $sheet->getStyle("Q" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('R' . $contador, $detalle_operacion->ct_n);
+                    if ($detalle_operacion->ct_n) {
+                        $sheet->getStyle("R" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('S' . $contador, $detalle_operacion->ct_d);
+                    if ($detalle_operacion->ct_d) {
+                        $sheet->getStyle("S" . $contador)->applyFromArray($estilo_conenido3);
+                    }
                     $sheet->setCellValue('T' . $contador, date("d/m/Y", strtotime($detalle_operacion->inicio)));
                     $sheet->setCellValue('U' . $contador, date("d/m/Y", strtotime($detalle_operacion->final)));
                     $sheet->getStyle('A' . $contador . ':U' . $contador)->applyFromArray($estilo_conenido);
@@ -732,42 +1101,106 @@ class ReporteController extends Controller
             }
         }
         $fila++;
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DAEEF3']
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleArray3 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+
         $sheet->setCellValue('A' . $fila, "");
         $sheet->setCellValue('B' . $fila, "ELABORADO POR:");
-        $sheet->mergeCells("B" . $fila . ":D" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('E' . $fila, "REVISADO POR:");
-        $sheet->mergeCells("E" . $fila . ":G" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('H' . $fila, "APROBADO");
-        $sheet->mergeCells("H" . $fila . ":J" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':J' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->mergeCells("B" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':H' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('I' . $fila, "REVISADO POR:");
+        $sheet->mergeCells("I" . $fila . ":N" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('O' . $fila, "APROBADO");
+        $sheet->mergeCells("O" . $fila . ":U" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray2);
         $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
         $sheet->setCellValue('A' . $fila, "FIRMA");
         $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":D" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('E' . $fila, "");
-        $sheet->mergeCells("E" . $fila . ":G" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('H' . $fila, "");
-        $sheet->mergeCells("H" . $fila . ":J" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':J' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->mergeCells("B" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':H' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('I' . $fila, "");
+        $sheet->mergeCells("I" . $fila . ":N" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('O' . $fila, "");
+        $sheet->mergeCells("O" . $fila . ":U" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray);
         $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
         $sheet->setCellValue('A' . $fila, "NOMBRE");
         $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":D" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('E' . $fila, "");
-        $sheet->mergeCells("E" . $fila . ":G" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('H' . $fila, "");
-        $sheet->mergeCells("H" . $fila . ":J" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':J' . $fila)->applyFromArray($estilo_conenido);
+        $sheet->mergeCells("B" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('I' . $fila, "");
+        $sheet->mergeCells("I" . $fila . ":N" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('O' . $fila, "");
+        $sheet->mergeCells("O" . $fila . ":U" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray);
         $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
         $sheet->setCellValue('A' . $fila, "CARGO");
         $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":D" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('E' . $fila, "");
-        $sheet->mergeCells("E" . $fila . ":G" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('H' . $fila, "");
-        $sheet->mergeCells("H" . $fila . ":J" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':J' . $fila)->applyFromArray($estilo_conenido);
-        
+        $sheet->getStyle('B' . $fila . ':H' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("B" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('I' . $fila, "");
+        $sheet->mergeCells("I" . $fila . ":N" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('O' . $fila, "");
+        $sheet->mergeCells("O" . $fila . ":U" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray);
+        $sheet->getStyle('H' . $fila . ':U' . $fila)->applyFromArray($styleArray3);
+        $fila++;
+        $fila++;
+        $sheet->setCellValue('S' . $fila, self::getFechaTexto());
+        $sheet->mergeCells("S" . $fila . ":U" . $fila);  //COMBINAR CELDAS
+
+
         $sheet->getColumnDimension('A')->setWidth(30);
         $sheet->getColumnDimension('B')->setWidth(20);
         $sheet->getColumnDimension('C')->setWidth(20);
@@ -797,6 +1230,931 @@ class ReporteController extends Controller
         // DESCARGA DEL ARCHIVO
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Usuarios.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
+    public function formulario_cinco_excel(Request $request)
+    {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()
+            ->setCreator("ADMIN")
+            ->setLastModifiedBy('Administración')
+            ->setTitle('Formularios')
+            ->setSubject('Formularios')
+            ->setDescription('Formularios')
+            ->setKeywords('PHPSpreadsheet')
+            ->setCategory('Listado');
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+
+        $styleTexto = [
+            'font' => [
+                'bold' => true,
+                'size' => 12,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $styleTextoForm = [
+            'font' => [
+                'bold' => true,
+                'size' => 10,
+            ],
+        ];
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+        $estilo_conenido = [
+            'font' => [
+                'size' => 8,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+
+        $estilo_conenido2 = [
+            'font' => [
+                'size' => 8,
+                'bold' => true
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'EBF1DE']
+            ],
+        ];
+
+        $estilo_total = [
+            'font' => [
+                'size' => 11,
+                'bold' => true,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'A6A6A6']
+            ],
+        ];
+
+        $formulario_cinco = FormularioCinco::find($request->id);
+
+        $fila = 1;
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('logo');
+        $drawing->setDescription('logo');
+        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+        $drawing->setCoordinates('A' . $fila);
+        $drawing->setOffsetX(5);
+        $drawing->setOffsetY(0);
+        $drawing->setHeight(60);
+        $drawing->setWorksheet($sheet);
+
+        $fila = 2;
+        $sheet->setCellValue('A' . $fila, "MATRIZ - PROGRAMACIÓN OPERATIVA ANUAL - GESTIÓN " . date("Y"));
+        $sheet->mergeCells("A" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleTexto);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "ARTICULACIÓN OPERACIONES, TAREAS Y PRESUPUESTO");
+        $sheet->mergeCells("A" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleTexto);
+        $fila++;
+        $sheet->setCellValue('L' . $fila, "FORMULARIO 5");
+        $sheet->mergeCells("L" . $fila . ":M" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('L' . $fila . ':M' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('L' . $fila . ':M' . $fila)->applyFromArray($styleTextoForm);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->codigo_pei);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'OBJETIVO ESTRATÉGICO INSTITUCIONAL');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->accion_institucional);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'INDICADOR');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->indicador);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'CODIGO POA');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->codigo_poa);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->accion_corto);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'RESULTADO ESPERADO GESTIÓN');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->resultado_esperado);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'PRESUPUESTO PROGRAMADO GESTIÓN');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, number_format($formulario_cinco->memoria->formulario->presupuesto, 2) . " ");
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'PONDREACIÓN %');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, number_format($formulario_cinco->memoria->formulario->ponderacion, 2) . " ");
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'UNIDAD ORGANIZACIONAL');
+        $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
+        $sheet->setCellValue('B' . $fila, $formulario_cinco->memoria->formulario->unidad->nombre);
+        $sheet->mergeCells("B" . $fila . ":Q" . $fila);  //COMBINAR
+        $sheet->getStyle('B' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido2);
+
+        $fila++;
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "PLAN OPERATIVO ANUAL GESTIÓN " . date("Y"));
+        $sheet->mergeCells("A" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'Código Operación(1)');
+        $sheet->mergeCells("A" . $fila . ":A" . ($fila + 2));  //COMBINAR CELDAS
+        $sheet->setCellValue('B' . $fila, 'Operación(2)');
+        $sheet->mergeCells("B" . $fila . ":B" . ($fila + 2));  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, 'Código tarea(3)');
+        $sheet->mergeCells("C" . $fila . ":C" . ($fila + 2));  //COMBINAR CELDAS
+        $sheet->setCellValue('D' . $fila, 'Actividad/Tareas(4)');
+        $sheet->mergeCells("D" . $fila . ":D" . ($fila + 2));  //COMBINAR CELDAS
+        $sheet->setCellValue('E' . $fila, 'Lugar de ejecución de la Operación(5)');
+        $sheet->mergeCells("E" . $fila . ":E" . ($fila + 2));  //COMBINAR CELDAS
+        $sheet->setCellValue('F' . $fila, 'Responsable de ejecución de la Operación/Tarea(6)');
+        $sheet->mergeCells("F" . $fila . ":F" . ($fila + 2));  //COMBINAR CELDAS
+        $sheet->setCellValue('G' . $fila, 'Desglose Presupuestario');
+        $sheet->mergeCells("G" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $fila++;
+        $sheet->setCellValue('G' . $fila, 'Partida(7)');
+        $sheet->mergeCells("G" . $fila . ":G" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('H' . $fila, 'Descripción(8)');
+        $sheet->mergeCells("H" . $fila . ":H" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('I' . $fila, 'Cantidad(9)');
+        $sheet->mergeCells("I" . $fila . ":I" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('J' . $fila, 'Unidad de medida(10)');
+        $sheet->mergeCells("J" . $fila . ":J" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('K' . $fila, 'Costo Unitario(11)');
+        $sheet->mergeCells("K" . $fila . ":K" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('L' . $fila, 'Recursos Internos(12)');
+        $sheet->mergeCells("L" . $fila . ":O" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('P' . $fila, 'Recursos externo(13)');
+        $sheet->setCellValue('Q' . $fila, 'TOTAL (por Operación)(14)');
+        $sheet->mergeCells("Q" . $fila . ":Q" . ($fila + 1));  //COMBINAR CELDAS
+        $fila++;
+        $sheet->setCellValue('L' . $fila, 'PRESUPUESTO VIGENTE');
+        $sheet->setCellValue('M' . $fila, 'UE');
+        $sheet->setCellValue('N' . $fila, 'PROG');
+        $sheet->setCellValue('O' . $fila, 'ACT');
+        $sheet->setCellValue('P' . $fila, 'OTROS');
+
+        $sheet->getStyle('A' . ($fila - 2) . ':Q' . ($fila - 2))->applyFromArray($styleArray2);
+        $sheet->getStyle('A' . ($fila - 1) . ':Q' . ($fila - 1))->applyFromArray($styleArray2);
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray2);
+        $fila++;
+        if ($formulario_cinco->memoria) {
+            foreach ($formulario_cinco->memoria->operacions as $operacion) {
+                $sheet->setCellValue('A' . $fila, $operacion->codigo_operacion);
+                $sheet->setCellValue('B' . $fila, $operacion->descripcion_operacion);
+                $sheet->setCellValue('C' . $fila, $operacion->codigo_actividad);
+                $sheet->setCellValue('D' . $fila, $operacion->descripcion_actividad);
+                $sheet->setCellValue('E' . $fila, $operacion->lugar);
+                $sheet->setCellValue('F' . $fila, $operacion->responsable);
+                $sheet->setCellValue('G' . $fila, $operacion->partida);
+                $sheet->setCellValue('H' . $fila, $operacion->descripcion);
+                $sheet->setCellValue('I' . $fila, $operacion->cantidad);
+                $sheet->setCellValue('J' . $fila, $operacion->unidad);
+                $sheet->setCellValue('K' . $fila, $operacion->costo);
+                $sheet->setCellValue('L' . $fila, $operacion->total);
+                $sheet->setCellValue('M' . $fila, $operacion->ue);
+                $sheet->setCellValue('N' . $fila, $operacion->prog);
+                $sheet->setCellValue('O' . $fila, $operacion->act);
+                $sheet->setCellValue('P' . $fila, $operacion->justificacion);
+                $sheet->setCellValue('Q' . $fila, $operacion->total_operacion);
+                $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido);
+                $fila++;
+            }
+        }
+        $sheet->setCellValue('A' . $fila, 'TOTAL PRESUPUESTO DE LA UNIDAD DE PLANIFICACIÓN');
+        $sheet->mergeCells("A" . $fila . ":P" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('Q' . $fila, $formulario_cinco->memoria->total_final);
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_total);
+
+        $fila++;
+        $fila++;
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DAEEF3']
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleArray3 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+
+        $sheet->setCellValue('A' . $fila, "");
+        $sheet->setCellValue('B' . $fila, "ELABORADO POR:");
+        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('H' . $fila, "REVISADO POR:");
+        $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('M' . $fila, "APROBADO");
+        $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray2);
+        $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->setCellValue('A' . $fila, "FIRMA");
+        $sheet->setCellValue('B' . $fila, "");
+        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('H' . $fila, "");
+        $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('M' . $fila, "");
+        $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray);
+        $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->setCellValue('A' . $fila, "NOMBRE");
+        $sheet->setCellValue('B' . $fila, "");
+        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('H' . $fila, "");
+        $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('M' . $fila, "");
+        $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray);
+        $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->setCellValue('A' . $fila, "CARGO");
+        $sheet->setCellValue('B' . $fila, "");
+        $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('H' . $fila, "");
+        $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('M' . $fila, "");
+        $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray);
+        $sheet->getStyle('H' . $fila . ':Q' . $fila)->applyFromArray($styleArray3);
+        $fila++;
+        $fila++;
+        $sheet->setCellValue('O' . $fila, self::getFechaTexto());
+        $sheet->mergeCells("O" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+
+        $sheet->getColumnDimension('A')->setWidth(30);
+        $sheet->getColumnDimension('B')->setWidth(20);
+        $sheet->getColumnDimension('C')->setWidth(20);
+        $sheet->getColumnDimension('D')->setWidth(20);
+        $sheet->getColumnDimension('E')->setWidth(20);
+        $sheet->getColumnDimension('F')->setWidth(20);
+        $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(10);
+        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('J')->setWidth(10);
+        $sheet->getColumnDimension('K')->setWidth(10);
+        $sheet->getColumnDimension('L')->setWidth(10);
+        $sheet->getColumnDimension('M')->setWidth(10);
+        $sheet->getColumnDimension('N')->setWidth(10);
+        $sheet->getColumnDimension('O')->setWidth(10);
+        $sheet->getColumnDimension('P')->setWidth(10);
+        $sheet->getColumnDimension('Q')->setWidth(10);
+
+        foreach (range('A', 'Q') as $columnID) {
+            $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
+        }
+
+        // DESCARGA DEL ARCHIVO
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="FormularioCinco.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
+    public function memoria_calculo_excel(Request $request)
+    {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()
+            ->setCreator("ADMIN")
+            ->setLastModifiedBy('Administración')
+            ->setTitle('Formularios')
+            ->setSubject('Formularios')
+            ->setDescription('Formularios')
+            ->setKeywords('PHPSpreadsheet')
+            ->setCategory('Listado');
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+
+        $styleTexto = [
+            'font' => [
+                'bold' => true,
+                'size' => 12,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $estilo1 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DCE6F1']
+            ],
+        ];
+        $estilo2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DCE6F1']
+            ],
+        ];
+
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+        $estilo_conenido = [
+            'font' => [
+                'size' => 8,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $estilo_conenido1 = [
+            'font' => [
+                'size' => 8,
+                'bold' => true,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $estilo_conenido2 = [
+            'font' => [
+                'size' => 8,
+                'bold' => true,
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $estilo_total = [
+            'font' => [
+                'bold' => true,
+                'size' => 11,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => '0062A5']
+            ],
+        ];
+
+        $memoria_calculo = MemoriaCalculo::find($request->id);
+
+        $fila = 1;
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName('logo');
+        $drawing->setDescription('logo');
+        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+        $drawing->setCoordinates('A' . $fila);
+        $drawing->setOffsetX(5);
+        $drawing->setOffsetY(0);
+        $drawing->setHeight(60);
+        $drawing->setWorksheet($sheet);
+        $sheet->setCellValue('A' . $fila, "Formulario 9");
+        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "Memorias de Cálculo");
+        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "MEMORIAS DE CÁLCULO POR CÓDIGO POA Y APRTIDA DE GASTO - GESTIÓN " . date("Y"));
+        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleTexto);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "(Expresado en Bolivianos)");
+        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleTexto);
+        $fila++;
+
+        $sheet->setCellValue('B' . $fila, "CODIGO");
+        $sheet->setCellValue('C' . $fila, "DESCRIPCIÓN");
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
+
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "ENTIDAD:");
+        $sheet->setCellValue('B' . $fila, "385");
+        $sheet->setCellValue('C' . $fila, "AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO - ASSUS");
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "UNIDAD ORGANIZACIONAL:");
+        $sheet->setCellValue('C' . $fila, $memoria_calculo->formulario->unidad->nombre);
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "DIRECCIÓN ADMINISTRATIVA:");
+        $sheet->setCellValue('B' . $fila, "1");
+        $sheet->setCellValue('C' . $fila, "DIRECCIÓN ADMINISTRATIVA FINANCIERA");
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "FUENTE:");
+        $sheet->setCellValue('B' . $fila, "42");
+        $sheet->setCellValue('C' . $fila, "TRANSFERENCIAS DE RECURSOS ESPECÍFICOS");
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, "ORGANISMO FINANCIADOR:");
+        $sheet->setCellValue('B' . $fila, "230");
+        $sheet->setCellValue('C' . $fila, "OTROS RECURSOS ESPECÍFICOS");
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
+
+        $fila++;
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'CODIGO POA:');
+        $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario->codigo_poa);
+        $sheet->setCellValue('C' . $fila, $memoria_calculo->formulario->accion_corto);
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'UNIDAD EJECUTORA:');
+        $sheet->setCellValue('B' . $fila, "1");
+        $sheet->setCellValue('C' . $fila, "ADMINISTRACIÓN CENTRAL");
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'PROGRAMA:');
+        $sheet->setCellValue('B' . $fila, "1");
+        $sheet->setCellValue('C' . $fila, "ADMINISTRACIÓN Y GESTIÓN INSTITUCIONAL");
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'ACTIVIDAD:');
+        $sheet->setCellValue('B' . $fila, "1");
+        $sheet->setCellValue('C' . $fila, "GESTIÓN EJECUTIVA");
+        $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
+        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $fila++;
+
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'UNIDAD EJECUTORA');
+        $sheet->mergeCells("A" . $fila . ":A" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('B' . $fila, 'PRESUPUESTOS');
+        $sheet->mergeCells("B" . $fila . ":C" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('D' . $fila, 'POA');
+        $sheet->mergeCells("D" . $fila . ":E" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('F' . $fila, 'PARTIDA DE GASTO');
+        $sheet->mergeCells("F" . $fila . ":F" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('G' . $fila, 'N°');
+        $sheet->mergeCells("G" . $fila . ":G" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('H' . $fila, 'DESCRIPCIÓN');
+        $sheet->mergeCells("H" . $fila . ":H" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('I' . $fila, 'CANTIDAD REQUERIDA');
+        $sheet->mergeCells("I" . $fila . ":I" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('J' . $fila, 'UNIDAD');
+        $sheet->mergeCells("J" . $fila . ":J" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('K' . $fila, 'PRECIO UNITARIO');
+        $sheet->mergeCells("K" . $fila . ":K" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('L' . $fila, 'TOTAL');
+        $sheet->mergeCells("L" . $fila . ":L" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('M' . $fila, 'JUSTIFICACIÓN');
+        $sheet->mergeCells("M" . $fila . ":M" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('N' . $fila, 'PROGRAMACIÓN MENSUAL');
+        $sheet->mergeCells("N" . $fila . ":Y" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('L' . $fila, 'TOTAL');
+        $sheet->mergeCells("Z" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray2);
+        $fila++;
+        $sheet->setCellValue('B' . $fila, 'PROGRAMA');
+        $sheet->setCellValue('C' . $fila, 'ACTIVIDAD');
+        $sheet->setCellValue('D' . $fila, 'COD. OPERACIÓN');
+        $sheet->setCellValue('E' . $fila, 'COD. ACT./TAREA');
+        $sheet->setCellValue('N' . $fila, 'ENERO');
+        $sheet->setCellValue('O' . $fila, 'FEBRERO');
+        $sheet->setCellValue('P' . $fila, 'MARZO');
+        $sheet->setCellValue('Q' . $fila, 'ABRIL');
+        $sheet->setCellValue('R' . $fila, 'MAYO');
+        $sheet->setCellValue('S' . $fila, 'JUNIO');
+        $sheet->setCellValue('T' . $fila, 'JULIO');
+        $sheet->setCellValue('U' . $fila, 'AGOSTO');
+        $sheet->setCellValue('V' . $fila, 'SEPTIEMBRE');
+        $sheet->setCellValue('W' . $fila, 'OCTUBRE');
+        $sheet->setCellValue('X' . $fila, 'NOVIEMBRE');
+        $sheet->setCellValue('Y' . $fila, 'DICIEMBRE');
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray2);
+        $fila++;
+        foreach ($memoria_calculo->operacions as $operacion) {
+            $sheet->setCellValue('A' . $fila, $operacion->ue);
+            $sheet->setCellValue('B' . $fila, $operacion->prog);
+            $sheet->setCellValue('C' . $fila, $operacion->act);
+            $sheet->setCellValue('D' . $fila, $operacion->codigo_operacion);
+            $sheet->setCellValue('E' . $fila, $operacion->codigo_actividad);
+            $sheet->setCellValue('F' . $fila, $operacion->partida);
+            $sheet->setCellValue('G' . $fila, $operacion->nro);
+            $sheet->setCellValue('H' . $fila, $operacion->descripcion);
+            $sheet->setCellValue('I' . $fila, $operacion->cantidad);
+            $sheet->setCellValue('J' . $fila, $operacion->unidad);
+            $sheet->setCellValue('K' . $fila, $operacion->costo);
+            $sheet->setCellValue('L' . $fila, $operacion->total);
+            $sheet->setCellValue('M' . $fila, $operacion->justificacion);
+            $sheet->setCellValue('N' . $fila, $operacion->ene);
+            $sheet->setCellValue('O' . $fila, $operacion->feb);
+            $sheet->setCellValue('P' . $fila, $operacion->mar);
+            $sheet->setCellValue('Q' . $fila, $operacion->abr);
+            $sheet->setCellValue('R' . $fila, $operacion->may);
+            $sheet->setCellValue('S' . $fila, $operacion->jun);
+            $sheet->setCellValue('T' . $fila, $operacion->jul);
+            $sheet->setCellValue('U' . $fila, $operacion->ago);
+            $sheet->setCellValue('V' . $fila, $operacion->sep);
+            $sheet->setCellValue('W' . $fila, $operacion->oct);
+            $sheet->setCellValue('X' . $fila, $operacion->nov);
+            $sheet->setCellValue('Y' . $fila, $operacion->dic);
+            $sheet->setCellValue('Z' . $fila, $operacion->total_operacion);
+            $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($estilo_conenido);
+            $fila++;
+        }
+        $sheet->setCellValue('A' . $fila, 'TOTAL');
+        $sheet->mergeCells("A" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('L' . $fila, $memoria_calculo->total_actividades);
+        $sheet->setCellValue('N' . $fila, $memoria_calculo->total_ene);
+        $sheet->setCellValue('O' . $fila, $memoria_calculo->total_feb);
+        $sheet->setCellValue('p' . $fila, $memoria_calculo->total_mar);
+        $sheet->setCellValue('Q' . $fila, $memoria_calculo->total_abr);
+        $sheet->setCellValue('R' . $fila, $memoria_calculo->total_may);
+        $sheet->setCellValue('S' . $fila, $memoria_calculo->total_jun);
+        $sheet->setCellValue('T' . $fila, $memoria_calculo->total_jul);
+        $sheet->setCellValue('U' . $fila, $memoria_calculo->total_ago);
+        $sheet->setCellValue('V' . $fila, $memoria_calculo->total_sep);
+        $sheet->setCellValue('W' . $fila, $memoria_calculo->total_oct);
+        $sheet->setCellValue('X' . $fila, $memoria_calculo->total_nov);
+        $sheet->setCellValue('Y' . $fila, $memoria_calculo->total_dic);
+        $sheet->setCellValue('Z' . $fila, $memoria_calculo->total_final);
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($estilo_total);
+
+        $fila++;
+        $fila++;
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DAEEF3']
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $styleArray3 = [
+            'font' => [
+                'bold' => true,
+                'size' => 9,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+
+        $sheet->setCellValue('A' . $fila, "");
+        $sheet->setCellValue('B' . $fila, "ELABORADO POR:");
+        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('J' . $fila, "REVISADO POR:");
+        $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('R' . $fila, "APROBADO");
+        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray2);
+        $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->setCellValue('A' . $fila, "FIRMA");
+        $sheet->setCellValue('B' . $fila, "");
+        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('E' . $fila, "");
+        $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('H' . $fila, "");
+        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray);
+        $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->setCellValue('A' . $fila, "NOMBRE");
+        $sheet->setCellValue('B' . $fila, "");
+        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('E' . $fila, "");
+        $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('H' . $fila, "");
+        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray);
+        $fila++;
+        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->setCellValue('A' . $fila, "CARGO");
+        $sheet->setCellValue('B' . $fila, "Jefe de Unidad de Planificación");
+        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->setCellValue('E' . $fila, "");
+        $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('R' . $fila, "Director General Ejecutivo");
+        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray);
+        $sheet->getStyle('R' . $fila . ':Z' . $fila)->applyFromArray($styleArray3);
+        $fila++;
+        $fila++;
+        $sheet->setCellValue('X' . $fila, self::getFechaTexto());
+        $sheet->mergeCells("X" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+
+        $sheet->getColumnDimension('A')->setWidth(15);
+        $sheet->getColumnDimension('B')->setWidth(15);
+        $sheet->getColumnDimension('C')->setWidth(7);
+        $sheet->getColumnDimension('D')->setWidth(8);
+        $sheet->getColumnDimension('E')->setWidth(8);
+        $sheet->getColumnDimension('F')->setWidth(10);
+        $sheet->getColumnDimension('G')->setWidth(5);
+        $sheet->getColumnDimension('H')->setWidth(15);
+        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('J')->setWidth(10);
+        $sheet->getColumnDimension('K')->setWidth(10);
+        $sheet->getColumnDimension('L')->setWidth(10);
+        $sheet->getColumnDimension('M')->setWidth(10);
+        $sheet->getColumnDimension('N')->setWidth(10);
+        $sheet->getColumnDimension('O')->setWidth(10);
+        $sheet->getColumnDimension('P')->setWidth(10);
+        $sheet->getColumnDimension('Q')->setWidth(10);
+        $sheet->getColumnDimension('R')->setWidth(10);
+        $sheet->getColumnDimension('S')->setWidth(10);
+        $sheet->getColumnDimension('T')->setWidth(10);
+        $sheet->getColumnDimension('U')->setWidth(10);
+        $sheet->getColumnDimension('V')->setWidth(10);
+        $sheet->getColumnDimension('W')->setWidth(10);
+        $sheet->getColumnDimension('X')->setWidth(10);
+        $sheet->getColumnDimension('Y')->setWidth(10);
+        $sheet->getColumnDimension('Z')->setWidth(10);
+
+        foreach (range('A', 'Z') as $columnID) {
+            $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
+        }
+
+        // DESCARGA DEL ARCHIVO
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="MemoriaCalculo.xlsx"');
         header('Cache-Control: max-age=0');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');

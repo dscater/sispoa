@@ -158,6 +158,8 @@ Route::prefix('admin')->group(function () {
     Route::post('reportes/semaforos', [ReporteController::class, 'semaforos']);
 
     Route::post('reportes/formulario_cuatro_excel', [ReporteController::class, 'formulario_cuatro_excel']);
+    Route::post('reportes/formulario_cinco_excel', [ReporteController::class, 'formulario_cinco_excel']);
+    Route::post('reportes/memoria_calculo_excel', [ReporteController::class, 'memoria_calculo_excel']);
 });
 
 // ---------------------------------------

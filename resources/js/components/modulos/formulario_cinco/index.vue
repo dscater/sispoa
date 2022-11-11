@@ -82,6 +82,23 @@
                                                             pill
                                                             variant="outline-primary"
                                                             class="btn-flat btn-block"
+                                                            title="Descargar Excel"
+                                                            @click="
+                                                                descargarExcel(
+                                                                    row.item.id
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-file-excel"
+                                                            ></i>
+                                                        </b-button>
+
+                                                        <b-button
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-primary"
+                                                            class="btn-flat btn-block"
                                                             title="Ver detalle"
                                                             @click="
                                                                 show(
@@ -242,6 +259,36 @@ export default {
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
+        },
+        descargarExcel(id) {
+            let config = {
+                responseType: "blob",
+            };
+            axios
+                .post(
+                    "/admin/reportes/formulario_cinco_excel",
+                    { id: id },
+                    config
+                )
+                .then((response) => {
+                    var fileURL = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    var fileLink = document.createElement("a");
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute("download", "formulario_cinco.xlsx");
+                    document.body.appendChild(fileLink);
+
+                    fileLink.click();
+                })
+                .catch(async (error) => {
+                    console.log(error);
+                    let responseObj = await error.response.data.text();
+                    responseObj = JSON.parse(responseObj);
+                    this.enviando = false;
+                    if (error.response) {
+                    }
+                });
         },
     },
 };

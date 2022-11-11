@@ -75,7 +75,7 @@
                                                     Descripción(8)
                                                 </th>
                                                 <th rowspan="2">Cantidad(9)</th>
-                                                <th rowspan="2">Unida(10)</th>
+                                                <th rowspan="2">Unidad(10)</th>
                                                 <th rowspan="2">
                                                     Costo Unitario(11)
                                                 </th>
