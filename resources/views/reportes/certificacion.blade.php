@@ -164,7 +164,7 @@
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('verificacion_actividad', 'App\Models\VerificacionActividad')
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
-    <div class="titulo">CERTIFICACIÓN POA<br />GESTIÓN {{ date('Y') }}</div>
+    <div class="titulo">CERTIFICACIÓN POA<br />GESTIÓN {{$verificacion_actividad->first()->gestion}}</div>
     <div class="correlativo">N° Correlativo<div class="nro">{{ $certificacion->correlativo }}</div>
     </div>
     <table class="solicitante" border="1">
@@ -332,6 +332,8 @@
         </tbody>
     </table>
 
+    <p><strong>Persona beneficiaria: </strong>{{$certificacion->persona_beneficiaria}}</p>
+
     <table class="collapse" style="margin-top:15px;">
         <tbody>
             <tr>
@@ -361,7 +363,7 @@
     </table>
     
     <div class="qr">
-        <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->size(150)->generate($certificacion->correlativo.'|'.$certificacion->solicitante->full_name.'|'.date('d/m/Y', strtotime($certificacion->inicio)).'|'.date('d/m/Y', strtotime($certificacion->final)))) !!}">
+        <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->size(150)->generate($certificacion->correlativo.'|'.$certificacion->solicitante->full_name.'|'.date('d/m/Y', strtotime($certificacion->inicio)).'|'.date('d/m/Y', strtotime($certificacion->final)).'|'. $certificacion->memoria_operacion->operacion->codigo_operacion.'|'.number_format($certificacion->memoria_operacion->presupuesto, 2).'|'.number_format($certificacion->presupuesto_usarse, 2))) !!}">
     </div>
 </body>
 

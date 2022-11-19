@@ -51,6 +51,6 @@ class UnidadController extends Controller
         }
 
         $unidad->delete();
-        return response()->JSON(["sw" => true, "unidad" => $unidad, "msj" => "El registro se actualizó correctamente"]);
+        return response()->JSON(["sw" => true, "msj" => "El registro se eliminó correctamente"]);
     }
 }

@@ -445,6 +445,38 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div
+                                        v-if="nro_paso == 9"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
+                                    >
+                                        <label
+                                            :class="{
+                                                'text-danger':
+                                                    errors.persona_beneficiaria,
+                                            }"
+                                            >Persona beneficiaria*</label
+                                        >
+                                        <el-input
+                                            filterable
+                                            class="w-100 d-block"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.persona_beneficiaria,
+                                            }"
+                                            v-model="
+                                                oCertificacion.persona_beneficiaria
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.persona_beneficiaria"
+                                            v-text="
+                                                errors.persona_beneficiaria[0]
+                                            "
+                                        ></span>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 ml-auto mr-auto">
@@ -486,6 +518,7 @@ export default {
                 superior_id: "",
                 inicio: "",
                 final: "",
+                persona_beneficiaria: "",
                 estado: "PENDIENTE",
             },
             errors: [],
@@ -541,6 +574,12 @@ export default {
                     nro: 8,
                     label: "Inicio y Final",
                     key: "inicio_final",
+                    error: false,
+                },
+                {
+                    nro: 9,
+                    label: "Persona beneficiaria",
+                    key: "persona_beneficiaria",
                     error: false,
                 },
             ],
@@ -620,7 +659,8 @@ export default {
                 formdata.append("superior_id", this.oCertificacion.superior_id);
                 formdata.append("inicio", this.oCertificacion.inicio);
                 formdata.append("final", this.oCertificacion.final);
-                formdata.append("estado", this.oCertificacion.estado);
+                formdata.append("final", this.oCertificacion.final);
+                formdata.append("persona_beneficiaria", this.oCertificacion.persona_beneficiaria);
 
                 axios
                     .post(url, formdata, config)
@@ -750,7 +790,7 @@ export default {
     overflow: auto;
     padding: 0px;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(9, 1fr);
 }
 .paso {
     display: flex;

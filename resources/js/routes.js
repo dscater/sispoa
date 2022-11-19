@@ -32,6 +32,13 @@ export default new Router({
             component: require('./components/modulos/usuarios/index.vue').default
         },
 
+        // PARTIDAS
+        {
+            path: '/partidas',
+            name: 'partidas.index',
+            component: require('./components/modulos/partidas/index.vue').default,
+        },
+
         // UNIDADES
         {
             path: '/unidads',

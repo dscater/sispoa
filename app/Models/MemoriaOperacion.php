@@ -11,7 +11,7 @@ class MemoriaOperacion extends Model
 
     protected $fillable = [
         "memoria_id", "ue", "prog", "act", "operacion_id", "detalle_operacion_id",
-        "lugar", "responsable", "partida", "nro", "descripcion", "cantidad",
+        "lugar", "responsable", "partida_id", "partida", "nro", "descripcion", "cantidad",
         "unidad", "costo", "total", "justificacion",
         "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic",
         "total_operacion", "fecha_registro"
@@ -62,6 +62,11 @@ class MemoriaOperacion extends Model
     public function detalle_operacion()
     {
         return $this->belongsTo(DetalleOperacion::class, 'detalle_operacion_id');
+    }
+
+    public function m_partida()
+    {
+        return $this->belongsTo(Partida::class, 'partida_id');
     }
 
     public function certificacions()

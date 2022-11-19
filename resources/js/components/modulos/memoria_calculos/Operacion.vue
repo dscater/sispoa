@@ -225,23 +225,29 @@
                 <div class="form-group col-md-3">
                     <label
                         :class="{
-                            'text-danger': errors.partida,
+                            'text-danger': errors.partida_id,
                         }"
                         >Partida de gasto*</label
                     >
-                    <el-input
+                    <el-select
                         class="w-100"
                         :class="{
-                            'is-invalid': errors.partida,
+                            'is-invalid': errors.partida_id,
                         }"
-                        v-model="o_Operacion.partida"
-                        clearable
+                        v-model="o_Operacion.partida_id"
+                        @change="getTextoPartida"
                     >
-                    </el-input>
+                        <el-option
+                            v-for="partida in listPartidas"
+                            :key="partida.id"
+                            :value="partida.id"
+                            :label="partida.partida"
+                        ></el-option>
+                    </el-select>
                     <span
                         class="error invalid-feedback"
-                        v-if="errors.partida"
-                        v-text="errors.partida[0]"
+                        v-if="errors.partida_id"
+                        v-text="errors.partida_id[0]"
                     ></span>
                 </div>
                 <div class="form-group col-md-1">
@@ -281,7 +287,7 @@
                             'is-invalid': errors.descripcion,
                         }"
                         v-model="o_Operacion.descripcion"
-                        clearable
+                        readonly
                     >
                     </el-input>
                     <span
@@ -373,6 +379,7 @@
                         placeholder="Total"
                         :class="{
                             'is-invalid': errors.total,
+                            'is-invalid': error_totales,
                         }"
                         v-model="o_Operacion.total"
                         clearable
@@ -431,6 +438,7 @@
                                 <th class="text-center">Octubre</th>
                                 <th class="text-center">Noviembre</th>
                                 <th class="text-center">Diciembre</th>
+                                <th class="text-center">TOTAL</th>
                             </tr>
                         </thead>
                         <tbody class="detalle_trimestres">
@@ -440,6 +448,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.ene"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -448,6 +460,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.feb"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -456,6 +472,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.mar"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -464,6 +484,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.abr"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -472,6 +496,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.may"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -480,6 +508,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.jun"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -488,6 +520,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.jul"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -496,6 +532,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.ago"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -504,6 +544,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.sep"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -512,6 +556,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.oct"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -520,6 +568,10 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.nov"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
@@ -528,9 +580,22 @@
                                         type="number"
                                         step="0.01"
                                         v-model="o_Operacion.dic"
+                                        @change="calculaTotalOperacionMeses"
+                                        @keypress.enter.prevent="
+                                            calculaTotalOperacionMeses
+                                        "
                                         class="form-control"
                                     />
                                 </td>
+                                <td
+                                    class="text-center font-weight-bold text-md align-middle"
+                                    :class="{ 'bg-danger': error_totales }"
+                                    v-text="
+                                        parseFloat(
+                                            o_Operacion.total_operacion
+                                        ).toFixed(2)
+                                    "
+                                ></td>
                             </tr>
                         </tbody>
                     </table>
@@ -616,12 +681,18 @@ export default {
             o_Operacion: this.operacion,
             formulario_cuatro_id: this.formulario_id,
             listOperaciones: [],
+            listPartidas: [],
             texto_operacion: "",
             texto_actividad: "",
+            error_totales: false,
         };
     },
     mounted() {
         this.getOperacionesFormulario();
+        this.getPartidas();
+        if (this.operacion.id != 0) {
+            this.verificaTotales();
+        }
     },
     watch: {
         formulario_id(newVal, oldVal) {
@@ -635,6 +706,27 @@ export default {
         },
     },
     methods: {
+        // OBTENER LAS PARTIDAS
+        getPartidas() {
+            axios.get("/admin/partidas").then((response) => {
+                this.listPartidas = response.data.partidas;
+                if (this.o_Operacion.operacion_id != "") {
+                    this.getTextoPartida();
+                }
+            });
+        },
+        getTextoPartida() {
+            let item = this.listPartidas.filter(
+                (value) => value.id == this.o_Operacion.partida_id
+            );
+            if (item.length > 0) {
+                this.o_Operacion.partida = item[0].partida;
+                this.o_Operacion.descripcion = item[0].descripcion;
+            } else {
+                this.o_Operacion.partida = "";
+                this.o_Operacion.descripcion = "";
+            }
+        },
         // OBTENER LAS OPERACIONES DEL FORMULARIO CUATRO
         getOperacionesFormulario() {
             axios
@@ -703,6 +795,116 @@ export default {
                     parseFloat(this.o_Operacion.cantidad) *
                     parseFloat(this.o_Operacion.costo);
                 this.o_Operacion.total = this.o_Operacion.total.toFixed(2);
+            }
+            this.verificaTotales();
+        },
+        calculaTotalOperacionMeses() {
+            this.o_Operacion.total_operacion = 0;
+            if (this.o_Operacion.ene) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.ene
+                );
+                this.o_Operacion.ene = parseFloat(this.o_Operacion.ene).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.feb) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.feb
+                );
+                this.o_Operacion.feb = parseFloat(this.o_Operacion.feb).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.mar) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.mar
+                );
+                this.o_Operacion.mar = parseFloat(this.o_Operacion.mar).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.abr) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.abr
+                );
+                this.o_Operacion.abr = parseFloat(this.o_Operacion.abr).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.may) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.may
+                );
+                this.o_Operacion.may = parseFloat(this.o_Operacion.may).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.jun) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.jun
+                );
+                this.o_Operacion.jun = parseFloat(this.o_Operacion.jun).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.jul) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.jul
+                );
+                this.o_Operacion.jul = parseFloat(this.o_Operacion.jul).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.ago) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.ago
+                );
+                this.o_Operacion.ago = parseFloat(this.o_Operacion.ago).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.sep) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.sep
+                );
+                this.o_Operacion.sep = parseFloat(this.o_Operacion.sep).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.oct) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.oct
+                );
+                this.o_Operacion.oct = parseFloat(this.o_Operacion.oct).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.nov) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.nov
+                );
+                this.o_Operacion.nov = parseFloat(this.o_Operacion.nov).toFixed(
+                    2
+                );
+            }
+            if (this.o_Operacion.dic) {
+                this.o_Operacion.total_operacion += parseFloat(
+                    this.o_Operacion.dic
+                );
+                this.o_Operacion.dic = parseFloat(this.o_Operacion.dic).toFixed(
+                    2
+                );
+            }
+            this.verificaTotales();
+        },
+        verificaTotales() {
+            this.error_totales = false;
+            if (
+                parseFloat(this.o_Operacion.total) !=
+                parseFloat(this.o_Operacion.total_operacion)
+            ) {
+                this.error_totales = true;
             }
         },
     },

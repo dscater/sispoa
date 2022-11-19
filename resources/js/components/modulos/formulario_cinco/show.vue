@@ -96,66 +96,200 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr
-                                                v-for="item in oFormularioCinco
-                                                    .memoria.operacions"
+                                            <template
+                                                v-for="item in array_registros"
                                             >
-                                                <td>
-                                                    {{ item.codigo_operacion }}
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        item.descripcion_operacion
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{ item.codigo_actividad }}
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        item.descripcion_actividad
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{ item.lugar }}
-                                                </td>
-                                                <td>
-                                                    {{ item.responsable }}
-                                                </td>
-                                                <td>
-                                                    {{ item.partida }}
-                                                </td>
-                                                <td>
-                                                    {{ item.descripcion }}
-                                                </td>
-                                                <td>
-                                                    {{ item.cantidad }}
-                                                </td>
-                                                <td>
-                                                    {{ item.unidad }}
-                                                </td>
-                                                <td>
-                                                    {{ item.costo }}
-                                                </td>
-                                                <td>
-                                                    {{ item.total }}
-                                                </td>
-                                                <td>
-                                                    {{ item.ue }}
-                                                </td>
-                                                <td>
-                                                    {{ item.prog }}
-                                                </td>
-                                                <td>
-                                                    {{ item.act }}
-                                                </td>
-                                                <td>
-                                                    {{ item.justificacion }}
-                                                </td>
-                                                <td>
-                                                    {{ item.total_operacion }}
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td
+                                                        :rowspan="
+                                                            item.actividads
+                                                                .length
+                                                        "
+                                                    >
+                                                        {{
+                                                            item.codigo_operacion
+                                                        }}
+                                                    </td>
+                                                    <td
+                                                        :rowspan="
+                                                            item.actividads
+                                                                .length
+                                                        "
+                                                    >
+                                                        {{
+                                                            item.descripcion_operacion
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .codigo_actividad
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .descripcion_actividad
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .lugar
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .responsable
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .partida
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .descripcion
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .cantidad
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .unidad
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .costo
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .total
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .ue
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .prog
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .act
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .justificacion
+                                                        }}
+                                                    </td>
+                                                    <td>
+                                                        {{
+                                                            item.actividads[0]
+                                                                .total_operacion
+                                                        }}
+                                                    </td>
+                                                </tr>
+                                                <template
+                                                    v-for="(
+                                                        actividad, index
+                                                    ) in item.actividads"
+                                                >
+                                                    <tr v-if="index != 0">
+                                                        <td>
+                                                            {{
+                                                                actividad.codigo_actividad
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.descripcion_actividad
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.lugar
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.responsable
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.partida
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.descripcion
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.cantidad
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.unidad
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.costo
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.total
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{ actividad.ue }}
+                                                        </td>
+                                                        <td>
+                                                            {{ actividad.prog }}
+                                                        </td>
+                                                        <td>
+                                                            {{ actividad.act }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.justificacion
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                actividad.total_operacion
+                                                            }}
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </template>
+
                                             <tr class="bg-primary">
                                                 <th colspan="16">TOTAL</th>
                                                 <th>
@@ -189,6 +323,7 @@ export default {
             oFormularioCinco: {
                 operacions: [],
             },
+            array_registros: [],
             tabla: "",
         };
     },
@@ -201,6 +336,7 @@ export default {
         getFormularioCinco() {
             axios.get("/admin/formulario_cinco/" + this.id).then((response) => {
                 this.oFormularioCinco = response.data.formulario_cinco;
+                this.array_registros = response.data.array_registros;
             });
         },
         getTabla() {

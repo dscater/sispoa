@@ -318,14 +318,23 @@ export default {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getMemoriaCalculo();
-                            this.filter = "";
-                            Swal.fire({
-                                icon: "success",
-                                title: res.data.msj,
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
+                            if (res.data.sw) {
+                                this.getMemoriaCalculo();
+                                this.filter = "";
+                                Swal.fire({
+                                    icon: "success",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                });
+                            }
                         });
                 }
             });

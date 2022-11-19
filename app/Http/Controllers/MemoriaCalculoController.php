@@ -75,6 +75,7 @@ class MemoriaCalculoController extends Controller
                 "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
                 "lugar" => mb_strtoupper($d["lugar"]),
                 "responsable" => mb_strtoupper($d["responsable"]),
+                "partida_id" => mb_strtoupper($d["partida_id"]),
                 "partida" => mb_strtoupper($d["partida"]),
                 "nro" => mb_strtoupper($d["nro"]),
                 "descripcion" => mb_strtoupper($d["descripcion"]),
@@ -196,6 +197,7 @@ class MemoriaCalculoController extends Controller
                     "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
                     "lugar" => mb_strtoupper($d["lugar"]),
                     "responsable" => mb_strtoupper($d["responsable"]),
+                    "partida_id" => mb_strtoupper($d["partida_id"]),
                     "partida" => mb_strtoupper($d["partida"]),
                     "nro" => mb_strtoupper($d["nro"]),
                     "descripcion" => mb_strtoupper($d["descripcion"]),
@@ -230,6 +232,7 @@ class MemoriaCalculoController extends Controller
                     "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
                     "lugar" => mb_strtoupper($d["lugar"]),
                     "responsable" => mb_strtoupper($d["responsable"]),
+                    "partida_id" => mb_strtoupper($d["partida_id"]),
                     "partida" => mb_strtoupper($d["partida"]),
                     "nro" => mb_strtoupper($d["nro"]),
                     "descripcion" => mb_strtoupper($d["descripcion"]),
@@ -309,6 +312,16 @@ class MemoriaCalculoController extends Controller
 
     public function destroy(MemoriaCalculo $memoria_calculo)
     {
+        $existe_certificaciones = MemoriaOperacion::where("memoria_id", $memoria_calculo->id)
+            ->join("certificacions", "certificacions.mo_id", "=", "memoria_operacions.id")
+            ->get();
+        if (count($existe_certificaciones) > 0) {
+            return response()->JSON([
+                'sw' => false,
+                'msj' => 'No es posible eliminar este registro debido a que existen certificaciones realizadas'
+            ], 200);
+        }
+
         $memoria_calculo->operacions()->delete();
         $memoria_calculo->formulario_cinco()->delete();
         $memoria_calculo->delete();

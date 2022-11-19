@@ -51,6 +51,11 @@ class UserController extends Controller
             'unidads.edit',
             'unidads.destroy',
 
+            'partidas.index',
+            'partidas.create',
+            'partidas.edit',
+            'partidas.destroy',
+
             'formulario_uno.index',
 
             'formulario_dos.index',
@@ -133,6 +138,11 @@ class UserController extends Controller
             'unidads.create',
             'unidads.edit',
             'unidads.destroy',
+
+            'partidas.index',
+            'partidas.create',
+            'partidas.edit',
+            'partidas.destroy',
 
             'formulario_uno.index',
 

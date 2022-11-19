@@ -11,11 +11,13 @@ use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
 use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
+use App\Models\Operacion;
 use App\Models\Semaforo;
 use App\Models\Unidad;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -308,14 +310,14 @@ class ReporteController extends Controller
                     $sheet->setCellValue('B' . $fila, $operacion->descripcion_actividad);
                     $sheet->setCellValue('C' . $fila, $operacion->partida);
                     $sheet->setCellValue('D' . $fila, $operacion->cantidad);
-                    $sheet->setCellValue('E' . $fila, $operacion->costo);
-                    $sheet->setCellValue('F' . $fila, $operacion->total);
+                    $sheet->setCellValue('E' . $fila, number_format($operacion->costo, 2) . " ");
+                    $sheet->setCellValue('F' . $fila, number_format($operacion->total, 2) . " ");
                     $cantidad_usado = Certificacion::where('mo_id', $operacion->id)->sum('cantidad_usar');
                     $total_usado = Certificacion::where('mo_id', $operacion->id)->sum('presupuesto_usarse');
                     $saldo = (float) $operacion->total - (float) $total_usado;
                     $sheet->setCellValue('G' . $fila, $cantidad_usado);
                     $sheet->setCellValue('H' . $fila, $total_usado);
-                    $sheet->setCellValue('I' . $fila, $saldo);
+                    $sheet->setCellValue('I' . $fila, number_format($saldo, 2) . " ");
                     $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
                     $fila++;
                     $suma_ejecutados += $total_usado;
@@ -1496,32 +1498,51 @@ class ReporteController extends Controller
         $sheet->getStyle('A' . ($fila - 1) . ':Q' . ($fila - 1))->applyFromArray($styleArray2);
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray2);
         $fila++;
-        if ($formulario_cinco->memoria) {
-            foreach ($formulario_cinco->memoria->operacions as $operacion) {
-                $sheet->setCellValue('A' . $fila, $operacion->codigo_operacion);
-                $sheet->setCellValue('B' . $fila, $operacion->descripcion_operacion);
-                $sheet->setCellValue('C' . $fila, $operacion->codigo_actividad);
-                $sheet->setCellValue('D' . $fila, $operacion->descripcion_actividad);
-                $sheet->setCellValue('E' . $fila, $operacion->lugar);
-                $sheet->setCellValue('F' . $fila, $operacion->responsable);
-                $sheet->setCellValue('G' . $fila, $operacion->partida);
-                $sheet->setCellValue('H' . $fila, $operacion->descripcion);
-                $sheet->setCellValue('I' . $fila, $operacion->cantidad);
-                $sheet->setCellValue('J' . $fila, $operacion->unidad);
-                $sheet->setCellValue('K' . $fila, $operacion->costo);
-                $sheet->setCellValue('L' . $fila, $operacion->total);
-                $sheet->setCellValue('M' . $fila, $operacion->ue);
-                $sheet->setCellValue('N' . $fila, $operacion->prog);
-                $sheet->setCellValue('O' . $fila, $operacion->act);
-                $sheet->setCellValue('P' . $fila, $operacion->justificacion);
-                $sheet->setCellValue('Q' . $fila, $operacion->total_operacion);
+
+        // armar repetidos
+        $array_registros = [];
+        $codigos = DB::select("SELECT DISTINCT operacion_id FROM memoria_operacions WHERE memoria_id = $formulario_cinco->memoria_id");
+
+        foreach ($codigos as $cod) {
+            $operacion = Operacion::find($cod->operacion_id);
+            $array_registros[] = [
+                "codigo_operacion" => $operacion->codigo_operacion,
+                "descripcion_operacion" => $operacion->operacion,
+                "actividads" => MemoriaOperacion::where("memoria_id", $formulario_cinco->memoria_id)->where("operacion_id", $cod->operacion_id)->get()
+            ];
+        }
+
+        if (count($array_registros) > 0) {
+            foreach ($array_registros as $operacion) {
+                $sheet->setCellValue('A' . $fila, $operacion["codigo_operacion"]);
+                $sheet->setCellValue('B' . $fila, $operacion["descripcion_operacion"]);
+                $sheet->mergeCells("A" . $fila . ":A" . ($fila + count($operacion["actividads"]) - 1));  //COMBINAR CELDAS
+                $sheet->mergeCells("B" . $fila . ":B" . ($fila + count($operacion["actividads"]) - 1));  //COMBINAR CELDAS
                 $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido);
-                $fila++;
+                foreach ($operacion["actividads"] as $actividad) {
+                    $sheet->setCellValue('C' . $fila, $actividad->codigo_actividad);
+                    $sheet->setCellValue('D' . $fila, $actividad->descripcion_actividad);
+                    $sheet->setCellValue('E' . $fila, $actividad->lugar);
+                    $sheet->setCellValue('F' . $fila, $actividad->responsable);
+                    $sheet->setCellValue('G' . $fila, $actividad->partida);
+                    $sheet->setCellValue('H' . $fila, $actividad->descripcion);
+                    $sheet->setCellValue('I' . $fila, $actividad->cantidad);
+                    $sheet->setCellValue('J' . $fila, $actividad->unidad);
+                    $sheet->setCellValue('K' . $fila, number_format($actividad->costo, 2) . " ");
+                    $sheet->setCellValue('L' . $fila, number_format($actividad->total, 2) . " ");
+                    $sheet->setCellValue('M' . $fila, $actividad->ue);
+                    $sheet->setCellValue('N' . $fila, $actividad->prog);
+                    $sheet->setCellValue('O' . $fila, $actividad->act);
+                    $sheet->setCellValue('P' . $fila, $actividad->justificacion);
+                    $sheet->setCellValue('Q' . $fila, number_format($actividad->total_operacion, 2) . " ");
+                    $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido);
+                    $fila++;
+                }
             }
         }
         $sheet->setCellValue('A' . $fila, 'TOTAL PRESUPUESTO DE LA UNIDAD DE PLANIFICACIÓN');
         $sheet->mergeCells("A" . $fila . ":P" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('Q' . $fila, $formulario_cinco->memoria->total_final);
+        $sheet->setCellValue('Q' . $fila, number_format($formulario_cinco->memoria->total_final, 2));
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_total);
 
         $fila++;
@@ -1632,8 +1653,8 @@ class ReporteController extends Controller
         $sheet->getColumnDimension('D')->setWidth(20);
         $sheet->getColumnDimension('E')->setWidth(20);
         $sheet->getColumnDimension('F')->setWidth(20);
-        $sheet->getColumnDimension('G')->setWidth(20);
-        $sheet->getColumnDimension('H')->setWidth(10);
+        $sheet->getColumnDimension('G')->setWidth(10);
+        $sheet->getColumnDimension('H')->setWidth(20);
         $sheet->getColumnDimension('I')->setWidth(10);
         $sheet->getColumnDimension('J')->setWidth(10);
         $sheet->getColumnDimension('K')->setWidth(10);
@@ -1831,7 +1852,7 @@ class ReporteController extends Controller
         $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
         $fila++;
-        $sheet->setCellValue('A' . $fila, "MEMORIAS DE CÁLCULO POR CÓDIGO POA Y APRTIDA DE GASTO - GESTIÓN " . date("Y"));
+        $sheet->setCellValue('A' . $fila, "MEMORIAS DE CÁLCULO POR CÓDIGO POA Y PARTIDA DE GASTO - GESTIÓN " . date("Y"));
         $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleTexto);
@@ -1982,41 +2003,41 @@ class ReporteController extends Controller
             $sheet->setCellValue('H' . $fila, $operacion->descripcion);
             $sheet->setCellValue('I' . $fila, $operacion->cantidad);
             $sheet->setCellValue('J' . $fila, $operacion->unidad);
-            $sheet->setCellValue('K' . $fila, $operacion->costo);
-            $sheet->setCellValue('L' . $fila, $operacion->total);
+            $sheet->setCellValue('K' . $fila, number_format($operacion->costo, 2) . " ");
+            $sheet->setCellValue('L' . $fila, number_format($operacion->total, 2) . " ");
             $sheet->setCellValue('M' . $fila, $operacion->justificacion);
-            $sheet->setCellValue('N' . $fila, $operacion->ene);
-            $sheet->setCellValue('O' . $fila, $operacion->feb);
-            $sheet->setCellValue('P' . $fila, $operacion->mar);
-            $sheet->setCellValue('Q' . $fila, $operacion->abr);
-            $sheet->setCellValue('R' . $fila, $operacion->may);
-            $sheet->setCellValue('S' . $fila, $operacion->jun);
-            $sheet->setCellValue('T' . $fila, $operacion->jul);
-            $sheet->setCellValue('U' . $fila, $operacion->ago);
-            $sheet->setCellValue('V' . $fila, $operacion->sep);
-            $sheet->setCellValue('W' . $fila, $operacion->oct);
-            $sheet->setCellValue('X' . $fila, $operacion->nov);
-            $sheet->setCellValue('Y' . $fila, $operacion->dic);
-            $sheet->setCellValue('Z' . $fila, $operacion->total_operacion);
+            $sheet->setCellValue('N' . $fila, number_format($operacion->ene, 2) . " ");
+            $sheet->setCellValue('O' . $fila, number_format($operacion->feb, 2) . " ");
+            $sheet->setCellValue('P' . $fila, number_format($operacion->mar, 2) . " ");
+            $sheet->setCellValue('Q' . $fila, number_format($operacion->abr, 2) . " ");
+            $sheet->setCellValue('R' . $fila, number_format($operacion->may, 2) . " ");
+            $sheet->setCellValue('S' . $fila, number_format($operacion->jun, 2) . " ");
+            $sheet->setCellValue('T' . $fila, number_format($operacion->jul, 2) . " ");
+            $sheet->setCellValue('U' . $fila, number_format($operacion->ago, 2) . " ");
+            $sheet->setCellValue('V' . $fila, number_format($operacion->sep, 2) . " ");
+            $sheet->setCellValue('W' . $fila, number_format($operacion->oct, 2) . " ");
+            $sheet->setCellValue('X' . $fila, number_format($operacion->nov, 2) . " ");
+            $sheet->setCellValue('Y' . $fila, number_format($operacion->dic, 2) . " ");
+            $sheet->setCellValue('Z' . $fila, number_format($operacion->total_operacion, 2) . " ");
             $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
         }
         $sheet->setCellValue('A' . $fila, 'TOTAL');
         $sheet->mergeCells("A" . $fila . ":H" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('L' . $fila, $memoria_calculo->total_actividades);
-        $sheet->setCellValue('N' . $fila, $memoria_calculo->total_ene);
-        $sheet->setCellValue('O' . $fila, $memoria_calculo->total_feb);
-        $sheet->setCellValue('p' . $fila, $memoria_calculo->total_mar);
-        $sheet->setCellValue('Q' . $fila, $memoria_calculo->total_abr);
-        $sheet->setCellValue('R' . $fila, $memoria_calculo->total_may);
-        $sheet->setCellValue('S' . $fila, $memoria_calculo->total_jun);
-        $sheet->setCellValue('T' . $fila, $memoria_calculo->total_jul);
-        $sheet->setCellValue('U' . $fila, $memoria_calculo->total_ago);
-        $sheet->setCellValue('V' . $fila, $memoria_calculo->total_sep);
-        $sheet->setCellValue('W' . $fila, $memoria_calculo->total_oct);
-        $sheet->setCellValue('X' . $fila, $memoria_calculo->total_nov);
-        $sheet->setCellValue('Y' . $fila, $memoria_calculo->total_dic);
-        $sheet->setCellValue('Z' . $fila, $memoria_calculo->total_final);
+        $sheet->setCellValue('L' . $fila, number_format($memoria_calculo->total_actividades, 2) . " ");
+        $sheet->setCellValue('N' . $fila, number_format($memoria_calculo->total_ene, 2) . " ");
+        $sheet->setCellValue('O' . $fila, number_format($memoria_calculo->total_feb, 2) . " ");
+        $sheet->setCellValue('p' . $fila, number_format($memoria_calculo->total_mar, 2) . " ");
+        $sheet->setCellValue('Q' . $fila, number_format($memoria_calculo->total_abr, 2) . " ");
+        $sheet->setCellValue('R' . $fila, number_format($memoria_calculo->total_may, 2) . " ");
+        $sheet->setCellValue('S' . $fila, number_format($memoria_calculo->total_jun, 2) . " ");
+        $sheet->setCellValue('T' . $fila, number_format($memoria_calculo->total_jul, 2) . " ");
+        $sheet->setCellValue('U' . $fila, number_format($memoria_calculo->total_ago, 2) . " ");
+        $sheet->setCellValue('V' . $fila, number_format($memoria_calculo->total_sep, 2) . " ");
+        $sheet->setCellValue('W' . $fila, number_format($memoria_calculo->total_oct, 2) . " ");
+        $sheet->setCellValue('X' . $fila, number_format($memoria_calculo->total_nov, 2) . " ");
+        $sheet->setCellValue('Y' . $fila, number_format($memoria_calculo->total_dic, 2) . " ");
+        $sheet->setCellValue('Z' . $fila, number_format($memoria_calculo->total_final, 2) . " ");
         $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($estilo_total);
 
         $fila++;

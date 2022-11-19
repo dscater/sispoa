@@ -25,6 +25,7 @@ class CreateCertificacionsTable extends Migration
             $table->unsignedBigInteger("superior_id");
             $table->date("inicio");
             $table->date("final");
+            $table->string("persona_beneficiaria", 255);
             $table->string("estado", 255);
             $table->date("fecha_registro");
 

@@ -15,6 +15,7 @@ use App\Http\Controllers\FormularioUnoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemoriaCalculoController;
 use App\Http\Controllers\OperacionController;
+use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\PeiController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SemaforoController;
@@ -63,6 +64,11 @@ Route::prefix('admin')->group(function () {
 
     // UNIDADES ORGANIZACIONALES
     Route::resource('unidads', UnidadController::class)->only([
+        'index', 'store', 'update', 'destroy', 'show'
+    ]);
+
+    // PARTIDAS
+    Route::resource('partidas', PartidaController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 

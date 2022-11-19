@@ -23,6 +23,7 @@ class CreateMemoriaOperacionsTable extends Migration
             $table->unsignedBigInteger("detalle_operacion_id");
             $table->string("lugar", 255);
             $table->string("responsable", 255);
+            $table->unsignedBigInteger("partida_id");
             $table->string("partida", 255);
             $table->string("nro", 255);
             $table->text("descripcion");
@@ -50,6 +51,7 @@ class CreateMemoriaOperacionsTable extends Migration
             $table->foreign("memoria_id")->on("memoria_calculos")->references("id");
             $table->foreign("operacion_id")->on("operacions")->references("id");
             $table->foreign("detalle_operacion_id")->on("detalle_operacions")->references("id");
+            $table->foreign("partida_id")->on("partidas")->references("id");
         });
     }
 

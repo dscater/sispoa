@@ -83,6 +83,7 @@
                         class="nav-header bg-navy"
                         v-if="
                             permisos.includes('unidads.index') ||
+                            permisos.includes('partidas.index') ||
                             permisos.includes('formulario_uno.index') ||
                             permisos.includes('formulario_dos.index') ||
                             permisos.includes('formulario_tres.index') ||
@@ -115,6 +116,19 @@
                         >
                             <i class="nav-icon fas fa-list-alt"></i>
                             <p>Unidades Organizacionales</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('partidas.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'partidas.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Partidas</p>
                         </router-link>
                     </li>
                     <li

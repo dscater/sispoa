@@ -185,8 +185,8 @@
                 <td class="bold p-5">Código operación:</td>
                 <td class="bold p-5">{{ $actividad->operacion->codigo_operacion }}</td>
             </tr>
-                <td class="bold p-5">Actividad:</td>
-                <td class="bold p-5">{{ $actividad->actividad_tarea }}</td>
+            <td class="bold p-5">Actividad:</td>
+            <td class="bold p-5">{{ $actividad->actividad_tarea }}</td>
             </tr>
         </tbody>
     </table>
@@ -245,9 +245,9 @@
                                 $total_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('presupuesto_usarse');
                                 $saldo = (float) $operacion->total - (float) $total_usado;
                             @endphp
-                            <td class="centreado">{{ $cantidad_usado }}</td>
-                            <td class="centreado">{{ $total_usado }}</td>
-                            <td class="centreado">{{ $saldo }}</td>
+                            <td class="centreado">{{ number_format($cantidad_usado, 2) }}</td>
+                            <td class="centreado">{{ number_format($total_usado, 2) }}</td>
+                            <td class="centreado">{{ number_format($saldo, 2) }}</td>
                         </tr>
                         @php
                             $suma_ejecutados += $total_usado;
@@ -261,7 +261,7 @@
                 @endif
             @else
                 <tr>
-                        <td colspan="9" class="centreado">NO SE ENCONTRARÓN REGISTROS</td>
+                    <td colspan="9" class="centreado">NO SE ENCONTRARÓN REGISTROS</td>
                 </tr>
             @endif
         </tbody>

@@ -22,7 +22,7 @@ class CertificacionController extends Controller
         "superior_id" => "required",
         "inicio" => "required",
         "final" => "required",
-        "estado" => "required",
+        "persona_beneficiaria" => "required|min:2",
     ];
 
     public function index()
@@ -46,6 +46,7 @@ class CertificacionController extends Controller
         }
         $request->validate($this->validacion);
         $request["fecha_registro"] = date("Y-m-d");
+        $request["estado"] = "PENDIENTE";
         $memoria_operacion = MemoriaOperacion::find($request->mo_id);
         $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion->costo;
         $request["presupuesto_usarse"] = $presupuesto_usarse;

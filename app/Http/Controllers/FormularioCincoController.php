@@ -7,6 +7,9 @@ use App\Models\FCOperacion;
 use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
 use App\Models\LugarResponsable;
+use App\Models\MemoriaCalculo;
+use App\Models\MemoriaOperacion;
+use App\Models\Operacion;
 use App\Models\Partida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -218,9 +221,23 @@ class FormularioCincoController extends Controller
 
     public function show(FormularioCinco $formulario_cinco)
     {
+        // armar repetidos
+        $array_registros = [];
+        $codigos = DB::select("SELECT DISTINCT operacion_id FROM memoria_operacions WHERE memoria_id = $formulario_cinco->memoria_id");
+
+        foreach ($codigos as $cod) {
+            $operacion = Operacion::find($cod->operacion_id);
+            $array_registros[] = [
+                "codigo_operacion" => $operacion->codigo_operacion,
+                "descripcion_operacion" => $operacion->operacion,
+                "actividads" => MemoriaOperacion::where("memoria_id", $formulario_cinco->memoria_id)->where("operacion_id", $cod->operacion_id)->get()
+            ];
+        }
+
         return response()->JSON([
             'sw' => true,
-            'formulario_cinco' => $formulario_cinco
+            'formulario_cinco' => $formulario_cinco,
+            "array_registros" => $array_registros
         ], 200);
     }
 

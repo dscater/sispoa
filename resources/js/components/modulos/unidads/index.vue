@@ -374,7 +374,7 @@ export default {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            if (res.sw) {
+                            if (res.data.sw) {
                                 this.getUnidads();
                                 this.filter = "";
                                 Swal.fire({

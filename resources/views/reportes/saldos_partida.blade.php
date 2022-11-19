@@ -243,9 +243,9 @@
                     $total_usado = $o_certificacion->where('mo_id', $memoria_operacion->id)->sum('presupuesto_usarse');
                     $saldo = (float) $memoria_operacion->total - (float) $total_usado;
                 @endphp
-                <td class="centreado">{{ $cantidad_usado }}</td>
-                <td class="centreado">{{ $total_usado }}</td>
-                <td class="centreado">{{ $saldo }}</td>
+                <td class="centreado">{{ number_format($cantidad_usado, 2) }}</td>
+                <td class="centreado">{{ number_format($total_usado, 2) }}</td>
+                <td class="centreado">{{ number_format($saldo, 2) }}</td>
             </tr>
 
         </tbody>

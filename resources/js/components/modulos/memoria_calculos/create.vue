@@ -274,9 +274,9 @@ export default {
                             (index + 1)
                     );
                 }
-                if (item.partida == null || item.partida == "") {
+                if (item.partida_id == null || item.partida_id == "") {
                     array_errors.push(
-                        "Debes ingresar una <b>Partida de gasto</b> en el elemento " +
+                        "Debes seleccionar una <b>Partida de gasto</b> en el elemento " +
                             (index + 1)
                     );
                 }
@@ -286,12 +286,12 @@ export default {
                             (index + 1)
                     );
                 }
-                if (item.descripcion == null || item.descripcion == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Descripción</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
+                // if (item.descripcion == null || item.descripcion == "") {
+                //     array_errors.push(
+                //         "Debes ingresar una <b>Descripción</b> en el elemento " +
+                //             (index + 1)
+                //     );
+                // }
                 if (item.cantidad == null || item.cantidad == "") {
                     array_errors.push(
                         "Debes ingresar una <b>Canitdad</b> en el elemento " +

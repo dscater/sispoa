@@ -116,6 +116,11 @@
                                                         row.item
                                                             .memoria_operacion
                                                             .partida
+                                                    }}<br />
+                                                    <strong>Persona beneficiaria: </strong
+                                                    >{{
+                                                        row.item
+                                                            .persona_beneficiaria
                                                     }}
                                                 </template>
 
