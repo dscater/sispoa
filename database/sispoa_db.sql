@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 19-11-2022 a las 15:32:04
+-- Tiempo de generación: 23-11-2022 a las 13:07:14
 -- Versión del servidor: 5.7.33
 -- Versión de PHP: 7.4.19
 
@@ -252,7 +252,7 @@ INSERT INTO `formulario_cinco` (`id`, `memoria_id`, `fecha_registro`, `created_a
 (1, 1, '2022-11-04', '2022-11-04 21:56:18', '2022-11-04 21:56:18'),
 (2, 4, '2022-11-04', '2022-11-04 21:56:24', '2022-11-04 21:56:24'),
 (5, 7, '2022-11-19', '2022-11-19 12:23:53', '2022-11-19 12:23:53'),
-(6, 8, '2022-11-19', '2022-11-19 13:01:44', '2022-11-19 13:01:44');
+(7, 9, '2022-11-23', '2022-11-23 12:32:59', '2022-11-23 12:32:59');
 
 -- --------------------------------------------------------
 
@@ -320,9 +320,9 @@ CREATE TABLE `memoria_calculos` (
 
 INSERT INTO `memoria_calculos` (`id`, `formulario_id`, `total_actividades`, `total_ene`, `total_feb`, `total_mar`, `total_abr`, `total_may`, `total_jun`, `total_jul`, `total_ago`, `total_sep`, `total_oct`, `total_nov`, `total_dic`, `total_final`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 1, '60846.80', '20.00', '2399.70', '3682.80', '6082.70', '6082.70', '6082.70', '6082.70', '6082.70', '6082.70', '6082.70', '6082.70', '6082.70', '60846.80', '2022-11-04', '2022-11-04 20:19:23', '2022-11-19 14:38:42'),
-(4, 2, '22233.89', '0.00', '0.00', '144.00', '0.00', '20990.00', '1099.89', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '22233.89', '2022-11-04', '2022-11-04 21:20:16', '2022-11-19 12:27:44'),
+(4, 2, '22233.89', '0.00', '0.00', '144.00', '0.00', '20990.00', '1099.89', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '22233.89', '2022-11-04', '2022-11-04 21:20:16', '2022-11-23 12:31:57'),
 (7, 4, '40.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '20.00', '20.00', '0.00', '0.00', '0.00', '0.00', '40.00', '2022-11-19', '2022-11-19 12:23:53', '2022-11-19 12:23:53'),
-(8, 3, '90.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '90.00', '0.00', '0.00', '0.00', '0.00', '0.00', '90.00', '2022-11-19', '2022-11-19 13:01:43', '2022-11-19 13:02:35');
+(9, 3, '31.40', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '31.40', '0.00', '0.00', '0.00', '0.00', '31.40', '2022-11-23', '2022-11-23 12:32:58', '2022-11-23 12:34:56');
 
 -- --------------------------------------------------------
 
@@ -344,6 +344,7 @@ CREATE TABLE `memoria_operacions` (
   `partida` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nro` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion_detallada` text COLLATE utf8mb4_unicode_ci,
   `cantidad` double(8,2) NOT NULL,
   `unidad` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `costo` decimal(24,2) NOT NULL,
@@ -371,15 +372,15 @@ CREATE TABLE `memoria_operacions` (
 -- Volcado de datos para la tabla `memoria_operacions`
 --
 
-INSERT INTO `memoria_operacions` (`id`, `memoria_id`, `ue`, `prog`, `act`, `operacion_id`, `detalle_operacion_id`, `lugar`, `responsable`, `partida_id`, `partida`, `nro`, `descripcion`, `cantidad`, `unidad`, `costo`, `total`, `justificacion`, `ene`, `feb`, `mar`, `abr`, `may`, `jun`, `jul`, `ago`, `sep`, `oct`, `nov`, `dic`, `total_operacion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, '01', '01', '10', 1, 1, 'LA PAZ', 'JUAN PERES', 1, '25600', '1', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 100.00, 'COPIA', '0.20', '20.00', 'ELABORACIPON DEL PLAN ESTRATEGICO COMUNICACIONAL 2023', '20.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '20.00', '2022-11-04', '2022-11-04 20:19:23', '2022-11-19 14:38:42'),
-(6, 4, '01', '01', '10', 3, 9, 'ASDASD', 'ASDASD', 1, '1', '1', 'PRUEBA MEMORIA', 12.00, 'UNIDAD', '12.00', '144.00', 'JUSTIFICACION DE PRUEBA', NULL, NULL, '144.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '144.00', '2022-11-04', '2022-11-04 21:20:16', '2022-11-19 12:27:44'),
-(7, 1, '01', '01', '10', 1, 2, 'LA PAZ', 'JUAN PERES', 1, '25600', '2', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 30.00, 'PASAJE', '1282.90', '38487.00', 'COBERTURA DE PRENSA PARA LA GESTIÓN DE IFNORMACIÓN', NULL, '1282.90', '2565.80', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '38487.00', '2022-11-04', '2022-11-04 21:44:45', '2022-11-19 14:38:42'),
-(8, 1, '01', '01', '10', 1, 3, 'LA PAZ', 'JUAN PERES', 2, '21002', '3', 'SERVICIOS DE PRUEBA', 60.00, 'DÍA', '372.33', '22339.80', 'COBERTURA DE PRENSA PARA LA GESTIÓN DE INFORMACIÓN', NULL, '1116.80', '1117.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '22339.80', '2022-11-04', '2022-11-04 21:46:34', '2022-11-19 14:38:42'),
-(9, 4, '01', '01', '10', 4, 11, 'LA PAZ', 'JUAN PERES', 1, '1', '2', 'GASTOS DE PRUEBA', 10.00, 'UNIDAD', '2099.00', '20990.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, '20990.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '20990.00', '2022-11-05', '2022-11-05 15:39:44', '2022-11-19 12:27:44'),
-(10, 4, '01', '01', '10', 3, 10, 'LA PAZ', 'JUAN PERES', 1, '1', '3', 'DESCRIPCIO DE GASTO DE PRUEBA', 11.00, 'UNIDAD', '99.99', '1099.89', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, '1099.89', NULL, NULL, NULL, NULL, NULL, NULL, '1099.89', '2022-11-05', '2022-11-05 15:43:21', '2022-11-05 15:43:21'),
-(13, 7, '01', '01', '10', 6, 13, 'LA PAZ', 'RESPONSABLE TECNICO DE COMUNICACIONES', 1, '1', '1', 'DESCRIPCION DE PARTIDA', 1.00, 'UNIDAD', '40.00', '40.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, NULL, '20.00', '20.00', NULL, NULL, NULL, NULL, '40.00', '2022-11-19', '2022-11-19 12:23:53', '2022-11-19 12:23:53'),
-(15, 8, '01', '10', '10', 5, 12, 'LA PAZ', 'RESPONSABLE', 1, '25600', '2', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 3.00, 'UNIDAD', '30.00', '90.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, NULL, '90.00', NULL, NULL, NULL, NULL, NULL, '90.00', '2022-11-19', '2022-11-19 13:02:16', '2022-11-19 13:02:35');
+INSERT INTO `memoria_operacions` (`id`, `memoria_id`, `ue`, `prog`, `act`, `operacion_id`, `detalle_operacion_id`, `lugar`, `responsable`, `partida_id`, `partida`, `nro`, `descripcion`, `descripcion_detallada`, `cantidad`, `unidad`, `costo`, `total`, `justificacion`, `ene`, `feb`, `mar`, `abr`, `may`, `jun`, `jul`, `ago`, `sep`, `oct`, `nov`, `dic`, `total_operacion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 1, '01', '01', '10', 1, 1, 'LA PAZ', 'JUAN PERES', 1, '25600', '1', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', NULL, 100.00, 'COPIA', '0.20', '20.00', 'ELABORACIPON DEL PLAN ESTRATEGICO COMUNICACIONAL 2023', '20.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '20.00', '2022-11-04', '2022-11-04 20:19:23', '2022-11-19 14:38:42'),
+(6, 4, '01', '01', '10', 3, 9, 'ASDASD', 'ASDASD', 1, '25600', '1', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 'DESCRIPCION DETALLADA OPERACION 1', 12.00, 'UNIDAD', '12.00', '144.00', 'JUSTIFICACION DE PRUEBA', NULL, NULL, '144.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '144.00', '2022-11-04', '2022-11-04 21:20:16', '2022-11-23 12:31:56'),
+(7, 1, '01', '01', '10', 1, 2, 'LA PAZ', 'JUAN PERES', 1, '25600', '2', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', NULL, 30.00, 'PASAJE', '1282.90', '38487.00', 'COBERTURA DE PRENSA PARA LA GESTIÓN DE IFNORMACIÓN', NULL, '1282.90', '2565.80', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '3848.70', '38487.00', '2022-11-04', '2022-11-04 21:44:45', '2022-11-19 14:38:42'),
+(8, 1, '01', '01', '10', 1, 3, 'LA PAZ', 'JUAN PERES', 2, '21002', '3', 'SERVICIOS DE PRUEBA', NULL, 60.00, 'DÍA', '372.33', '22339.80', 'COBERTURA DE PRENSA PARA LA GESTIÓN DE INFORMACIÓN', NULL, '1116.80', '1117.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '2234.00', '22339.80', '2022-11-04', '2022-11-04 21:46:34', '2022-11-19 14:38:42'),
+(9, 4, '01', '01', '10', 4, 11, 'LA PAZ', 'JUAN PERES', 1, '25600', '2', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 'DESCRIPCION DETALLADA OPERACION 2', 10.00, 'UNIDAD', '2099.00', '20990.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, '20990.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '20990.00', '2022-11-05', '2022-11-05 15:39:44', '2022-11-23 12:31:57'),
+(10, 4, '01', '01', '10', 3, 10, 'LA PAZ', 'JUAN PERES', 1, '25600', '3', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 'DESCRIPCION DETALLADA OPERACION 3', 11.00, 'UNIDAD', '99.99', '1099.89', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, '1099.89', NULL, NULL, NULL, NULL, NULL, NULL, '1099.89', '2022-11-05', '2022-11-05 15:43:21', '2022-11-23 12:31:57'),
+(13, 7, '01', '01', '10', 6, 13, 'LA PAZ', 'RESPONSABLE TECNICO DE COMUNICACIONES', 1, '1', '1', 'DESCRIPCION DE PARTIDA', NULL, 1.00, 'UNIDAD', '40.00', '40.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, NULL, '20.00', '20.00', NULL, NULL, NULL, NULL, '40.00', '2022-11-19', '2022-11-19 12:23:53', '2022-11-19 12:23:53'),
+(16, 9, '01', '01', '10', 5, 12, 'LA PAZ', 'TECNICO DE TELECOMUNICACIONES', 1, '25600', '1', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', 'DESCRIPCION DETALLADA DE ITEM DE PRUEBA, PAR BIEN O SERVICIO', 2.00, 'UNIDAD', '15.70', '31.40', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '31.40', NULL, NULL, NULL, NULL, '31.40', '2022-11-23', '2022-11-23 12:32:58', '2022-11-23 12:34:56');
 
 -- --------------------------------------------------------
 
@@ -778,7 +779,7 @@ ALTER TABLE `fisicos`
 -- AUTO_INCREMENT de la tabla `formulario_cinco`
 --
 ALTER TABLE `formulario_cinco`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `formulario_cuatro`
@@ -790,13 +791,13 @@ ALTER TABLE `formulario_cuatro`
 -- AUTO_INCREMENT de la tabla `memoria_calculos`
 --
 ALTER TABLE `memoria_calculos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `memoria_operacions`
 --
 ALTER TABLE `memoria_operacions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
