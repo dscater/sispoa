@@ -67,13 +67,19 @@
                                                     class="text-center"
                                                     rowspan="2"
                                                 >
+                                                    Descripción
+                                                </th>
+                                                <th
+                                                    class="text-center"
+                                                    rowspan="2"
+                                                >
                                                     N°
                                                 </th>
                                                 <th
                                                     class="text-center"
                                                     rowspan="2"
                                                 >
-                                                    Descripción
+                                                    Descripción detallada por item(bien o servicio)
                                                 </th>
                                                 <th
                                                     class="text-center"
@@ -183,8 +189,9 @@
                                                     {{ item.codigo_actividad }}
                                                 </td>
                                                 <td>{{ item.partida }}</td>
-                                                <td>{{ item.nro }}</td>
                                                 <td>{{ item.descripcion }}</td>
+                                                <td>{{ item.nro }}</td>
+                                                <td>{{ item.descripcion_detallada }}</td>
                                                 <td>{{ item.cantidad }}</td>
                                                 <td>{{ item.unidad }}</td>
                                                 <td>{{ item.costo }}</td>
@@ -211,7 +218,7 @@
                                         </tbody>
                                         <tfoot class="bg-primary">
                                             <tr>
-                                                <th colspan="8" class="text-center">TOTAL PARTIDA</th>
+                                                <th colspan="9" class="text-center">TOTAL PARTIDA</th>
                                                 <th colspan="3"></th>
                                                 <th>
                                                     {{ oMemoriaCalculo.total_actividades }}

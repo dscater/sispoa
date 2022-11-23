@@ -250,6 +250,30 @@
                         v-text="errors.partida_id[0]"
                     ></span>
                 </div>
+                <div class="form-group col-md-4">
+                    <label
+                        :class="{
+                            'text-danger': errors.descripcion,
+                        }"
+                        >Descripción*</label
+                    >
+                    <el-input
+                        type="textarea"
+                        autosize
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.descripcion,
+                        }"
+                        v-model="o_Operacion.descripcion"
+                        readonly
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.descripcion"
+                        v-text="errors.descripcion[0]"
+                    ></span>
+                </div>
                 <div class="form-group col-md-1">
                     <label
                         :class="{
@@ -272,28 +296,27 @@
                         v-text="errors.nro[0]"
                     ></span>
                 </div>
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-4">
                     <label
                         :class="{
-                            'text-danger': errors.descripcion,
+                            'text-danger': errors.descripcion_detallada,
                         }"
-                        >Descripción*</label
+                        >Descripción detallada por item (bien o servicio)*</label
                     >
                     <el-input
                         type="textarea"
                         autosize
                         class="w-100"
                         :class="{
-                            'is-invalid': errors.descripcion,
+                            'is-invalid': errors.descripcion_detallada,
                         }"
-                        v-model="o_Operacion.descripcion"
-                        readonly
+                        v-model="o_Operacion.descripcion_detallada"
                     >
                     </el-input>
                     <span
                         class="error invalid-feedback"
-                        v-if="errors.descripcion"
-                        v-text="errors.descripcion[0]"
+                        v-if="errors.descripcion_detallada"
+                        v-text="errors.descripcion_detallada[0]"
                     ></span>
                 </div>
                 <div class="form-group col-md-3">

@@ -11,7 +11,7 @@ class MemoriaOperacion extends Model
 
     protected $fillable = [
         "memoria_id", "ue", "prog", "act", "operacion_id", "detalle_operacion_id",
-        "lugar", "responsable", "partida_id", "partida", "nro", "descripcion", "cantidad",
+        "lugar", "responsable", "partida_id", "partida", "nro", "descripcion", "descripcion_detallada", "cantidad",
         "unidad", "costo", "total", "justificacion",
         "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic",
         "total_operacion", "fecha_registro"

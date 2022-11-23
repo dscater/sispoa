@@ -1845,69 +1845,69 @@ class ReporteController extends Controller
         $drawing->setHeight(60);
         $drawing->setWorksheet($sheet);
         $sheet->setCellValue('A' . $fila, "Formulario 9");
-        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->mergeCells("A" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->getAlignment()->setHorizontal('center');
         $fila++;
         $sheet->setCellValue('A' . $fila, "Memorias de Cálculo");
-        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->mergeCells("A" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->getAlignment()->setHorizontal('center');
         $fila++;
         $sheet->setCellValue('A' . $fila, "MEMORIAS DE CÁLCULO POR CÓDIGO POA Y PARTIDA DE GASTO - GESTIÓN " . date("Y"));
-        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleTexto);
+        $sheet->mergeCells("A" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleTexto);
         $fila++;
         $sheet->setCellValue('A' . $fila, "(Expresado en Bolivianos)");
-        $sheet->mergeCells("A" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleTexto);
+        $sheet->mergeCells("A" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleTexto);
         $fila++;
 
         $sheet->setCellValue('B' . $fila, "CODIGO");
         $sheet->setCellValue('C' . $fila, "DESCRIPCIÓN");
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
 
         $fila++;
         $sheet->setCellValue('A' . $fila, "ENTIDAD:");
         $sheet->setCellValue('B' . $fila, "385");
         $sheet->setCellValue('C' . $fila, "AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO - ASSUS");
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
         $fila++;
         $sheet->setCellValue('A' . $fila, "UNIDAD ORGANIZACIONAL:");
         $sheet->setCellValue('C' . $fila, $memoria_calculo->formulario->unidad->nombre);
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
         $fila++;
         $sheet->setCellValue('A' . $fila, "DIRECCIÓN ADMINISTRATIVA:");
         $sheet->setCellValue('B' . $fila, "1");
         $sheet->setCellValue('C' . $fila, "DIRECCIÓN ADMINISTRATIVA FINANCIERA");
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
         $fila++;
         $sheet->setCellValue('A' . $fila, "FUENTE:");
         $sheet->setCellValue('B' . $fila, "42");
         $sheet->setCellValue('C' . $fila, "TRANSFERENCIAS DE RECURSOS ESPECÍFICOS");
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
         $fila++;
         $sheet->setCellValue('A' . $fila, "ORGANISMO FINANCIADOR:");
         $sheet->setCellValue('B' . $fila, "230");
         $sheet->setCellValue('C' . $fila, "OTROS RECURSOS ESPECÍFICOS");
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo2);
 
         $fila++;
@@ -1916,33 +1916,33 @@ class ReporteController extends Controller
         $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario->codigo_poa);
         $sheet->setCellValue('C' . $fila, $memoria_calculo->formulario->accion_corto);
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo_conenido1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $fila++;
         $sheet->setCellValue('A' . $fila, 'UNIDAD EJECUTORA:');
         $sheet->setCellValue('B' . $fila, "1");
         $sheet->setCellValue('C' . $fila, "ADMINISTRACIÓN CENTRAL");
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo_conenido1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $fila++;
         $sheet->setCellValue('A' . $fila, 'PROGRAMA:');
         $sheet->setCellValue('B' . $fila, "1");
         $sheet->setCellValue('C' . $fila, "ADMINISTRACIÓN Y GESTIÓN INSTITUCIONAL");
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo_conenido1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $fila++;
         $sheet->setCellValue('A' . $fila, 'ACTIVIDAD:');
         $sheet->setCellValue('B' . $fila, "1");
         $sheet->setCellValue('C' . $fila, "GESTIÓN EJECUTIVA");
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
-        $sheet->getStyle('C' . $fila . ":Z" . $fila)->applyFromArray($estilo_conenido1);
+        $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo_conenido1);
         $sheet->getStyle('B' . $fila)->applyFromArray($estilo_conenido2);
-        $sheet->mergeCells("C" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("C" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $fila++;
 
         $fila++;
@@ -1954,43 +1954,45 @@ class ReporteController extends Controller
         $sheet->mergeCells("D" . $fila . ":E" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('F' . $fila, 'PARTIDA DE GASTO');
         $sheet->mergeCells("F" . $fila . ":F" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('G' . $fila, 'N°');
+        $sheet->setCellValue('G' . $fila, 'DESCRIPCIÓN');
         $sheet->mergeCells("G" . $fila . ":G" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('H' . $fila, 'DESCRIPCIÓN');
+        $sheet->setCellValue('H' . $fila, 'N°');
         $sheet->mergeCells("H" . $fila . ":H" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('I' . $fila, 'CANTIDAD REQUERIDA');
+        $sheet->setCellValue('I' . $fila, 'DESCRIPCIÓN DETALLADA POR ITEM(BIEN O SERVICIO)');
         $sheet->mergeCells("I" . $fila . ":I" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('J' . $fila, 'UNIDAD');
+        $sheet->setCellValue('J' . $fila, 'CANTIDAD REQUERIDA');
         $sheet->mergeCells("J" . $fila . ":J" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('K' . $fila, 'PRECIO UNITARIO');
+        $sheet->setCellValue('K' . $fila, 'UNIDAD');
         $sheet->mergeCells("K" . $fila . ":K" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('L' . $fila, 'TOTAL');
+        $sheet->setCellValue('L' . $fila, 'PRECIO UNITARIO');
         $sheet->mergeCells("L" . $fila . ":L" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('M' . $fila, 'JUSTIFICACIÓN');
+        $sheet->setCellValue('M' . $fila, 'TOTAL');
         $sheet->mergeCells("M" . $fila . ":M" . ($fila + 1));  //COMBINAR CELDAS
-        $sheet->setCellValue('N' . $fila, 'PROGRAMACIÓN MENSUAL');
-        $sheet->mergeCells("N" . $fila . ":Y" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('L' . $fila, 'TOTAL');
-        $sheet->mergeCells("Z" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray2);
+        $sheet->setCellValue('N' . $fila, 'JUSTIFICACIÓN');
+        $sheet->mergeCells("N" . $fila . ":N" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->setCellValue('O' . $fila, 'PROGRAMACIÓN MENSUAL');
+        $sheet->mergeCells("O" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('AA' . $fila, 'TOTAL');
+        $sheet->mergeCells("AA" . $fila . ":AA" . ($fila + 1));  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray2);
         $fila++;
         $sheet->setCellValue('B' . $fila, 'PROGRAMA');
         $sheet->setCellValue('C' . $fila, 'ACTIVIDAD');
         $sheet->setCellValue('D' . $fila, 'COD. OPERACIÓN');
         $sheet->setCellValue('E' . $fila, 'COD. ACT./TAREA');
-        $sheet->setCellValue('N' . $fila, 'ENERO');
-        $sheet->setCellValue('O' . $fila, 'FEBRERO');
-        $sheet->setCellValue('P' . $fila, 'MARZO');
-        $sheet->setCellValue('Q' . $fila, 'ABRIL');
-        $sheet->setCellValue('R' . $fila, 'MAYO');
-        $sheet->setCellValue('S' . $fila, 'JUNIO');
-        $sheet->setCellValue('T' . $fila, 'JULIO');
-        $sheet->setCellValue('U' . $fila, 'AGOSTO');
-        $sheet->setCellValue('V' . $fila, 'SEPTIEMBRE');
-        $sheet->setCellValue('W' . $fila, 'OCTUBRE');
-        $sheet->setCellValue('X' . $fila, 'NOVIEMBRE');
-        $sheet->setCellValue('Y' . $fila, 'DICIEMBRE');
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray2);
+        $sheet->setCellValue('O' . $fila, 'ENERO');
+        $sheet->setCellValue('P' . $fila, 'FEBRERO');
+        $sheet->setCellValue('Q' . $fila, 'MARZO');
+        $sheet->setCellValue('R' . $fila, 'ABRIL');
+        $sheet->setCellValue('S' . $fila, 'MAYO');
+        $sheet->setCellValue('T' . $fila, 'JUNIO');
+        $sheet->setCellValue('U' . $fila, 'JULIO');
+        $sheet->setCellValue('V' . $fila, 'AGOSTO');
+        $sheet->setCellValue('W' . $fila, 'SEPTIEMBRE');
+        $sheet->setCellValue('X' . $fila, 'OCTUBRE');
+        $sheet->setCellValue('Y' . $fila, 'NOVIEMBRE');
+        $sheet->setCellValue('Z' . $fila, 'DICIEMBRE');
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray2);
         $fila++;
         foreach ($memoria_calculo->operacions as $operacion) {
             $sheet->setCellValue('A' . $fila, $operacion->ue);
@@ -1999,46 +2001,47 @@ class ReporteController extends Controller
             $sheet->setCellValue('D' . $fila, $operacion->codigo_operacion);
             $sheet->setCellValue('E' . $fila, $operacion->codigo_actividad);
             $sheet->setCellValue('F' . $fila, $operacion->partida);
-            $sheet->setCellValue('G' . $fila, $operacion->nro);
-            $sheet->setCellValue('H' . $fila, $operacion->descripcion);
-            $sheet->setCellValue('I' . $fila, $operacion->cantidad);
-            $sheet->setCellValue('J' . $fila, $operacion->unidad);
-            $sheet->setCellValue('K' . $fila, number_format($operacion->costo, 2) . " ");
-            $sheet->setCellValue('L' . $fila, number_format($operacion->total, 2) . " ");
-            $sheet->setCellValue('M' . $fila, $operacion->justificacion);
-            $sheet->setCellValue('N' . $fila, number_format($operacion->ene, 2) . " ");
-            $sheet->setCellValue('O' . $fila, number_format($operacion->feb, 2) . " ");
-            $sheet->setCellValue('P' . $fila, number_format($operacion->mar, 2) . " ");
-            $sheet->setCellValue('Q' . $fila, number_format($operacion->abr, 2) . " ");
-            $sheet->setCellValue('R' . $fila, number_format($operacion->may, 2) . " ");
-            $sheet->setCellValue('S' . $fila, number_format($operacion->jun, 2) . " ");
-            $sheet->setCellValue('T' . $fila, number_format($operacion->jul, 2) . " ");
-            $sheet->setCellValue('U' . $fila, number_format($operacion->ago, 2) . " ");
-            $sheet->setCellValue('V' . $fila, number_format($operacion->sep, 2) . " ");
-            $sheet->setCellValue('W' . $fila, number_format($operacion->oct, 2) . " ");
-            $sheet->setCellValue('X' . $fila, number_format($operacion->nov, 2) . " ");
-            $sheet->setCellValue('Y' . $fila, number_format($operacion->dic, 2) . " ");
-            $sheet->setCellValue('Z' . $fila, number_format($operacion->total_operacion, 2) . " ");
-            $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('G' . $fila, $operacion->descripcion);
+            $sheet->setCellValue('H' . $fila, $operacion->nro);
+            $sheet->setCellValue('I' . $fila, $operacion->descripcion_detallada);
+            $sheet->setCellValue('J' . $fila, $operacion->cantidad);
+            $sheet->setCellValue('K' . $fila, $operacion->unidad);
+            $sheet->setCellValue('L' . $fila, number_format($operacion->costo, 2) . " ");
+            $sheet->setCellValue('M' . $fila, number_format($operacion->total, 2) . " ");
+            $sheet->setCellValue('N' . $fila, $operacion->justificacion);
+            $sheet->setCellValue('O' . $fila, number_format($operacion->ene, 2) . " ");
+            $sheet->setCellValue('P' . $fila, number_format($operacion->feb, 2) . " ");
+            $sheet->setCellValue('Q' . $fila, number_format($operacion->mar, 2) . " ");
+            $sheet->setCellValue('R' . $fila, number_format($operacion->abr, 2) . " ");
+            $sheet->setCellValue('S' . $fila, number_format($operacion->may, 2) . " ");
+            $sheet->setCellValue('T' . $fila, number_format($operacion->jun, 2) . " ");
+            $sheet->setCellValue('U' . $fila, number_format($operacion->jul, 2) . " ");
+            $sheet->setCellValue('V' . $fila, number_format($operacion->ago, 2) . " ");
+            $sheet->setCellValue('W' . $fila, number_format($operacion->sep, 2) . " ");
+            $sheet->setCellValue('X' . $fila, number_format($operacion->oct, 2) . " ");
+            $sheet->setCellValue('Y' . $fila, number_format($operacion->nov, 2) . " ");
+            $sheet->setCellValue('Z' . $fila, number_format($operacion->dic, 2) . " ");
+            $sheet->setCellValue('AA' . $fila, number_format($operacion->total_operacion, 2) . " ");
+            $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
         }
         $sheet->setCellValue('A' . $fila, 'TOTAL');
-        $sheet->mergeCells("A" . $fila . ":H" . $fila);  //COMBINAR CELDAS
-        $sheet->setCellValue('L' . $fila, number_format($memoria_calculo->total_actividades, 2) . " ");
-        $sheet->setCellValue('N' . $fila, number_format($memoria_calculo->total_ene, 2) . " ");
-        $sheet->setCellValue('O' . $fila, number_format($memoria_calculo->total_feb, 2) . " ");
-        $sheet->setCellValue('p' . $fila, number_format($memoria_calculo->total_mar, 2) . " ");
-        $sheet->setCellValue('Q' . $fila, number_format($memoria_calculo->total_abr, 2) . " ");
-        $sheet->setCellValue('R' . $fila, number_format($memoria_calculo->total_may, 2) . " ");
-        $sheet->setCellValue('S' . $fila, number_format($memoria_calculo->total_jun, 2) . " ");
-        $sheet->setCellValue('T' . $fila, number_format($memoria_calculo->total_jul, 2) . " ");
-        $sheet->setCellValue('U' . $fila, number_format($memoria_calculo->total_ago, 2) . " ");
-        $sheet->setCellValue('V' . $fila, number_format($memoria_calculo->total_sep, 2) . " ");
-        $sheet->setCellValue('W' . $fila, number_format($memoria_calculo->total_oct, 2) . " ");
-        $sheet->setCellValue('X' . $fila, number_format($memoria_calculo->total_nov, 2) . " ");
-        $sheet->setCellValue('Y' . $fila, number_format($memoria_calculo->total_dic, 2) . " ");
-        $sheet->setCellValue('Z' . $fila, number_format($memoria_calculo->total_final, 2) . " ");
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($estilo_total);
+        $sheet->mergeCells("A" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('M' . $fila, number_format($memoria_calculo->total_actividades, 2) . " ");
+        $sheet->setCellValue('O' . $fila, number_format($memoria_calculo->total_ene, 2) . " ");
+        $sheet->setCellValue('P' . $fila, number_format($memoria_calculo->total_feb, 2) . " ");
+        $sheet->setCellValue('Q' . $fila, number_format($memoria_calculo->total_mar, 2) . " ");
+        $sheet->setCellValue('R' . $fila, number_format($memoria_calculo->total_abr, 2) . " ");
+        $sheet->setCellValue('S' . $fila, number_format($memoria_calculo->total_may, 2) . " ");
+        $sheet->setCellValue('T' . $fila, number_format($memoria_calculo->total_jun, 2) . " ");
+        $sheet->setCellValue('U' . $fila, number_format($memoria_calculo->total_jul, 2) . " ");
+        $sheet->setCellValue('V' . $fila, number_format($memoria_calculo->total_ago, 2) . " ");
+        $sheet->setCellValue('W' . $fila, number_format($memoria_calculo->total_sep, 2) . " ");
+        $sheet->setCellValue('X' . $fila, number_format($memoria_calculo->total_oct, 2) . " ");
+        $sheet->setCellValue('Y' . $fila, number_format($memoria_calculo->total_nov, 2) . " ");
+        $sheet->setCellValue('Z' . $fila, number_format($memoria_calculo->total_dic, 2) . " ");
+        $sheet->setCellValue('AA' . $fila, number_format($memoria_calculo->total_final, 2) . " ");
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($estilo_total);
 
         $fila++;
         $fila++;
@@ -2101,8 +2104,8 @@ class ReporteController extends Controller
         $sheet->setCellValue('J' . $fila, "REVISADO POR:");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('R' . $fila, "APROBADO");
-        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray2);
+        $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray2);
         $fila++;
         $sheet->getRowDimension($fila)->setRowHeight(40);
         $sheet->setCellValue('A' . $fila, "FIRMA");
@@ -2112,8 +2115,8 @@ class ReporteController extends Controller
         $sheet->setCellValue('E' . $fila, "");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('H' . $fila, "");
-        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray);
+        $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray);
         $fila++;
         $sheet->getRowDimension($fila)->setRowHeight(40);
         $sheet->setCellValue('A' . $fila, "NOMBRE");
@@ -2122,8 +2125,8 @@ class ReporteController extends Controller
         $sheet->setCellValue('E' . $fila, "");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('H' . $fila, "");
-        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray);
+        $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray);
         $fila++;
         $sheet->getRowDimension($fila)->setRowHeight(40);
         $sheet->setCellValue('A' . $fila, "CARGO");
@@ -2134,13 +2137,13 @@ class ReporteController extends Controller
         $sheet->setCellValue('E' . $fila, "");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('R' . $fila, "Director General Ejecutivo");
-        $sheet->mergeCells("R" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('A' . $fila . ':Z' . $fila)->applyFromArray($styleArray);
-        $sheet->getStyle('R' . $fila . ':Z' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray);
+        $sheet->getStyle('R' . $fila . ':AA' . $fila)->applyFromArray($styleArray3);
         $fila++;
         $fila++;
         $sheet->setCellValue('X' . $fila, self::getFechaTexto());
-        $sheet->mergeCells("X" . $fila . ":Z" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("X" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
 
         $sheet->getColumnDimension('A')->setWidth(15);
         $sheet->getColumnDimension('B')->setWidth(15);
@@ -2148,9 +2151,9 @@ class ReporteController extends Controller
         $sheet->getColumnDimension('D')->setWidth(8);
         $sheet->getColumnDimension('E')->setWidth(8);
         $sheet->getColumnDimension('F')->setWidth(10);
-        $sheet->getColumnDimension('G')->setWidth(5);
-        $sheet->getColumnDimension('H')->setWidth(15);
-        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('G')->setWidth(15);
+        $sheet->getColumnDimension('H')->setWidth(5);
+        $sheet->getColumnDimension('I')->setWidth(15);
         $sheet->getColumnDimension('J')->setWidth(10);
         $sheet->getColumnDimension('K')->setWidth(10);
         $sheet->getColumnDimension('L')->setWidth(10);
@@ -2168,6 +2171,7 @@ class ReporteController extends Controller
         $sheet->getColumnDimension('X')->setWidth(10);
         $sheet->getColumnDimension('Y')->setWidth(10);
         $sheet->getColumnDimension('Z')->setWidth(10);
+        $sheet->getColumnDimension('AA')->setWidth(10);
 
         foreach (range('A', 'Z') as $columnID) {
             $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);

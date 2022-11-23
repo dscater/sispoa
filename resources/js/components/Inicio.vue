@@ -90,6 +90,9 @@
             </div>
             <!-- /.container-fluid -->
         </section>
+        <audio id="audio" controls style="display: none">
+            <source type="audio/wav" src="/audio/bienvenido.mp3" />
+        </audio>
     </div>
 </template>
 
@@ -112,6 +115,7 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
+        this.mensajeBienvenida();
         this.getInfoBox();
         this.getMision();
         this.getVision();
@@ -137,6 +141,14 @@ export default {
             axios.get("/pei/objetivos").then((response) => {
                 this.htmlObjetivos = response.data;
             });
+        },
+        mensajeBienvenida() {
+            let reproduce = localStorage.getItem("reproducir_audio");
+            var audio = document.getElementById("audio");
+            if (reproduce == "si") {
+                audio.play();
+                localStorage.setItem("reproducir_audio", "no");
+            }
         },
     },
 };

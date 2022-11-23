@@ -301,12 +301,15 @@ export default {
                             (index + 1)
                     );
                 }
-                // if (item.descripcion == null || item.descripcion == "") {
-                //     array_errors.push(
-                //         "Debes ingresar una <b>Descripción</b> en el elemento " +
-                //             (index + 1)
-                //     );
-                // }
+                if (
+                    item.descripcion_detallada == null ||
+                    item.descripcion_detallada == ""
+                ) {
+                    array_errors.push(
+                        "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el elemento " +
+                            (index + 1)
+                    );
+                }
                 if (item.cantidad == null || item.cantidad == "") {
                     array_errors.push(
                         "Debes ingresar una <b>Canitdad</b> en el elemento " +

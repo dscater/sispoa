@@ -25,8 +25,9 @@ class CreateMemoriaOperacionsTable extends Migration
             $table->string("responsable", 255);
             $table->unsignedBigInteger("partida_id");
             $table->string("partida", 255);
-            $table->string("nro", 255);
             $table->text("descripcion");
+            $table->string("nro", 255);
+            $table->text("descripcion_detallada");
             $table->float("cantidad");
             $table->string("unidad");
             $table->decimal("costo", 24, 2);

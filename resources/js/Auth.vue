@@ -129,6 +129,8 @@ export default {
                 localStorage.setItem("configuracion", this.configuracion);
                 localStorage.setItem("permisos", JSON.stringify(res.data));
                 localStorage.setItem("user", JSON.stringify(user));
+
+                localStorage.setItem("reproducir_audio", "si");
                 location.reload();
             });
         },
