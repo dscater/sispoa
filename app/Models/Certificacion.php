@@ -11,7 +11,7 @@ class Certificacion extends Model
 
     protected $fillable = [
         "formulario_id", "mo_id", "cantidad_usar", "presupuesto_usarse", "archivo",
-        "correlativo", "solicitante_id", "superior_id", "inicio", "final", "persona_beneficiaria",
+        "correlativo", "solicitante_id", "superior_id", "inicio", "final", "personal_designado", "departamento", "municipio",
         "estado", "fecha_registro",
     ];
 

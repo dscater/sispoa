@@ -151,7 +151,10 @@ return [
 
         'name'                  => 'nombre',
         'user_id'                  => 'Personal',
-        'estudiante_id'                  => 'Estudiante',
+        'formulario_id'                  => 'formulario',
+        'mo_id'                  => 'Operación | Tarea/Actividad',
+        'solicitante_id'                  => 'solicitante',
+        'superior_id'                  => 'superior',
         'programa_academico_id'                  => 'Programa académico',
         'listArchivos'                  => 'La lista de archivos',
         'tipo_soporte_id'                  => 'Tipo de soporte',

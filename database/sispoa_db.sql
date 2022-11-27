@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 23-11-2022 a las 13:07:14
+-- Tiempo de generación: 27-11-2022 a las 12:52:03
 -- Versión del servidor: 5.7.33
 -- Versión de PHP: 7.4.19
 
@@ -62,7 +62,9 @@ CREATE TABLE `certificacions` (
   `superior_id` bigint(20) UNSIGNED NOT NULL,
   `inicio` date NOT NULL,
   `final` date NOT NULL,
-  `persona_beneficiaria` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `personal_designado` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `departamento` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `municipio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -73,9 +75,10 @@ CREATE TABLE `certificacions` (
 -- Volcado de datos para la tabla `certificacions`
 --
 
-INSERT INTO `certificacions` (`id`, `formulario_id`, `mo_id`, `cantidad_usar`, `presupuesto_usarse`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `persona_beneficiaria`, `estado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 100, '20.00', NULL, 1, 2, 3, '2022-01-01', '2022-03-03', 'JUAN PERES', 'PENDIENTE', '2022-11-04', '2022-11-05 01:05:38', '2022-11-19 13:19:14'),
-(3, 2, 6, 12, '144.00', NULL, 2, 6, 5, '2022-11-02', '2022-12-12', 'ORLANDO PAREDES', 'PENDIENTE', '2022-11-19', '2022-11-19 13:21:15', '2022-11-19 13:21:20');
+INSERT INTO `certificacions` (`id`, `formulario_id`, `mo_id`, `cantidad_usar`, `presupuesto_usarse`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `personal_designado`, `departamento`, `municipio`, `estado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 100, '20.00', NULL, 1, 2, 3, '2022-01-01', '2022-03-03', 'JUAN PERES', 'DEPARTAMENTO', 'MUNICIPIO', 'PENDIENTE', '2022-11-04', '2022-11-05 01:05:38', '2022-11-27 12:37:22'),
+(3, 2, 6, 12, '144.00', NULL, 2, 6, 5, '2022-11-02', '2022-12-12', 'ORLANDO PAREDES', NULL, NULL, 'PENDIENTE', '2022-11-19', '2022-11-19 13:21:15', '2022-11-19 13:21:20'),
+(4, 3, 16, 2, '31.40', NULL, 3, 3, 5, '2022-11-18', '2022-11-30', 'JOSE PERES', 'DEPARTAMENTO', '', 'PENDIENTE', '2022-11-27', '2022-11-27 12:41:57', '2022-11-27 12:41:57');
 
 -- --------------------------------------------------------
 
@@ -743,7 +746,7 @@ ALTER TABLE `actividad_realizadas`
 -- AUTO_INCREMENT de la tabla `certificacions`
 --
 ALTER TABLE `certificacions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`

@@ -22,7 +22,7 @@ class CertificacionController extends Controller
         "superior_id" => "required",
         "inicio" => "required",
         "final" => "required",
-        "persona_beneficiaria" => "required|min:2",
+        "personal_designado" => "required|min:2",
     ];
 
     public function index()

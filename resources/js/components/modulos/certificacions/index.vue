@@ -117,10 +117,20 @@
                                                             .memoria_operacion
                                                             .partida
                                                     }}<br />
-                                                    <strong>Persona beneficiaria: </strong
+                                                    <strong>Personal designado: </strong
                                                     >{{
                                                         row.item
-                                                            .persona_beneficiaria
+                                                            .personal_designado
+                                                    }}<br />
+                                                    <strong>Departamento: </strong
+                                                    >{{
+                                                        row.item
+                                                            .departamento
+                                                    }}<br />
+                                                    <strong>Municipio: </strong
+                                                    >{{
+                                                        row.item
+                                                            .municipio
                                                     }}
                                                 </template>
 

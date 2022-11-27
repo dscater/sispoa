@@ -452,29 +452,85 @@
                                         <label
                                             :class="{
                                                 'text-danger':
-                                                    errors.persona_beneficiaria,
+                                                    errors.personal_designado,
                                             }"
-                                            >Persona beneficiaria*</label
+                                            >Personal designado*</label
                                         >
                                         <el-input
                                             filterable
                                             class="w-100 d-block"
                                             :class="{
                                                 'is-invalid':
-                                                    errors.persona_beneficiaria,
+                                                    errors.personal_designado,
                                             }"
                                             v-model="
-                                                oCertificacion.persona_beneficiaria
+                                                oCertificacion.personal_designado
                                             "
                                             clearable
                                         >
                                         </el-input>
                                         <span
                                             class="error invalid-feedback"
-                                            v-if="errors.persona_beneficiaria"
+                                            v-if="errors.personal_designado"
                                             v-text="
-                                                errors.persona_beneficiaria[0]
+                                                errors.personal_designado[0]
                                             "
+                                        ></span>
+                                    </div>
+                                    <div
+                                        v-if="nro_paso == 10"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
+                                    >
+                                        <label
+                                            :class="{
+                                                'text-danger':
+                                                    errors.departamento,
+                                            }"
+                                            >Departamento</label
+                                        >
+                                        <el-input
+                                            filterable
+                                            class="w-100 d-block"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.departamento,
+                                            }"
+                                            v-model="
+                                                oCertificacion.departamento
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.departamento"
+                                            v-text="errors.departamento[0]"
+                                        ></span>
+                                    </div>
+                                    <div
+                                        v-if="nro_paso == 11"
+                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
+                                    >
+                                        <label
+                                            :class="{
+                                                'text-danger': errors.municipio,
+                                            }"
+                                            >Municipio</label
+                                        >
+                                        <el-input
+                                            filterable
+                                            class="w-100 d-block"
+                                            :class="{
+                                                'is-invalid': errors.municipio,
+                                            }"
+                                            v-model="oCertificacion.municipio"
+                                            clearable
+                                        >
+                                        </el-input>
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.municipio"
+                                            v-text="errors.municipio[0]"
                                         ></span>
                                     </div>
                                 </div>
@@ -518,7 +574,9 @@ export default {
                 superior_id: "",
                 inicio: "",
                 final: "",
-                persona_beneficiaria: "",
+                personal_designado: "",
+                personal_designado: "",
+                departamento: "",
                 estado: "PENDIENTE",
             },
             errors: [],
@@ -578,8 +636,20 @@ export default {
                 },
                 {
                     nro: 9,
-                    label: "Persona beneficiaria",
-                    key: "persona_beneficiaria",
+                    label: "Personal designado",
+                    key: "personal_designado",
+                    error: false,
+                },
+                {
+                    nro: 10,
+                    label: "Departamento",
+                    key: "departamento",
+                    error: false,
+                },
+                {
+                    nro: 11,
+                    label: "Municipio",
+                    key: "municipio",
                     error: false,
                 },
             ],
@@ -660,7 +730,22 @@ export default {
                 formdata.append("inicio", this.oCertificacion.inicio);
                 formdata.append("final", this.oCertificacion.final);
                 formdata.append("final", this.oCertificacion.final);
-                formdata.append("persona_beneficiaria", this.oCertificacion.persona_beneficiaria);
+                formdata.append(
+                    "personal_designado",
+                    this.oCertificacion.personal_designado
+                );
+                formdata.append(
+                    "departamento",
+                    this.oCertificacion.departamento
+                        ? this.oCertificacion.departamento
+                        : ""
+                );
+                formdata.append(
+                    "municipio",
+                    this.oCertificacion.municipio
+                        ? this.oCertificacion.municipio
+                        : ""
+                );
 
                 axios
                     .post(url, formdata, config)
@@ -790,7 +875,7 @@ export default {
     overflow: auto;
     padding: 0px;
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
+    grid-template-columns: repeat(11, 1fr);
 }
 .paso {
     display: flex;

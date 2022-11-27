@@ -25,7 +25,7 @@
         }
 
         .titulo {
-            margin-top:2px;
+            margin-top: 2px;
             position: absolute;
             border: solid 1px;
             width: 350px;
@@ -101,7 +101,7 @@
             position: absolute;
             width: 48%;
             margin-right: 0px;
-            top: 147px;
+            top: 139px;
         }
 
         .bg_principal {
@@ -128,12 +128,12 @@
         }
 
         .inicio {
-            top: 350px;
+            top: 335px;
             right: -100px;
         }
 
         .final {
-            top: 350px;
+            top: 335px;
             right: -250px;
         }
 
@@ -152,7 +152,7 @@
             text-align: right;
         }
 
-        .qr{
+        .qr {
             width: 200px;
             margin-left: auto;
             text-align: right;
@@ -164,7 +164,7 @@
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('verificacion_actividad', 'App\Models\VerificacionActividad')
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
-    <div class="titulo">CERTIFICACIÓN POA<br />GESTIÓN {{$verificacion_actividad->first()->gestion}}</div>
+    <div class="titulo">CERTIFICACIÓN POA<br />GESTIÓN {{ $verificacion_actividad->first()->gestion }}</div>
     <div class="correlativo">N° Correlativo<div class="nro">{{ $certificacion->correlativo }}</div>
     </div>
     <table class="solicitante" border="1">
@@ -332,17 +332,34 @@
         </tbody>
     </table>
 
-    <p><strong>Persona beneficiaria: </strong>{{$certificacion->persona_beneficiaria}}</p>
+    
+    <table class="collapse" border="1" style="margin-top:15px">
+        <thead>
+            <tr>
+                <th class="bg_principal centreado">Personal designado</th>
+                <th class="bg_principal centreado">Departamento</th>
+                <th class="bg_principal centreado">Municipio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="centreado">{{ $certificacion->personal_designado }}</td>
+                <td class="centreado">{{ $certificacion->departamento }}</td>
+                <td class="centreado">{{ $certificacion->municipio }}</td>
+            </tr>
+        </tbody>
+    </table>
 
     <table class="collapse" style="margin-top:15px;">
         <tbody>
             <tr>
-                <td class="border bold p-5" width="40%">Verificación de la actividad en el POA {{$verificacion_actividad->first()->gestion}}
+                <td class="border bold p-5" width="40%">Verificación de la actividad en el POA
+                    {{ $verificacion_actividad->first()->gestion }}
                 </td>
                 <td></td>
             </tr>
             <tr class="border">
-                <td class="p-5" colspan="2">{{$verificacion_actividad->first()->actividad}}</td>
+                <td class="p-5" colspan="2">{{ $verificacion_actividad->first()->actividad }}</td>
             </tr>
         </tbody>
     </table>
@@ -361,9 +378,25 @@
             </tr>
         </tbody>
     </table>
-    
+
     <div class="qr">
-        <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->size(150)->generate($certificacion->correlativo.'|'.$certificacion->solicitante->full_name.'|'.date('d/m/Y', strtotime($certificacion->inicio)).'|'.date('d/m/Y', strtotime($certificacion->final)).'|'. $certificacion->memoria_operacion->operacion->codigo_operacion.'|'.number_format($certificacion->memoria_operacion->presupuesto, 2).'|'.number_format($certificacion->presupuesto_usarse, 2))) !!}">
+        <img src="data:image/png;base64, {!! base64_encode(
+            \QrCode::format('png')->size(150)->generate(
+                    $certificacion->correlativo .
+                        '|' .
+                        $certificacion->solicitante->full_name .
+                        '|' .
+                        date('d/m/Y', strtotime($certificacion->inicio)) .
+                        '|' .
+                        date('d/m/Y', strtotime($certificacion->final)) .
+                        '|' .
+                        $certificacion->memoria_operacion->operacion->codigo_operacion .
+                        '|' .
+                        number_format($certificacion->memoria_operacion->presupuesto, 2) .
+                        '|' .
+                        number_format($certificacion->presupuesto_usarse, 2),
+                ),
+        ) !!}">
     </div>
 </body>
 
