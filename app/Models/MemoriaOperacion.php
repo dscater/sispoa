@@ -10,11 +10,11 @@ class MemoriaOperacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        "memoria_id", "ue", "prog", "act", "operacion_id", "detalle_operacion_id",
-        "lugar", "responsable", "partida_id", "partida", "nro", "descripcion", "descripcion_detallada", "cantidad",
-        "unidad", "costo", "total", "justificacion",
-        "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic",
-        "total_operacion", "fecha_registro"
+        "memoria_id",
+        "operacion_id",
+        "detalle_operacion_id",
+        "total_operacion",
+        "fecha_registro",
     ];
 
     protected $appends = ["presupuesto", "descripcion_actividad", "descripcion_operacion", "codigo_operacion", "codigo_actividad"];
@@ -64,9 +64,9 @@ class MemoriaOperacion extends Model
         return $this->belongsTo(DetalleOperacion::class, 'detalle_operacion_id');
     }
 
-    public function m_partida()
+    public function memoria_operacion_detalles()
     {
-        return $this->belongsTo(Partida::class, 'partida_id');
+        return $this->hasMany(MemoriaOperacionDetalle::class, 'memoria_operacion_id');
     }
 
     public function certificacions()

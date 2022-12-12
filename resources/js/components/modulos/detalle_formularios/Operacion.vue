@@ -15,6 +15,32 @@
                 X
             </button>
             <div class="row">
+                <div class="form-group col-md-12">
+                    <label>Seleccionar subdirección</label>
+                    <el-select
+                        placeholder="Sin subdirección"
+                        class="w-100 d-block"
+                        :class="{
+                            'is-invalid': errors.subdireccion_id,
+                        }"
+                        v-model="o_Operacion.subdireccion_id"
+                        clearable
+                    >
+                        <el-option
+                            v-for="(item, index) in listSubdireccions"
+                            :key="index"
+                            :value="item.id"
+                            :label="item.nombre"
+                        >
+                        </el-option>
+                    </el-select>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.subdireccion_id"
+                        v-text="errors.subdireccion_id[0]"
+                    ></span>
+                </div>
+
                 <div class="form-group col-md-6">
                     <label>Código de Operación</label>
                     <input
@@ -568,6 +594,7 @@ export default {
             default: {
                 id: 0,
                 formulario_id: "",
+                subdireccion_id: "",
                 codigo_operacion: "",
                 operacion: "",
                 fecha_registro: "",
@@ -584,6 +611,7 @@ export default {
             sw_accion: this.accion,
             errors: [],
             o_Operacion: this.operacion,
+            listSubdireccions: [],
             _detalle_formulario_id: this.detalle_formulario_id,
         };
     },
@@ -614,6 +642,7 @@ export default {
                 final: "",
             });
         }
+        this.getSubdirecciones();
     },
     watch: {
         detalle_formulario_id(newVal, oldVal) {
@@ -661,6 +690,11 @@ export default {
             if (id != 0) {
                 this.$emit("quitar_detalle", id);
             }
+        },
+        getSubdirecciones() {
+            axios.get("/admin/subdireccions").then((response) => {
+                this.listSubdireccions = response.data.subdireccions;
+            });
         },
     },
 };

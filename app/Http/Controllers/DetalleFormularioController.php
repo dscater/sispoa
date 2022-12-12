@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetalleFormulario;
 use App\Models\DetalleOperacion;
+use App\Models\MemoriaCalculo;
 use App\Models\Operacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,7 @@ class DetalleFormularioController extends Controller
         foreach ($data as $d) {
             $nueva_operacion = $nuevo_detalle_formulario->operacions()->create([
                 "codigo_operacion" => mb_strtoupper($d["codigo_operacion"]),
+                "subdireccion_id" => $d["subdireccion_id"] ? $d["subdireccion_id"] : null,
                 "operacion" => mb_strtoupper($d["operacion"]),
             ]);
             foreach ($d["detalle_operaciones"] as $do) {
@@ -101,6 +103,7 @@ class DetalleFormularioController extends Controller
         foreach ($data as $d) {
             if ($d["id"] == 0 || $d["id"] == "") {
                 $nueva_operacion = $detalle_formulario->operacions()->create([
+                    "subdireccion_id" => $d["subdireccion_id"] ? $d["subdireccion_id"] : null,
                     "codigo_operacion" => mb_strtoupper($d["codigo_operacion"]),
                     "operacion" => mb_strtoupper($d["operacion"]),
                 ]);
@@ -108,6 +111,7 @@ class DetalleFormularioController extends Controller
                 $operacion = Operacion::find($d["id"]);
                 $nueva_operacion = $operacion;
                 $operacion->update([
+                    "subdireccion_id" => $d["subdireccion_id"] ? $d["subdireccion_id"] : null,
                     "codigo_operacion" => mb_strtoupper($d["codigo_operacion"]),
                     "operacion" => mb_strtoupper($d["operacion"]),
                 ]);
@@ -175,12 +179,18 @@ class DetalleFormularioController extends Controller
     {
         return response()->JSON([
             'sw' => true,
-            'detalle_formulario' => $detalle_formulario
+            'detalle_formulario' => $detalle_formulario->load("operacions.subdireccion")
         ], 200);
     }
 
     public function destroy(DetalleFormulario $detalle_formulario)
     {
+        // validar si existe un registro de memoria de calculo
+        $existe = MemoriaCalculo::where("formulario_id", $detalle_formulario->formulario_id)->get();
+        if (count($existe) > 0) {
+            return response()->JSON(["sw" => false, "formulario_cuatro" => $detalle_formulario->formulario, "msj" => "No es posible eliminar este registro, debido a que su información esta siendo utilizada en Memoria de cálculo"]);
+        }
+
         foreach ($detalle_formulario->operacions as $o) {
             DB::delete("DELETE FROM detalle_operacions WHERE operacion_id = $o->id");
             $o->delete();

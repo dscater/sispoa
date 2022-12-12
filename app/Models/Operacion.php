@@ -10,7 +10,7 @@ class Operacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        "detalle_formulario_id", "codigo_operacion", "operacion",
+        "detalle_formulario_id", 'subdireccion_id', "codigo_operacion", "operacion",
     ];
 
     protected $with = ["detalle_operaciones"];
@@ -23,5 +23,10 @@ class Operacion extends Model
     public function detalle_formulario()
     {
         return $this->belongsTo(DetalleFormulario::class, 'detalle_formulario_id');
+    }
+
+    public function subdireccion()
+    {
+        return $this->belongsTo(Subdireccion::class, 'subdireccion_id');
     }
 }

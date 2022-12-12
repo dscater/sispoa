@@ -133,6 +133,7 @@ export default {
             cantidad_registrados: 0,
             errors: [],
             formulario_id: "",
+            cambioPagina: true,
         };
     },
     watch: {
@@ -154,6 +155,8 @@ export default {
     mounted() {
         this.loadingWindow.close();
         this.getFormularios();
+        // this.validarCierre();
+        this.cambioPagina = true;
     },
     methods: {
         // OBTENER LA LISTA DE FORMULARIO
@@ -180,6 +183,7 @@ export default {
                             showConfirmButton: false,
                             timer: 2000,
                         });
+                        this.cambioPagina = false;
                         this.$router.push({
                             name: "detalle_formularios.index",
                         });
@@ -342,6 +346,7 @@ export default {
             this.listOperacions.push({
                 id: 0,
                 detalle_formulario_id: this.detalle_formulario_id,
+                subdireccion_id: "",
                 codigo_operacion: "",
                 operacion: "",
                 fecha_registro: "",
@@ -351,6 +356,42 @@ export default {
         quitarOperacion(index, item) {
             this.listOperacions.splice(index, 1);
         },
+        validarCierre() {
+            window.addEventListener("beforeunload", (evento) => {
+                if (true) {
+                    evento.preventDefault();
+                    evento.returnValue = "";
+                    return "";
+                }
+            });
+        },
+        removerValidacion() {
+            window.removeEventListener("beforeunload");
+        },
+    },
+    beforeRouteLeave(to, from, next) {
+        if (this.cambioPagina) {
+            Swal.fire({
+                title: "¿Desea guardar el formulario antes de salir?",
+                html: ``,
+                showCancelButton: true,
+                confirmButtonColor: "#05568e",
+                confirmButtonText: "Si, guardar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    this.enviarRegistro();
+                    this.removerValidacion();
+                } else {
+                    next();
+                    this.removerValidacion();
+                }
+            });
+        } else {
+            next();
+        }
     },
 };
 </script>

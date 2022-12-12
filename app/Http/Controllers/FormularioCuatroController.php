@@ -6,6 +6,7 @@ use App\Models\Certificacion;
 use App\Models\DetalleFormulario;
 use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
+use App\Models\MemoriaCalculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,11 +14,13 @@ class FormularioCuatroController extends Controller
 {
     public $validacion = [
         'codigo_pei' => 'required|min:1',
-        'accion_institucional' => 'required|min:1',
+        'resultado_institucional' => 'required|min:1',
         'indicador' => 'required|min:1',
         'codigo_poa' => 'required|min:1',
         'accion_corto' => 'required|min:1',
-        'resultado_esperado' => 'required|min:1',
+        'indicador_proceso' => 'required|min:1',
+        'linea_base' => 'required|min:1',
+        'meta' => 'required|min:1',
         'presupuesto' => 'required|numeric',
         'ponderacion' => 'required|numeric',
         'unidad_id' => 'required',
@@ -82,6 +85,11 @@ class FormularioCuatroController extends Controller
         }
 
         $existe = FormularioCinco::where("formulario_id", $formulario_cuatro->id)->get();
+        if (count($existe) > 0) {
+            return response()->JSON(["sw" => false, "formulario_cuatro" => $formulario_cuatro, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
+        }
+
+        $existe = MemoriaCalculo::where("formulario_id", $formulario_cuatro->id)->get();
         if (count($existe) > 0) {
             return response()->JSON(["sw" => false, "formulario_cuatro" => $formulario_cuatro, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
         }

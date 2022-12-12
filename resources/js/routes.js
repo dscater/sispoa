@@ -46,6 +46,13 @@ export default new Router({
             component: require('./components/modulos/unidads/index.vue').default,
         },
 
+        // SUBDIRECCIONES
+        {
+            path: '/subdireccions',
+            name: 'subdireccions.index',
+            component: require('./components/modulos/subdireccions/index.vue').default,
+        },
+
         // FORMULARIO UNO
         {
             path: '/formulario_uno',

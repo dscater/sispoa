@@ -90,6 +90,14 @@
                                                 operacion, index_operacion
                                             ) in oDetalleFormulario.operacions"
                                         >
+                                            <tr v-if="operacion.subdireccion" class="bg-primary">
+                                                <td colspan="21">
+                                                    {{
+                                                        operacion.subdireccion
+                                                            .nombre
+                                                    }}
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td
                                                     :rowspan="

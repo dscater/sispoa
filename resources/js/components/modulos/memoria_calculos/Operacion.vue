@@ -110,520 +110,676 @@
                     </el-input>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-md-2">
-                    <label
-                        :class="{
-                            'text-danger': errors.ue,
-                        }"
-                        >Unidad ejecutora*</label
-                    >
-                    <el-input
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.ue,
-                        }"
-                        v-model="o_Operacion.ue"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.ue"
-                        v-text="errors.ue[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-2">
-                    <label
-                        :class="{
-                            'text-danger': errors.prog,
-                        }"
-                        >Programa*</label
-                    >
-                    <el-input
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.prog,
-                        }"
-                        v-model="o_Operacion.prog"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.prog"
-                        v-text="errors.prog[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-2">
-                    <label
-                        :class="{
-                            'text-danger': errors.act,
-                        }"
-                        >Actividad*</label
-                    >
-                    <el-input
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.act,
-                        }"
-                        v-model="o_Operacion.act"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.act"
-                        v-text="errors.act[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.lugar,
-                        }"
-                        >Lugar de Ejecución de la Operación*</label
-                    >
-                    <el-input
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.lugar,
-                        }"
-                        v-model="o_Operacion.lugar"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.lugar"
-                        v-text="errors.lugar[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.responsable,
-                        }"
-                        >Responsable de Ejecución de la Operación /
-                        Tarea*</label
-                    >
-                    <el-input
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.responsable,
-                        }"
-                        v-model="o_Operacion.responsable"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.responsable"
-                        v-text="errors.responsable[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.partida_id,
-                        }"
-                        >Partida de gasto*</label
-                    >
-                    <el-select
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.partida_id,
-                        }"
-                        v-model="o_Operacion.partida_id"
-                        @change="getTextoPartida"
-                    >
-                        <el-option
-                            v-for="partida in listPartidas"
-                            :key="partida.id"
-                            :value="partida.id"
-                            :label="partida.partida"
-                        ></el-option>
-                    </el-select>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.partida_id"
-                        v-text="errors.partida_id[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-4">
-                    <label
-                        :class="{
-                            'text-danger': errors.descripcion,
-                        }"
-                        >Descripción*</label
-                    >
-                    <el-input
-                        type="textarea"
-                        autosize
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.descripcion,
-                        }"
-                        v-model="o_Operacion.descripcion"
-                        readonly
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.descripcion"
-                        v-text="errors.descripcion[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-1">
-                    <label
-                        :class="{
-                            'text-danger': errors.nro,
-                        }"
-                        >Nro*</label
-                    >
-                    <el-input
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.nro,
-                        }"
-                        v-model="o_Operacion.nro"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.nro"
-                        v-text="errors.nro[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-4">
-                    <label
-                        :class="{
-                            'text-danger': errors.descripcion_detallada,
-                        }"
-                        >Descripción detallada por item (bien o servicio)*</label
-                    >
-                    <el-input
-                        type="textarea"
-                        autosize
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.descripcion_detallada,
-                        }"
-                        v-model="o_Operacion.descripcion_detallada"
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.descripcion_detallada"
-                        v-text="errors.descripcion_detallada[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.cantidad,
-                        }"
-                        >Canitdad*</label
-                    >
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control"
-                        :class="{
-                            'is-invalid': errors.cantidad,
-                        }"
-                        v-model="o_Operacion.cantidad"
-                        clearable
-                        @change="calculaTotal"
-                        @keyup="calculaTotal"
-                    />
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.cantidad"
-                        v-text="errors.cantidad[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.unidad,
-                        }"
-                        >Unidad*</label
-                    >
-                    <el-input
-                        class="w-full"
-                        :class="{
-                            'is-invalid': errors.unidad,
-                        }"
-                        v-model="o_Operacion.unidad"
-                        clearable
-                    ></el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.unidad"
-                        v-text="errors.unidad[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.costo,
-                        }"
-                        >Precio Unitario*</label
-                    >
-                    <input
-                        type="number"
-                        step="0.01"
-                        class="form-control"
-                        :class="{
-                            'is-invalid': errors.costo,
-                        }"
-                        v-model="o_Operacion.costo"
-                        clearable
-                        @change="calculaTotal"
-                        @keyup="calculaTotal"
-                    />
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.costo"
-                        v-text="errors.costo[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.total,
-                        }"
-                        >Total*</label
-                    >
-                    <el-input
-                        class="w-full"
-                        placeholder="Total"
-                        :class="{
-                            'is-invalid': errors.total,
-                            'is-invalid': error_totales,
-                        }"
-                        v-model="o_Operacion.total"
-                        clearable
-                        readonly
-                    ></el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.total"
-                        v-text="errors.total[0]"
-                    ></span>
-                </div>
-                <div class="form-group col-md-3">
-                    <label
-                        :class="{
-                            'text-danger': errors.justificacion,
-                        }"
-                        >Justificación*</label
-                    >
-                    <el-input
-                        type="textarea"
-                        autosize
-                        class="w-100"
-                        :class="{
-                            'is-invalid': errors.justificacion,
-                        }"
-                        v-model="o_Operacion.justificacion"
-                        clearable
-                    >
-                    </el-input>
-                    <span
-                        class="error invalid-feedback"
-                        v-if="errors.justificacion"
-                        v-text="errors.justificacion[0]"
-                    ></span>
+            <div
+                class="row detalle"
+                v-for="(
+                    item_mod, index_mod
+                ) in o_Operacion.memoria_operacion_detalles"
+                :key="index_mod"
+            >
+                <span
+                    class="numero_operacion_detalle_tarea"
+                    v-text="index + 1 + '-' + (index_mod + 1) + ' Detalle'"
+                ></span>
+                <div class="col-md-12">
+                    <div class="card">
+                        <button
+                            class="btn btn-danger rounded-circle btnQuitar"
+                            @click="quitarDetalle(index_mod, item_mod.id)"
+                            v-if="index_mod > 0"
+                        >
+                            X
+                        </button>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.ue,
+                                        }"
+                                        >Unidad ejecutora*</label
+                                    >
+                                    <el-input
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.ue,
+                                        }"
+                                        v-model="item_mod.ue"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.ue"
+                                        v-text="errors.ue[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.prog,
+                                        }"
+                                        >Programa*</label
+                                    >
+                                    <el-input
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.prog,
+                                        }"
+                                        v-model="item_mod.prog"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.prog"
+                                        v-text="errors.prog[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.act,
+                                        }"
+                                        >Actividad*</label
+                                    >
+                                    <el-input
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.act,
+                                        }"
+                                        v-model="item_mod.act"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.act"
+                                        v-text="errors.act[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.lugar,
+                                        }"
+                                        >Lugar de Ejecución de la
+                                        Operación*</label
+                                    >
+                                    <el-input
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.lugar,
+                                        }"
+                                        v-model="item_mod.lugar"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.lugar"
+                                        v-text="errors.lugar[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.responsable,
+                                        }"
+                                        >Responsable de Ejecución de la
+                                        Operación / Tarea*</label
+                                    >
+                                    <el-input
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.responsable,
+                                        }"
+                                        v-model="item_mod.responsable"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.responsable"
+                                        v-text="errors.responsable[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.partida_id,
+                                        }"
+                                        >Partida de gasto*</label
+                                    >
+                                    <el-select
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.partida_id,
+                                        }"
+                                        v-model="item_mod.partida_id"
+                                        @change="getTextoPartida(index_mod)"
+                                    >
+                                        <el-option
+                                            v-for="partida in listPartidas"
+                                            :key="partida.id"
+                                            :value="partida.id"
+                                            :label="partida.partida"
+                                        ></el-option>
+                                    </el-select>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.partida_id"
+                                        v-text="errors.partida_id[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.texto_partida,
+                                        }"
+                                        >Descripción*</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        autosize
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.texto_partida,
+                                        }"
+                                        v-model="item_mod.texto_partida"
+                                        readonly
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.texto_partida"
+                                        v-text="errors.texto_partida[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.nro,
+                                        }"
+                                        >Nro*</label
+                                    >
+                                    <el-input
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.nro,
+                                        }"
+                                        v-model="item_mod.nro"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.nro"
+                                        v-text="errors.nro[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label
+                                        :class="{
+                                            'text-danger':
+                                                errors.descripcion_detallada,
+                                        }"
+                                        >Descripción detallada por item (bien o
+                                        servicio)*</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        autosize
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid':
+                                                errors.descripcion_detallada,
+                                        }"
+                                        v-model="item_mod.descripcion_detallada"
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.descripcion_detallada"
+                                        v-text="errors.descripcion_detallada[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.cantidad,
+                                        }"
+                                        >Cantidad*</label
+                                    >
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.cantidad,
+                                        }"
+                                        v-model="item_mod.cantidad"
+                                        clearable
+                                        @change="calculaTotal(index_mod)"
+                                        @keyup="calculaTotal(index_mod)"
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.cantidad"
+                                        v-text="errors.cantidad[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.unidad,
+                                        }"
+                                        >Unidad*</label
+                                    >
+                                    <el-input
+                                        class="w-full"
+                                        :class="{
+                                            'is-invalid': errors.unidad,
+                                        }"
+                                        v-model="item_mod.unidad"
+                                        clearable
+                                    ></el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.unidad"
+                                        v-text="errors.unidad[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.costo,
+                                        }"
+                                        >Precio Unitario*</label
+                                    >
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.costo,
+                                        }"
+                                        v-model="item_mod.costo"
+                                        clearable
+                                        @change="calculaTotal(index_mod)"
+                                        @keyup="calculaTotal(index_mod)"
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.costo"
+                                        v-text="errors.costo[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.total,
+                                        }"
+                                        >Total*</label
+                                    >
+                                    <el-input
+                                        class="w-full"
+                                        placeholder="Total"
+                                        :class="{
+                                            'is-invalid': errors.total,
+                                            'is-invalid':
+                                                error_totales[index_mod],
+                                        }"
+                                        v-model="item_mod.total"
+                                        clearable
+                                        readonly
+                                    ></el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.total"
+                                        v-text="errors.total[0]"
+                                    ></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.justificacion,
+                                        }"
+                                        >Justificación*</label
+                                    >
+                                    <el-input
+                                        type="textarea"
+                                        autosize
+                                        class="w-100"
+                                        :class="{
+                                            'is-invalid': errors.justificacion,
+                                        }"
+                                        v-model="item_mod.justificacion"
+                                        clearable
+                                    >
+                                    </el-input>
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.justificacion"
+                                        v-text="errors.justificacion[0]"
+                                    ></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 contenedor_tabla">
+                                    <table
+                                        class="table table-bordered tabla_programacion"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    class="text-center"
+                                                    colspan="12"
+                                                >
+                                                    Programación Mensual
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-center">
+                                                    Enero
+                                                </th>
+                                                <th class="text-center">
+                                                    Febrero
+                                                </th>
+                                                <th class="text-center">
+                                                    Marzo
+                                                </th>
+                                                <th class="text-center">
+                                                    Abril
+                                                </th>
+                                                <th class="text-center">
+                                                    Mayo
+                                                </th>
+                                                <th class="text-center">
+                                                    Junio
+                                                </th>
+                                                <th class="text-center">
+                                                    Julio
+                                                </th>
+                                                <th class="text-center">
+                                                    Agosto
+                                                </th>
+                                                <th class="text-center">
+                                                    Septiembre
+                                                </th>
+                                                <th class="text-center">
+                                                    Octubre
+                                                </th>
+                                                <th class="text-center">
+                                                    Noviembre
+                                                </th>
+                                                <th class="text-center">
+                                                    Diciembre
+                                                </th>
+                                                <th class="text-center">
+                                                    TOTAL
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="detalle_trimestres">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.ene"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.feb"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.mar"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.abr"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.may"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.jun"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.jul"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.ago"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.sep"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.oct"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.nov"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td class="text-center">
+                                                    <input
+                                                        type="number"
+                                                        step="0.01"
+                                                        v-model="item_mod.dic"
+                                                        @change="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        @keypress.enter.prevent="
+                                                            calculaTotalOperacionMeses(
+                                                                index_mod
+                                                            )
+                                                        "
+                                                        class="form-control"
+                                                    />
+                                                </td>
+                                                <td
+                                                    class="text-center font-weight-bold text-md align-middle"
+                                                    :class="{
+                                                        'bg-danger':
+                                                            error_totales[
+                                                                index_mod
+                                                            ],
+                                                    }"
+                                                    v-text="
+                                                        parseFloat(
+                                                            item_mod.total_actividad
+                                                        ).toFixed(2)
+                                                    "
+                                                ></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- BOTON AGREGAR DETALLE -->
             <div class="row">
-                <div class="col-md-12 contenedor_tabla">
-                    <table class="table table-bordered tabla_programacion">
-                        <thead>
-                            <tr>
-                                <th class="text-center" colspan="12">
-                                    Programación Mensual
-                                </th>
-                            </tr>
-                            <tr>
-                                <th class="text-center">Enero</th>
-                                <th class="text-center">Febrero</th>
-                                <th class="text-center">Marzo</th>
-                                <th class="text-center">Abril</th>
-                                <th class="text-center">Mayo</th>
-                                <th class="text-center">Junio</th>
-                                <th class="text-center">Julio</th>
-                                <th class="text-center">Agosto</th>
-                                <th class="text-center">Septiembre</th>
-                                <th class="text-center">Octubre</th>
-                                <th class="text-center">Noviembre</th>
-                                <th class="text-center">Diciembre</th>
-                                <th class="text-center">TOTAL</th>
-                            </tr>
-                        </thead>
-                        <tbody class="detalle_trimestres">
-                            <tr>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.ene"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.feb"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.mar"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.abr"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.may"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.jun"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.jul"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.ago"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.sep"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.oct"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.nov"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td class="text-center">
-                                    <input
-                                        type="number"
-                                        step="0.01"
-                                        v-model="o_Operacion.dic"
-                                        @change="calculaTotalOperacionMeses"
-                                        @keypress.enter.prevent="
-                                            calculaTotalOperacionMeses
-                                        "
-                                        class="form-control"
-                                    />
-                                </td>
-                                <td
-                                    class="text-center font-weight-bold text-md align-middle"
-                                    :class="{ 'bg-danger': error_totales }"
-                                    v-text="
-                                        parseFloat(
-                                            o_Operacion.total_operacion
-                                        ).toFixed(2)
-                                    "
-                                ></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button
+                                class="btn btn-default btn-flat btn-block"
+                                @click="agregarDetalle"
+                            >
+                                <i class="fa fa-plus"></i>
+                                Agregar detalle
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <!-- <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -662,34 +818,39 @@ export default {
             default: {
                 id: 0,
                 memoria_id: "",
-                ue: "",
-                prog: "",
-                act: "",
                 operacion_id: "",
                 detalle_operacion_id: "",
-                lugar: "",
-                responsable: "",
-                partida: "",
-                nro: "",
-                descripcion: "",
-                cantidad: "",
-                unidad: "",
-                costo: "",
-                total: 0,
-                justificacion: "",
-                ene: "",
-                feb: "",
-                mar: "",
-                abr: "",
-                may: "",
-                jun: "",
-                jul: "",
-                ago: "",
-                sep: "",
-                oct: "",
-                nov: "",
-                dic: "",
                 total_operacion: 0,
+                memoria_operacion_detalles: [
+                    {
+                        ue: "",
+                        prog: "",
+                        act: "",
+                        lugar: "",
+                        responsable: "",
+                        partida: "",
+                        nro: "",
+                        descripcion: "",
+                        cantidad: "",
+                        unidad: "",
+                        costo: "",
+                        total: 0,
+                        justificacion: "",
+                        ene: "",
+                        feb: "",
+                        mar: "",
+                        abr: "",
+                        may: "",
+                        jun: "",
+                        jul: "",
+                        ago: "",
+                        sep: "",
+                        oct: "",
+                        nov: "",
+                        dic: "",
+                        total_actividad: 0,
+                    },
+                ],
             },
         },
         accion: {
@@ -707,14 +868,18 @@ export default {
             listPartidas: [],
             texto_operacion: "",
             texto_actividad: "",
-            error_totales: false,
+            error_totales: [],
         };
     },
     mounted() {
         this.getOperacionesFormulario();
         this.getPartidas();
         if (this.operacion.id != 0) {
-            this.verificaTotales();
+            this.o_Operacion.memoria_operacion_detalles.forEach(
+                (elem_detalle, index) => {
+                    this.verificaTotales(index);
+                }
+            );
         }
     },
     watch: {
@@ -733,21 +898,31 @@ export default {
         getPartidas() {
             axios.get("/admin/partidas").then((response) => {
                 this.listPartidas = response.data.partidas;
-                if (this.o_Operacion.operacion_id != "") {
-                    this.getTextoPartida();
-                }
             });
         },
-        getTextoPartida() {
-            let item = this.listPartidas.filter(
-                (value) => value.id == this.o_Operacion.partida_id
-            );
-            if (item.length > 0) {
-                this.o_Operacion.partida = item[0].partida;
-                this.o_Operacion.descripcion = item[0].descripcion;
-            } else {
-                this.o_Operacion.partida = "";
-                this.o_Operacion.descripcion = "";
+        getTextoPartida(index_mod = null) {
+            if (index_mod != null) {
+                let item = this.listPartidas.filter(
+                    (value) =>
+                        value.id ==
+                        this.o_Operacion.memoria_operacion_detalles[index_mod]
+                            .partida_id
+                );
+                if (item.length > 0) {
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].partida = item[0].partida;
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].texto_partida = item[0].descripcion;
+                } else {
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].partida = "";
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].texto_partida = "";
+                }
             }
         },
         // OBTENER LAS OPERACIONES DEL FORMULARIO CUATRO
@@ -808,127 +983,217 @@ export default {
         quitar() {
             this.$emit("quitar", this.index, this.operacion);
         },
-        calculaTotal() {
+        // DETALLES OPERACIONES
+        agregarDetalle() {
+            this.o_Operacion.memoria_operacion_detalles.push({
+                id: 0,
+                memoria_operacion_id: 0,
+                ue: "",
+                prog: "",
+                act: "",
+                lugar: "",
+                responsable: "",
+                partida: "",
+                nro: "",
+                descripcion: "",
+                cantidad: "",
+                unidad: "",
+                costo: "",
+                total: 0,
+                justificacion: "",
+                ene: "",
+                feb: "",
+                mar: "",
+                abr: "",
+                may: "",
+                jun: "",
+                jul: "",
+                ago: "",
+                sep: "",
+                oct: "",
+                nov: "",
+                dic: "",
+                total_actividad: 0,
+            });
+        },
+        quitarDetalle(index_mod, id) {
+            this.o_Operacion.memoria_operacion_detalles.splice(index_mod, 1);
+            if (id != 0) {
+                this.$emit("quitar_detalle", id);
+            }
+        },
+        // FIN DETALLES
+        calculaTotal(index_mod) {
             let total = 0;
             if (
-                this.o_Operacion.cantidad != "" &&
-                this.o_Operacion.costo != ""
+                this.o_Operacion.memoria_operacion_detalles[index_mod]
+                    .cantidad != "" &&
+                this.o_Operacion.memoria_operacion_detalles[index_mod].costo !=
+                    ""
             ) {
-                this.o_Operacion.total =
-                    parseFloat(this.o_Operacion.cantidad) *
-                    parseFloat(this.o_Operacion.costo);
-                this.o_Operacion.total = this.o_Operacion.total.toFixed(2);
+                this.o_Operacion.memoria_operacion_detalles[index_mod].total =
+                    parseFloat(
+                        this.o_Operacion.memoria_operacion_detalles[index_mod]
+                            .cantidad
+                    ) *
+                    parseFloat(
+                        this.o_Operacion.memoria_operacion_detalles[index_mod]
+                            .costo
+                    );
+                this.o_Operacion.memoria_operacion_detalles[index_mod].total =
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].total.toFixed(2);
             }
-            this.verificaTotales();
+            this.calculaTotalOperacion();
+            this.verificaTotales(index_mod);
         },
-        calculaTotalOperacionMeses() {
-            this.o_Operacion.total_operacion = 0;
-            if (this.o_Operacion.ene) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.ene
+        calculaTotalOperacionMeses(index_mod) {
+            this.o_Operacion.memoria_operacion_detalles[
+                index_mod
+            ].total_actividad = 0;
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].ene) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].ene
                 );
-                this.o_Operacion.ene = parseFloat(this.o_Operacion.ene).toFixed(
-                    2
-                );
+                this.o_Operacion.ene = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].ene
+                ).toFixed(2);
             }
-            if (this.o_Operacion.feb) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.feb
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].feb) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].feb
                 );
-                this.o_Operacion.feb = parseFloat(this.o_Operacion.feb).toFixed(
-                    2
-                );
+                this.o_Operacion.feb = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].feb
+                ).toFixed(2);
             }
-            if (this.o_Operacion.mar) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.mar
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].mar) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].mar
                 );
-                this.o_Operacion.mar = parseFloat(this.o_Operacion.mar).toFixed(
-                    2
-                );
+                this.o_Operacion.mar = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].mar
+                ).toFixed(2);
             }
-            if (this.o_Operacion.abr) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.abr
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].abr) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].abr
                 );
-                this.o_Operacion.abr = parseFloat(this.o_Operacion.abr).toFixed(
-                    2
-                );
+                this.o_Operacion.abr = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].abr
+                ).toFixed(2);
             }
-            if (this.o_Operacion.may) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.may
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].may) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].may
                 );
-                this.o_Operacion.may = parseFloat(this.o_Operacion.may).toFixed(
-                    2
-                );
+                this.o_Operacion.may = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].may
+                ).toFixed(2);
             }
-            if (this.o_Operacion.jun) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.jun
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].jun) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].jun
                 );
-                this.o_Operacion.jun = parseFloat(this.o_Operacion.jun).toFixed(
-                    2
-                );
+                this.o_Operacion.jun = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].jun
+                ).toFixed(2);
             }
-            if (this.o_Operacion.jul) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.jul
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].jul) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].jul
                 );
-                this.o_Operacion.jul = parseFloat(this.o_Operacion.jul).toFixed(
-                    2
-                );
+                this.o_Operacion.jul = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].jul
+                ).toFixed(2);
             }
-            if (this.o_Operacion.ago) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.ago
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].ago) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].ago
                 );
-                this.o_Operacion.ago = parseFloat(this.o_Operacion.ago).toFixed(
-                    2
-                );
+                this.o_Operacion.ago = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].ago
+                ).toFixed(2);
             }
-            if (this.o_Operacion.sep) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.sep
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].sep) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].sep
                 );
-                this.o_Operacion.sep = parseFloat(this.o_Operacion.sep).toFixed(
-                    2
-                );
+                this.o_Operacion.sep = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].sep
+                ).toFixed(2);
             }
-            if (this.o_Operacion.oct) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.oct
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].oct) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].oct
                 );
-                this.o_Operacion.oct = parseFloat(this.o_Operacion.oct).toFixed(
-                    2
-                );
+                this.o_Operacion.oct = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].oct
+                ).toFixed(2);
             }
-            if (this.o_Operacion.nov) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.nov
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].nov) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].nov
                 );
-                this.o_Operacion.nov = parseFloat(this.o_Operacion.nov).toFixed(
-                    2
-                );
+                this.o_Operacion.nov = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].nov
+                ).toFixed(2);
             }
-            if (this.o_Operacion.dic) {
-                this.o_Operacion.total_operacion += parseFloat(
-                    this.o_Operacion.dic
+            if (this.o_Operacion.memoria_operacion_detalles[index_mod].dic) {
+                this.o_Operacion.memoria_operacion_detalles[
+                    index_mod
+                ].total_actividad += parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].dic
                 );
-                this.o_Operacion.dic = parseFloat(this.o_Operacion.dic).toFixed(
-                    2
-                );
+                this.o_Operacion.dic = parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].dic
+                ).toFixed(2);
             }
-            this.verificaTotales();
+            this.verificaTotales(index_mod);
         },
-        verificaTotales() {
-            this.error_totales = false;
+        verificaTotales(index_mod) {
+            this.error_totales[index_mod] = false;
             if (
-                parseFloat(this.o_Operacion.total) !=
-                parseFloat(this.o_Operacion.total_operacion)
+                parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].total
+                ) !=
+                parseFloat(
+                    this.o_Operacion.memoria_operacion_detalles[index_mod]
+                        .total_actividad
+                )
             ) {
-                this.error_totales = true;
+                this.error_totales[index_mod] = true;
             }
+        },
+        calculaTotalOperacion() {
+            let total = 0;
+            this.o_Operacion.memoria_operacion_detalles.forEach((item) => {
+                total += parseFloat(item.total);
+            });
+            this.o_Operacion.total_operacion = total;
         },
     },
 };
@@ -976,7 +1241,7 @@ export default {
     position: absolute;
     z-index: 100;
     left: -2px;
-    top: -18px;
+    top: -15px;
     color: white;
     text-align: center;
     font-weight: bold;

@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>FormularioCuatros</h1>
+                        <h1>Formulario Cuatro</h1>
                     </div>
                 </div>
             </div>
@@ -227,8 +227,8 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: "accion_institucional",
-                    label: "Acción Institucional Específica",
+                    key: "resultado_institucional",
+                    label: "Resultado institucional",
                     sortable: true,
                 },
                 {
@@ -247,8 +247,18 @@ export default {
                     sortable: true,
                 },
                 {
-                    key: "resultado_esperado",
-                    label: "Restultado Esperado Gestión",
+                    key: "indicador_proceso",
+                    label: "Indicador de proceso",
+                    sortable: true,
+                },
+                {
+                    key: "linea_base",
+                    label: "Línea de base",
+                    sortable: true,
+                },
+                {
+                    key: "meta",
+                    label: "Meta",
                     sortable: true,
                 },
                 {
@@ -275,11 +285,13 @@ export default {
             oFormularioCuatro: {
                 id: 0,
                 codigo_pei: "",
-                accion_institucional: "",
+                resultado_institucional: "",
                 indicador: "",
                 codigo_poa: "",
                 accion_corto: "",
-                resultado_esperado: "",
+                indicador_proceso: "",
+                linea_base: "",
+                meta: "",
                 presupuesto: "",
                 ponderacion: "",
                 unidad_id: "",
@@ -309,8 +321,10 @@ export default {
             this.oFormularioCuatro.codigo_pei = item.codigo_pei
                 ? item.codigo_pei
                 : "";
-            this.oFormularioCuatro.accion_institucional =
-                item.accion_institucional ? item.accion_institucional : "";
+            this.oFormularioCuatro.resultado_institucional =
+                item.resultado_institucional
+                    ? item.resultado_institucional
+                    : "";
             this.oFormularioCuatro.indicador = item.indicador
                 ? item.indicador
                 : "";
@@ -320,9 +334,13 @@ export default {
             this.oFormularioCuatro.accion_corto = item.accion_corto
                 ? item.accion_corto
                 : "";
-            this.oFormularioCuatro.resultado_esperado = item.resultado_esperado
-                ? item.resultado_esperado
+            this.oFormularioCuatro.indicador_proceso = item.indicador_proceso
+                ? item.indicador_proceso
                 : "";
+            this.oFormularioCuatro.linea_base = item.linea_base
+                ? item.linea_base
+                : "";
+            this.oFormularioCuatro.meta = item.meta ? item.meta : "";
             this.oFormularioCuatro.presupuesto = item.presupuesto
                 ? item.presupuesto
                 : "";
@@ -371,7 +389,7 @@ export default {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            if (res.sw) {
+                            if (res.data.sw) {
                                 this.getFormularioCuatros();
                                 this.filter = "";
                                 Swal.fire({
@@ -406,11 +424,13 @@ export default {
         },
         limpiaFormularioCuatro() {
             this.oFormularioCuatro.codigo_pei = "";
-            this.oFormularioCuatro.accion_institucional = "";
+            this.oFormularioCuatro.resultado_institucional = "";
             this.oFormularioCuatro.indicador = "";
             this.oFormularioCuatro.codigo_poa = "";
             this.oFormularioCuatro.accion_corto = "";
-            this.oFormularioCuatro.resultado_esperado = "";
+            this.oFormularioCuatro.indicador_proceso = "";
+            this.oFormularioCuatro.linea_base = "";
+            this.oFormularioCuatro.meta = "";
             this.oFormularioCuatro.presupuesto = "";
             this.oFormularioCuatro.ponderacion = "";
             this.oFormularioCuatro.unidad_id = "";

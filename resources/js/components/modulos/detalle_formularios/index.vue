@@ -303,14 +303,23 @@ export default {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getDetalleFormularios();
-                            this.filter = "";
-                            Swal.fire({
-                                icon: "success",
-                                title: res.data.msj,
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
+                            if (res.data.sw) {
+                                this.getDetalleFormularios();
+                                this.filter = "";
+                                Swal.fire({
+                                    icon: "success",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                });
+                            }
                         });
                 }
             });

@@ -19,6 +19,7 @@ use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\PeiController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SemaforoController;
+use App\Http\Controllers\SubdireccionController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificacionActividadController;
@@ -130,6 +131,11 @@ Route::prefix('admin')->group(function () {
 
     // FISICOS
     Route::resource('fisicos', FisicoController::class)->only([
+        'index', 'store', 'update', 'destroy'
+    ]);
+
+    // SUBDIRECCIÓN
+    Route::resource('subdireccions', SubdireccionController::class)->only([
         'index', 'store', 'update', 'destroy'
     ]);
 

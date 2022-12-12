@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FormularioCuatro;
 use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
+use App\Models\MemoriaOperacionDetalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,51 +70,57 @@ class MemoriaCalculoController extends Controller
         foreach ($data as $d) {
             $nueva_operacion = $nuevo_memoria_calculo->operacions()->create([
                 "operacion_id" => mb_strtoupper($d["operacion_id"]),
-                "ue" => mb_strtoupper($d["ue"]),
-                "prog" => mb_strtoupper($d["prog"]),
-                "act" => mb_strtoupper($d["act"]),
                 "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
-                "lugar" => mb_strtoupper($d["lugar"]),
-                "responsable" => mb_strtoupper($d["responsable"]),
-                "partida_id" => mb_strtoupper($d["partida_id"]),
-                "partida" => mb_strtoupper($d["partida"]),
-                "nro" => mb_strtoupper($d["nro"]),
-                "descripcion" => mb_strtoupper($d["descripcion"]),
-                "descripcion_detallada" => mb_strtoupper($d["descripcion_detallada"]),
-                "cantidad" => $d["cantidad"],
-                "unidad" => mb_strtoupper($d["unidad"]),
-                "costo" => mb_strtoupper($d["costo"]),
-                "total" => $d["total"],
-                "justificacion" => mb_strtoupper($d["justificacion"]),
-                "ene" => $d["ene"],
-                "feb" => $d["feb"],
-                "mar" => $d["mar"],
-                "abr" => $d["abr"],
-                "may" => $d["may"],
-                "jun" => $d["jun"],
-                "jul" => $d["jul"],
-                "ago" => $d["ago"],
-                "sep" => $d["sep"],
-                "oct" => $d["oct"],
-                "nov" => $d["nov"],
-                "dic" => $d["dic"],
                 "total_operacion" => $d["total_operacion"],
                 "fecha_registro" => date("Y-m-d")
             ]);
-            $total_actividades += (float)$nueva_operacion->total;
-            $total_ene += $nueva_operacion->ene ? (float)$nueva_operacion->ene : 0;
-            $total_feb += $nueva_operacion->feb ? (float)$nueva_operacion->feb : 0;
-            $total_mar += $nueva_operacion->mar ? (float)$nueva_operacion->mar : 0;
-            $total_abr += $nueva_operacion->abr ? (float)$nueva_operacion->abr : 0;
-            $total_may += $nueva_operacion->may ? (float)$nueva_operacion->may : 0;
-            $total_jun += $nueva_operacion->jun ? (float)$nueva_operacion->jun : 0;
-            $total_jul += $nueva_operacion->jul ? (float)$nueva_operacion->jul : 0;
-            $total_ago += $nueva_operacion->ago ? (float)$nueva_operacion->ago : 0;
-            $total_sep += $nueva_operacion->sep ? (float)$nueva_operacion->sep : 0;
-            $total_oct += $nueva_operacion->oct ? (float)$nueva_operacion->oct : 0;
-            $total_nov += $nueva_operacion->nov ? (float)$nueva_operacion->nov : 0;
-            $total_dic += $nueva_operacion->dic ? (float)$nueva_operacion->dic : 0;
-            $total_final += (float)$nueva_operacion->total_operacion;
+
+            foreach ($d["memoria_operacion_detalles"] as $mod) {
+                $nuevo_detalle_operacion = $nueva_operacion->memoria_operacion_detalles()->create([
+                    "ue" => mb_strtoupper($mod["ue"]),
+                    "prog" => mb_strtoupper($mod["prog"]),
+                    "act" => mb_strtoupper($mod["act"]),
+                    "lugar" => mb_strtoupper($mod["lugar"]),
+                    "responsable" => mb_strtoupper($mod["responsable"]),
+                    "partida_id" => mb_strtoupper($mod["partida_id"]),
+                    "partida" => mb_strtoupper($mod["partida"]),
+                    "nro" => mb_strtoupper($mod["nro"]),
+                    "descripcion" => mb_strtoupper($mod["descripcion"]),
+                    "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
+                    "cantidad" => $mod["cantidad"],
+                    "unidad" => mb_strtoupper($mod["unidad"]),
+                    "costo" => mb_strtoupper($mod["costo"]),
+                    "total" => $mod["total"],
+                    "justificacion" => mb_strtoupper($mod["justificacion"]),
+                    "ene" => $mod["ene"],
+                    "feb" => $mod["feb"],
+                    "mar" => $mod["mar"],
+                    "abr" => $mod["abr"],
+                    "may" => $mod["may"],
+                    "jun" => $mod["jun"],
+                    "jul" => $mod["jul"],
+                    "ago" => $mod["ago"],
+                    "sep" => $mod["sep"],
+                    "oct" => $mod["oct"],
+                    "nov" => $mod["nov"],
+                    "dic" => $mod["dic"],
+                    "total_actividad" => $mod["total_actividad"]
+                ]);
+                $total_actividades += (float)$nuevo_detalle_operacion->total;
+                $total_ene += $nuevo_detalle_operacion->ene ? (float)$nuevo_detalle_operacion->ene : 0;
+                $total_feb += $nuevo_detalle_operacion->feb ? (float)$nuevo_detalle_operacion->feb : 0;
+                $total_mar += $nuevo_detalle_operacion->mar ? (float)$nuevo_detalle_operacion->mar : 0;
+                $total_abr += $nuevo_detalle_operacion->abr ? (float)$nuevo_detalle_operacion->abr : 0;
+                $total_may += $nuevo_detalle_operacion->may ? (float)$nuevo_detalle_operacion->may : 0;
+                $total_jun += $nuevo_detalle_operacion->jun ? (float)$nuevo_detalle_operacion->jun : 0;
+                $total_jul += $nuevo_detalle_operacion->jul ? (float)$nuevo_detalle_operacion->jul : 0;
+                $total_ago += $nuevo_detalle_operacion->ago ? (float)$nuevo_detalle_operacion->ago : 0;
+                $total_sep += $nuevo_detalle_operacion->sep ? (float)$nuevo_detalle_operacion->sep : 0;
+                $total_oct += $nuevo_detalle_operacion->oct ? (float)$nuevo_detalle_operacion->oct : 0;
+                $total_nov += $nuevo_detalle_operacion->nov ? (float)$nuevo_detalle_operacion->nov : 0;
+                $total_dic += $nuevo_detalle_operacion->dic ? (float)$nuevo_detalle_operacion->dic : 0;
+                $total_final += (float)$nuevo_detalle_operacion->total_actividad;
+            }
         }
 
         $nuevo_memoria_calculo->total_actividades = number_format($total_actividades, 2, ".", "");
@@ -161,13 +168,22 @@ class MemoriaCalculoController extends Controller
         $request["total_dic"] = 0;
         $request["total_final"] = 0;
 
-        $memoria_calculo->update(array_map('mb_strtoupper', $request->except("data", "eliminados", "tareas_eliminados", "partidas_eliminados")));
+        $memoria_calculo->update(array_map('mb_strtoupper', $request->except("data", "eliminados", "tareas_eliminados", "partidas_eliminados", "mod_eliminados")));
 
         $eliminados = $request->eliminados;
         if (isset($eliminados) && count($eliminados) > 0) {
             foreach ($eliminados as $eliminado) {
                 $operacion = MemoriaOperacion::find($eliminado);
                 $operacion->delete();
+            }
+        }
+
+
+        $mod_eliminados = $request->mod_eliminados;
+        if (isset($mod_eliminados) && count($mod_eliminados) > 0) {
+            foreach ($mod_eliminados as $eliminado) {
+                $mod = MemoriaOperacionDetalle::find($eliminado);
+                $mod->delete();
             }
         }
 
@@ -192,34 +208,7 @@ class MemoriaCalculoController extends Controller
             if ($d["id"] == 0 || $d["id"] == "") {
                 $nueva_operacion = $memoria_calculo->operacions()->create([
                     "operacion_id" => mb_strtoupper($d["operacion_id"]),
-                    "ue" => mb_strtoupper($d["ue"]),
-                    "prog" => mb_strtoupper($d["prog"]),
-                    "act" => mb_strtoupper($d["act"]),
                     "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
-                    "lugar" => mb_strtoupper($d["lugar"]),
-                    "responsable" => mb_strtoupper($d["responsable"]),
-                    "partida_id" => mb_strtoupper($d["partida_id"]),
-                    "partida" => mb_strtoupper($d["partida"]),
-                    "nro" => mb_strtoupper($d["nro"]),
-                    "descripcion" => mb_strtoupper($d["descripcion"]),
-                    "descripcion_detallada" => mb_strtoupper($d["descripcion_detallada"]),
-                    "cantidad" => $d["cantidad"],
-                    "unidad" => mb_strtoupper($d["unidad"]),
-                    "costo" => mb_strtoupper($d["costo"]),
-                    "total" => $d["total"],
-                    "justificacion" => mb_strtoupper($d["justificacion"]),
-                    "ene" => $d["ene"],
-                    "feb" => $d["feb"],
-                    "mar" => $d["mar"],
-                    "abr" => $d["abr"],
-                    "may" => $d["may"],
-                    "jun" => $d["jun"],
-                    "jul" => $d["jul"],
-                    "ago" => $d["ago"],
-                    "sep" => $d["sep"],
-                    "oct" => $d["oct"],
-                    "nov" => $d["nov"],
-                    "dic" => $d["dic"],
                     "total_operacion" => $d["total_operacion"],
                     "fecha_registro" => date("Y-m-d")
                 ]);
@@ -228,54 +217,92 @@ class MemoriaCalculoController extends Controller
                 $memoria_operacion = MemoriaOperacion::find($d["id"]);
                 $memoria_operacion->update([
                     "operacion_id" => mb_strtoupper($d["operacion_id"]),
-                    "ue" => mb_strtoupper($d["ue"]),
-                    "prog" => mb_strtoupper($d["prog"]),
-                    "act" => mb_strtoupper($d["act"]),
                     "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
-                    "lugar" => mb_strtoupper($d["lugar"]),
-                    "responsable" => mb_strtoupper($d["responsable"]),
-                    "partida_id" => mb_strtoupper($d["partida_id"]),
-                    "partida" => mb_strtoupper($d["partida"]),
-                    "nro" => mb_strtoupper($d["nro"]),
-                    "descripcion" => mb_strtoupper($d["descripcion"]),
-                    "descripcion_detallada" => mb_strtoupper($d["descripcion_detallada"]),
-                    "cantidad" => $d["cantidad"],
-                    "unidad" => mb_strtoupper($d["unidad"]),
-                    "costo" => mb_strtoupper($d["costo"]),
-                    "total" => $d["total"],
-                    "justificacion" => mb_strtoupper($d["justificacion"]),
-                    "ene" => $d["ene"],
-                    "feb" => $d["feb"],
-                    "mar" => $d["mar"],
-                    "abr" => $d["abr"],
-                    "may" => $d["may"],
-                    "jun" => $d["jun"],
-                    "jul" => $d["jul"],
-                    "ago" => $d["ago"],
-                    "sep" => $d["sep"],
-                    "oct" => $d["oct"],
-                    "nov" => $d["nov"],
-                    "dic" => $d["dic"],
                     "total_operacion" => $d["total_operacion"],
                 ]);
                 $nueva_operacion = $memoria_operacion;
             }
-
-
-            $total_actividades += (float)$nueva_operacion->total;
-            $total_ene += $nueva_operacion->ene ? (float)$nueva_operacion->ene : 0;
-            $total_feb += $nueva_operacion->feb ? (float)$nueva_operacion->feb : 0;
-            $total_mar += $nueva_operacion->mar ? (float)$nueva_operacion->mar : 0;
-            $total_abr += $nueva_operacion->abr ? (float)$nueva_operacion->abr : 0;
-            $total_may += $nueva_operacion->may ? (float)$nueva_operacion->may : 0;
-            $total_jun += $nueva_operacion->jun ? (float)$nueva_operacion->jun : 0;
-            $total_jul += $nueva_operacion->jul ? (float)$nueva_operacion->jul : 0;
-            $total_ago += $nueva_operacion->ago ? (float)$nueva_operacion->ago : 0;
-            $total_sep += $nueva_operacion->sep ? (float)$nueva_operacion->sep : 0;
-            $total_oct += $nueva_operacion->oct ? (float)$nueva_operacion->oct : 0;
-            $total_nov += $nueva_operacion->nov ? (float)$nueva_operacion->nov : 0;
-            $total_dic += $nueva_operacion->dic ? (float)$nueva_operacion->dic : 0;
-            $total_final += (float)$nueva_operacion->total_operacion;
+            foreach ($d["memoria_operacion_detalles"] as $mod) {
+                if ($mod["id"] == 0 || $mod["id"] == "") {
+                    $nuevo_detalle_operacion = $nueva_operacion->memoria_operacion_detalles()->create([
+                        "ue" => mb_strtoupper($mod["ue"]),
+                        "prog" => mb_strtoupper($mod["prog"]),
+                        "act" => mb_strtoupper($mod["act"]),
+                        "lugar" => mb_strtoupper($mod["lugar"]),
+                        "responsable" => mb_strtoupper($mod["responsable"]),
+                        "partida_id" => mb_strtoupper($mod["partida_id"]),
+                        "partida" => mb_strtoupper($mod["partida"]),
+                        "nro" => mb_strtoupper($mod["nro"]),
+                        "descripcion" => mb_strtoupper($mod["descripcion"]),
+                        "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
+                        "cantidad" => $mod["cantidad"],
+                        "unidad" => mb_strtoupper($mod["unidad"]),
+                        "costo" => mb_strtoupper($mod["costo"]),
+                        "total" => $mod["total"],
+                        "justificacion" => mb_strtoupper($mod["justificacion"]),
+                        "ene" => $mod["ene"],
+                        "feb" => $mod["feb"],
+                        "mar" => $mod["mar"],
+                        "abr" => $mod["abr"],
+                        "may" => $mod["may"],
+                        "jun" => $mod["jun"],
+                        "jul" => $mod["jul"],
+                        "ago" => $mod["ago"],
+                        "sep" => $mod["sep"],
+                        "oct" => $mod["oct"],
+                        "nov" => $mod["nov"],
+                        "dic" => $mod["dic"],
+                        "total_actividad" => $mod["total_actividad"]
+                    ]);
+                } else {
+                    $memoria_operacion_detalle = MemoriaOperacionDetalle::find($mod["id"]);
+                    $memoria_operacion_detalle->update([
+                        "ue" => mb_strtoupper($mod["ue"]),
+                        "prog" => mb_strtoupper($mod["prog"]),
+                        "act" => mb_strtoupper($mod["act"]),
+                        "lugar" => mb_strtoupper($mod["lugar"]),
+                        "responsable" => mb_strtoupper($mod["responsable"]),
+                        "partida_id" => mb_strtoupper($mod["partida_id"]),
+                        "partida" => mb_strtoupper($mod["partida"]),
+                        "nro" => mb_strtoupper($mod["nro"]),
+                        "descripcion" => mb_strtoupper($mod["descripcion"]),
+                        "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
+                        "cantidad" => $mod["cantidad"],
+                        "unidad" => mb_strtoupper($mod["unidad"]),
+                        "costo" => mb_strtoupper($mod["costo"]),
+                        "total" => $mod["total"],
+                        "justificacion" => mb_strtoupper($mod["justificacion"]),
+                        "ene" => $mod["ene"],
+                        "feb" => $mod["feb"],
+                        "mar" => $mod["mar"],
+                        "abr" => $mod["abr"],
+                        "may" => $mod["may"],
+                        "jun" => $mod["jun"],
+                        "jul" => $mod["jul"],
+                        "ago" => $mod["ago"],
+                        "sep" => $mod["sep"],
+                        "oct" => $mod["oct"],
+                        "nov" => $mod["nov"],
+                        "dic" => $mod["dic"],
+                        "total_actividad" => $mod["total_actividad"]
+                    ]);
+                    $nuevo_detalle_operacion = $memoria_operacion_detalle;
+                }
+                $total_actividades += (float)$nuevo_detalle_operacion->total;
+                $total_ene += $nuevo_detalle_operacion->ene ? (float)$nuevo_detalle_operacion->ene : 0;
+                $total_feb += $nuevo_detalle_operacion->feb ? (float)$nuevo_detalle_operacion->feb : 0;
+                $total_mar += $nuevo_detalle_operacion->mar ? (float)$nuevo_detalle_operacion->mar : 0;
+                $total_abr += $nuevo_detalle_operacion->abr ? (float)$nuevo_detalle_operacion->abr : 0;
+                $total_may += $nuevo_detalle_operacion->may ? (float)$nuevo_detalle_operacion->may : 0;
+                $total_jun += $nuevo_detalle_operacion->jun ? (float)$nuevo_detalle_operacion->jun : 0;
+                $total_jul += $nuevo_detalle_operacion->jul ? (float)$nuevo_detalle_operacion->jul : 0;
+                $total_ago += $nuevo_detalle_operacion->ago ? (float)$nuevo_detalle_operacion->ago : 0;
+                $total_sep += $nuevo_detalle_operacion->sep ? (float)$nuevo_detalle_operacion->sep : 0;
+                $total_oct += $nuevo_detalle_operacion->oct ? (float)$nuevo_detalle_operacion->oct : 0;
+                $total_nov += $nuevo_detalle_operacion->nov ? (float)$nuevo_detalle_operacion->nov : 0;
+                $total_dic += $nuevo_detalle_operacion->dic ? (float)$nuevo_detalle_operacion->dic : 0;
+                $total_final += (float)$nuevo_detalle_operacion->total_actividad;
+            }
         }
 
         $memoria_calculo->total_actividades = number_format($total_actividades, 2, ".", "");
@@ -309,7 +336,7 @@ class MemoriaCalculoController extends Controller
     {
         return response()->JSON([
             'sw' => true,
-            'memoria_calculo' => $memoria_calculo
+            'memoria_calculo' => $memoria_calculo->load("operacions.memoria_operacion_detalles")
         ], 200);
     }
 

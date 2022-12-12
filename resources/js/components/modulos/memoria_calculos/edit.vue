@@ -77,6 +77,7 @@
                             :operacion="operacion"
                             :index="index"
                             @quitar="quitarOperacion"
+                            @quitar_detalle="addEliminadosMod"
                             :key="index"
                             :accion="'edit'"
                         ></Operacion>
@@ -140,6 +141,7 @@ export default {
             oMemoriaCalculo: null,
             memoria_id: "",
             eliminados: [],
+            mod_eliminados: [],
         };
     },
     watch: {
@@ -189,6 +191,7 @@ export default {
                     data: this.listOperacions,
                     eliminados: this.eliminados,
                     _method: "put",
+                    mod_eliminados: this.mod_eliminados,
                 };
                 axios
                     .post("/admin/memoria_calculos/" + this.id, data)
@@ -259,81 +262,139 @@ export default {
                             (index + 1)
                     );
                 }
-                if (item.ue == null || item.ue == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Unidad Ejecutora</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.prog == null || item.prog == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Programación</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.act == null || item.act == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Actividad</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.lugar == null || item.lugar == "") {
-                    array_errors.push(
-                        "Debes ingresar un <b>Lugar de Ejecución de la Operación</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.responsable == null || item.responsable == "") {
-                    array_errors.push(
-                        "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.partida_id == null || item.partida_id == "") {
-                    array_errors.push(
-                        "Debes seleccionar una <b>Partida de gasto</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.nro == null || item.nro == "") {
-                    array_errors.push(
-                        "Debes ingresar un <b>Nro</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (
-                    item.descripcion_detallada == null ||
-                    item.descripcion_detallada == ""
-                ) {
-                    array_errors.push(
-                        "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.cantidad == null || item.cantidad == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Canitdad</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.unidad == null || item.unidad == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Unidad</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.costo == null || item.costo == "") {
-                    array_errors.push(
-                        "Debes ingresar un <b>Precio Unitario</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
-                if (item.justificacion == null || item.justificacion == "") {
-                    array_errors.push(
-                        "Debes ingresar una <b>Justificación</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
+                item.memoria_operacion_detalles.forEach(
+                    (elem_detalle, index_detalle) => {
+                        if (elem_detalle.ue == null || elem_detalle.ue == "") {
+                            array_errors.push(
+                                "Debes ingresar una <b>Unidad Ejecutora</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.prog == null ||
+                            elem_detalle.prog == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Programación</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.act == null ||
+                            elem_detalle.act == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Actividad</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.lugar == null ||
+                            elem_detalle.lugar == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Lugar de Ejecución de la Operación</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.responsable == null ||
+                            elem_detalle.responsable == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.partida_id == null ||
+                            elem_detalle.partida_id == ""
+                        ) {
+                            array_errors.push(
+                                "Debes seleccionar una <b>Partida de gasto</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.nro == null ||
+                            elem_detalle.nro == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Nro</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.descripcion_detallada == null ||
+                            elem_detalle.descripcion_detallada == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.cantidad == null ||
+                            elem_detalle.cantidad == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Canitdad</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.unidad == null ||
+                            elem_detalle.unidad == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Unidad</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.costo == null ||
+                            elem_detalle.costo == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Precio Unitario</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.justificacion == null ||
+                            elem_detalle.justificacion == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Justificación</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                    }
+                );
             });
 
             return array_errors;
@@ -344,34 +405,39 @@ export default {
             this.listOperacions.push({
                 id: 0,
                 memoria_id: "",
-                ue: "",
-                prog: "",
-                act: "",
                 operacion_id: "",
                 detalle_operacion_id: "",
-                lugar: "",
-                responsable: "",
-                partida: "",
-                nro: "",
-                descripcion: "",
-                cantidad: "",
-                unidad: "",
-                costo: "",
-                total: 0,
-                justificacion: "",
-                ene: "",
-                feb: "",
-                mar: "",
-                abr: "",
-                may: "",
-                jun: "",
-                jul: "",
-                ago: "",
-                sep: "",
-                oct: "",
-                nov: "",
-                dic: "",
                 total_operacion: 0,
+                memoria_operacion_detalles: [
+                    {
+                        ue: "",
+                        prog: "",
+                        act: "",
+                        lugar: "",
+                        responsable: "",
+                        partida: "",
+                        nro: "",
+                        descripcion: "",
+                        cantidad: "",
+                        unidad: "",
+                        costo: "",
+                        total: 0,
+                        justificacion: "",
+                        ene: "",
+                        feb: "",
+                        mar: "",
+                        abr: "",
+                        may: "",
+                        jun: "",
+                        jul: "",
+                        ago: "",
+                        sep: "",
+                        oct: "",
+                        nov: "",
+                        dic: "",
+                        total_actividad: 0,
+                    },
+                ],
             });
         },
         quitarOperacion(index, item) {
@@ -379,6 +445,9 @@ export default {
                 this.eliminados.push(item.id);
             }
             this.listOperacions.splice(index, 1);
+        },
+        addEliminadosMod(id) {
+            this.mod_eliminados.push(id);
         },
     },
 };

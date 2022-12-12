@@ -12,8 +12,8 @@ class FormularioCuatro extends Model
     protected $table = "formulario_cuatro";
 
     protected $fillable = [
-        'codigo_pei', 'accion_institucional', 'indicador', 'codigo_poa',
-        'accion_corto', 'resultado_esperado', 'presupuesto', 'ponderacion',
+        'codigo_pei', 'resultado_institucional', 'indicador', 'codigo_poa',
+        'accion_corto', 'indicador_proceso', 'linea_base', 'meta', 'presupuesto', 'ponderacion',
         'unidad_id', 'fecha_registro'
     ];
 

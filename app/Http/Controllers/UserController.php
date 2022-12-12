@@ -51,6 +51,11 @@ class UserController extends Controller
             'unidads.edit',
             'unidads.destroy',
 
+            'subdireccions.index',
+            'subdireccions.create',
+            'subdireccions.edit',
+            'subdireccions.destroy',
+
             'partidas.index',
             'partidas.create',
             'partidas.edit',
@@ -138,6 +143,11 @@ class UserController extends Controller
             'unidads.create',
             'unidads.edit',
             'unidads.destroy',
+
+            'subdireccions.index',
+            'subdireccions.create',
+            'subdireccions.edit',
+            'subdireccions.destroy',
 
             'partidas.index',
             'partidas.create',

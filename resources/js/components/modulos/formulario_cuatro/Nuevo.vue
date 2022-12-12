@@ -47,29 +47,29 @@
                                 <label
                                     :class="{
                                         'text-danger':
-                                            errors.accion_institucional,
+                                            errors.resultado_institucional,
                                     }"
-                                    >Acción Institucional específica*</label
+                                    >Resultado institucional*</label
                                 >
 
                                 <el-input
                                     type="textarea"
                                     autosize
-                                    placeholder="Acción Institucional específica"
+                                    placeholder="Resultado institucional"
                                     :class="{
                                         'is-invalid':
-                                            errors.accion_institucional,
+                                            errors.resultado_institucional,
                                     }"
                                     v-model="
-                                        formulario_cuatro.accion_institucional
+                                        formulario_cuatro.resultado_institucional
                                     "
                                     clearable
                                 >
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.accion_institucional"
-                                    v-text="errors.accion_institucional[0]"
+                                    v-if="errors.resultado_institucional"
+                                    v-text="errors.resultado_institucional[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -141,28 +141,49 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger':
-                                            errors.resultado_esperado,
+                                        'text-danger': errors.linea_base,
                                     }"
-                                    >Resultado Esperado Gestión*</label
+                                    >Línea de base*</label
                                 >
                                 <el-input
                                     type="textarea"
                                     autosize
-                                    placeholder="Resultado Esperado Gestión"
+                                    placeholder="Línea de base"
                                     :class="{
-                                        'is-invalid': errors.resultado_esperado,
+                                        'is-invalid': errors.linea_base,
                                     }"
-                                    v-model="
-                                        formulario_cuatro.resultado_esperado
-                                    "
+                                    v-model="formulario_cuatro.linea_base"
                                     clearable
                                 >
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.resultado_esperado"
-                                    v-text="errors.resultado_esperado[0]"
+                                    v-if="errors.linea_base"
+                                    v-text="errors.linea_base[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.meta,
+                                    }"
+                                    >Meta*</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Línea de base"
+                                    :class="{
+                                        'is-invalid': errors.meta,
+                                    }"
+                                    v-model="formulario_cuatro.meta"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.meta"
+                                    v-text="errors.meta[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -286,11 +307,13 @@ export default {
             default: {
                 id: 0,
                 codigo_pei: "",
-                accion_institucional: "",
+                resultado_institucional: "",
                 indicador: "",
                 codigo_poa: "",
                 accion_corto: "",
-                resultado_esperado: "",
+                indicador_proceso: "",
+                linea_base: "",
+                meta: "",
                 presupuesto: "",
                 ponderacion: "",
                 unidad_id: "",
@@ -310,7 +333,7 @@ export default {
     computed: {
         tituloModal() {
             if (this.accion == "nuevo") {
-                return "AGREGAR USUARIO";
+                return "AGREGAR REGISTRO";
             } else {
                 return "MODIFICAR REGISTRO";
             }
@@ -360,9 +383,9 @@ export default {
                         : ""
                 );
                 formdata.append(
-                    "accion_institucional",
-                    this.formulario_cuatro.accion_institucional
-                        ? this.formulario_cuatro.accion_institucional
+                    "resultado_institucional",
+                    this.formulario_cuatro.resultado_institucional
+                        ? this.formulario_cuatro.resultado_institucional
                         : ""
                 );
                 formdata.append(
@@ -384,9 +407,21 @@ export default {
                         : ""
                 );
                 formdata.append(
-                    "resultado_esperado",
-                    this.formulario_cuatro.resultado_esperado
-                        ? this.formulario_cuatro.resultado_esperado
+                    "indicador_proceso",
+                    this.formulario_cuatro.indicador_proceso
+                        ? this.formulario_cuatro.indicador_proceso
+                        : ""
+                );
+                formdata.append(
+                    "linea_base",
+                    this.formulario_cuatro.linea_base
+                        ? this.formulario_cuatro.linea_base
+                        : ""
+                );
+                formdata.append(
+                    "meta",
+                    this.formulario_cuatro.meta
+                        ? this.formulario_cuatro.meta
                         : ""
                 );
                 formdata.append(
@@ -469,11 +504,13 @@ export default {
         limpiaFormularioCuatro() {
             this.errors = [];
             this.formulario_cuatro.codigo_pei = "";
-            this.formulario_cuatro.accion_institucional = "";
+            this.formulario_cuatro.resultado_institucional = "";
             this.formulario_cuatro.indicador = "";
             this.formulario_cuatro.codigo_poa = "";
             this.formulario_cuatro.accion_corto = "";
-            this.formulario_cuatro.resultado_esperado = "";
+            this.formulario_cuatro.indicador_proceso = "";
+            this.formulario_cuatro.linea_base = "";
+            this.formulario_cuatro.meta = "";
             this.formulario_cuatro.presupuesto = "";
             this.formulario_cuatro.ponderacion = "";
             this.formulario_cuatro.unidad_id = "";
