@@ -16,7 +16,6 @@ class MemoriaOperacionDetalle extends Model
         "ago", "sep", "oct", "nov", "dic", "total_actividad",
     ];
 
-    protected $appends = ["texto_partida"];
 
     public function memoria_operacion()
     {
@@ -28,8 +27,4 @@ class MemoriaOperacionDetalle extends Model
         return $this->belongsTo(Partida::class, 'partida_id');
     }
 
-    public function getTextoPartidaAttribute()
-    {
-        return $this->m_partida->partida;
-    }
 }

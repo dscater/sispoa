@@ -9,6 +9,7 @@ use App\Models\FormularioCuatro;
 use App\Models\LugarResponsable;
 use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
+use App\Models\MemoriaOperacionDetalle;
 use App\Models\Operacion;
 use App\Models\Partida;
 use Illuminate\Http\Request;
@@ -221,6 +222,8 @@ class FormularioCincoController extends Controller
 
     public function show(FormularioCinco $formulario_cinco)
     {
+
+
         // armar repetidos
         $array_registros = [];
         $codigos = DB::select("SELECT DISTINCT operacion_id FROM memoria_operacions WHERE memoria_id = $formulario_cinco->memoria_id");
@@ -270,7 +273,73 @@ class FormularioCincoController extends Controller
     }
     public function getTabla(FormularioCinco $formulario_cinco)
     {
-        $html = view("parcial.formulario_cinco", compact("formulario_cinco"))->render();
+        // armar repetidos
+        $array_registros = FormularioCincoController::armaRepetidos($formulario_cinco);
+        $html = view("parcial.formulario_cinco", compact("array_registros", "formulario_cinco"))->render();
         return response()->JSON($html);
+    }
+
+    public static function armaRepetidos($formulario_cinco)
+    {
+        $array_registros = [];
+        $operaciones = $formulario_cinco->memoria->operacions;
+        foreach ($operaciones as $operacion) {
+            $rowspan_operacion = 0;
+            // buscar los lugares sin repetir de la operacion_actual
+            // obtener los lugares sin repetir
+            $lugares = MemoriaOperacionDetalle::select("lugar")
+                ->where("memoria_operacion_id", $operacion->id)
+                ->distinct("lugar")
+                ->get()
+                ->pluck("lugar")
+                ->toArray();
+
+            $array_lugares = [];
+            foreach ($lugares as $lugar) {
+                $rowspan_lugar = 0;
+                // armar los responsables sin repetir
+                $resposanbles = MemoriaOperacionDetalle::select("responsable")
+                    ->where("memoria_operacion_id", $operacion->id)
+                    ->where("lugar", $lugar)
+                    ->distinct("responsable")
+                    ->get()
+                    ->pluck("responsable")
+                    ->toArray();
+
+                $array_responsables = [];
+                foreach ($resposanbles as $responsable) {
+                    $registros = MemoriaOperacionDetalle::where("memoria_operacion_id", $operacion->id)
+                        ->where("lugar", $lugar)
+                        ->where("responsable", $responsable)
+                        ->get();
+                    $array_responsables[] = [
+                        "responsable" => $responsable,
+                        "registros" => $registros,
+                        "rowspan" => count($registros),
+                    ];
+                    $rowspan_operacion += count($registros);
+                    $rowspan_lugar += count($registros);
+                }
+
+                // unir los registros los responsables con lugares
+                $array_lugares[] = [
+                    "lugar" => $lugar,
+                    "rowspan" => $rowspan_lugar,
+                    "responsables" =>  $array_responsables
+                ];
+            }
+
+            // unir los registros de lugares y responsables con el array $array_lugares
+            $array_registros[] = [
+                "codigo_operacion" => $operacion->codigo_operacion,
+                "subdireccion" => $operacion->operacion->subdireccion,
+                "operacion" => $operacion->operacion->operacion,
+                "codigo_tarea" => $operacion->codigo_actividad,
+                "tarea" => $operacion->detalle_operacion->actividad_tarea,
+                "rowspan" => $rowspan_operacion,
+                "lugares" => $array_lugares
+            ];
+        }
+        return $array_registros;
     }
 }

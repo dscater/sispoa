@@ -393,7 +393,7 @@ export default {
             });
         },
         removerValidacion() {
-            window.removeEventListener("beforeunload");
+            // window.removeEventListener("beforeunload");
         },
     },
     beforeRouteLeave(to, from, next) {

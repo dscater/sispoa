@@ -203,6 +203,7 @@ class MemoriaCalculoController extends Controller
         $total_final = 0;
 
         $data = $request->data;
+
         foreach ($data as $d) {
 
             if ($d["id"] == 0 || $d["id"] == "") {
@@ -222,6 +223,7 @@ class MemoriaCalculoController extends Controller
                 ]);
                 $nueva_operacion = $memoria_operacion;
             }
+
             foreach ($d["memoria_operacion_detalles"] as $mod) {
                 if ($mod["id"] == 0 || $mod["id"] == "") {
                     $nuevo_detalle_operacion = $nueva_operacion->memoria_operacion_detalles()->create([
@@ -336,7 +338,7 @@ class MemoriaCalculoController extends Controller
     {
         return response()->JSON([
             'sw' => true,
-            'memoria_calculo' => $memoria_calculo->load("operacions.memoria_operacion_detalles")
+            'memoria_calculo' => $memoria_calculo->load("operacions.memoria_operacion_detalles", "operacions.detalle_operacion","operacions.operacion.subdireccion")
         ], 200);
     }
 

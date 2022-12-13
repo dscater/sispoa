@@ -105,6 +105,7 @@ Route::prefix('admin')->group(function () {
     Route::get("formulario_tres", [FormularioTresController::class, 'formulario_tres']);
 
     // FORMULARIO CINCO
+    Route::get("formulario_cinco/tabla/getTabla/{formulario_cinco}", [FormularioCincoController::class, 'getTabla']);
     Route::resource('formulario_cinco', FormularioCincoController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);

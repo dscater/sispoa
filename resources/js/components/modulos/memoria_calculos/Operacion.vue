@@ -275,7 +275,7 @@
                                 <div class="form-group col-md-4">
                                     <label
                                         :class="{
-                                            'text-danger': errors.texto_partida,
+                                            'text-danger': errors.descripcion,
                                         }"
                                         >Descripción*</label
                                     >
@@ -284,16 +284,16 @@
                                         autosize
                                         class="w-100"
                                         :class="{
-                                            'is-invalid': errors.texto_partida,
+                                            'is-invalid': errors.descripcion,
                                         }"
-                                        v-model="item_mod.texto_partida"
+                                        v-model="item_mod.descripcion"
                                         readonly
                                     >
                                     </el-input>
                                     <span
                                         class="error invalid-feedback"
-                                        v-if="errors.texto_partida"
-                                        v-text="errors.texto_partida[0]"
+                                        v-if="errors.descripcion"
+                                        v-text="errors.descripcion[0]"
                                     ></span>
                                 </div>
                                 <div class="form-group col-md-1">
@@ -878,6 +878,9 @@ export default {
             this.o_Operacion.memoria_operacion_detalles.forEach(
                 (elem_detalle, index) => {
                     this.verificaTotales(index);
+                    // setTimeout(() => {
+                    //     this.getTextoPartida(index);
+                    // }, 300);
                 }
             );
         }
@@ -901,6 +904,7 @@ export default {
             });
         },
         getTextoPartida(index_mod = null) {
+            console.log(this.o_Operacion.memoria_operacion_detalles[index_mod].id);
             if (index_mod != null) {
                 let item = this.listPartidas.filter(
                     (value) =>
@@ -909,19 +913,11 @@ export default {
                             .partida_id
                 );
                 if (item.length > 0) {
-                    this.o_Operacion.memoria_operacion_detalles[
-                        index_mod
-                    ].partida = item[0].partida;
-                    this.o_Operacion.memoria_operacion_detalles[
-                        index_mod
-                    ].texto_partida = item[0].descripcion;
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].partida = item[0].partida;
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].descripcion = item[0].descripcion;
                 } else {
-                    this.o_Operacion.memoria_operacion_detalles[
-                        index_mod
-                    ].partida = "";
-                    this.o_Operacion.memoria_operacion_detalles[
-                        index_mod
-                    ].texto_partida = "";
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].partida = "";
+                    this.o_Operacion.memoria_operacion_detalles[index_mod].descripcion = "";
                 }
             }
         },

@@ -35,8 +35,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row" id="contenedor_tabla">
-                                    <table class="tabla_detalle">
+                                <div class="row" id="contenedor_tabla" v-html="tabla">
+                                    <!-- <table class="tabla_detalle">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th colspan="17">
@@ -300,7 +300,7 @@
                                                 </th>
                                             </tr>
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
                             </div>
                         </div>
@@ -328,7 +328,8 @@ export default {
         };
     },
     mounted() {
-        this.getFormularioCinco();
+        // this.getFormularioCinco();
+        this.getTabla();
         this.loadingWindow.close();
     },
     methods: {
@@ -341,11 +342,9 @@ export default {
         },
         getTabla() {
             axios
-                .get(
-                    "/admin/formulario_cinco/tabla/getTabla/" +
-                        this.oFormularioCinco.id
-                )
+                .get("/admin/formulario_cinco/tabla/getTabla/" + this.id)
                 .then((response) => {
+                    console.log(response.data);
                     this.tabla = response.data;
                 });
         },
