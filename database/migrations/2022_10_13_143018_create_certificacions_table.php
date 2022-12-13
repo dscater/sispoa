@@ -17,6 +17,7 @@ class CreateCertificacionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger("formulario_id");
             $table->unsignedBigInteger("mo_id");
+            $table->unsignedBigInteger("mod_id");
             $table->double("cantidad_usar");
             $table->decimal("presupuesto_usarse", 24, 2);
             $table->string("archivo", 255)->nullable();

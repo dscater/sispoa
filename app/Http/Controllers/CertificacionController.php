@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
 use App\Models\MemoriaOperacion;
+use App\Models\MemoriaOperacionDetalle;
 use App\Models\Partida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ class CertificacionController extends Controller
     public $validacion = [
         'formulario_id' => 'required',
         "mo_id" => "required",
+        "mod_id" => "required",
         "cantidad_usar" => "required",
         "archivo" => "required",
         "correlativo" => "required",
@@ -29,12 +31,12 @@ class CertificacionController extends Controller
     {
         $certificacions = [];
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
-            $certificacions = Certificacion::select("certificacions.*")
+            $certificacions = Certificacion::with("memoria_operacion_detalle")->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                 ->get();
         } else {
-            $certificacions = Certificacion::all();
+            $certificacions = Certificacion::with("memoria_operacion_detalle")->get();
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
     }
@@ -47,8 +49,9 @@ class CertificacionController extends Controller
         $request->validate($this->validacion);
         $request["fecha_registro"] = date("Y-m-d");
         $request["estado"] = "PENDIENTE";
-        $memoria_operacion = MemoriaOperacion::find($request->mo_id);
-        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion->costo;
+        $request["anulado"] = 0;
+        $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
+        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
         $request["presupuesto_usarse"] = $presupuesto_usarse;
         $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
         if ($request->hasFile('archivo')) {
@@ -68,6 +71,7 @@ class CertificacionController extends Controller
 
     public function pdf(Certificacion $certificacion)
     {
+        $certificacion = $certificacion->load("memoria_operacion_detalle");
         $pdf = PDF::loadView('reportes.certificacion', compact('certificacion'))->setPaper('letter', 'portrait');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
@@ -86,8 +90,8 @@ class CertificacionController extends Controller
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
-        $memoria_operacion = MemoriaOperacion::find($request->mo_id);
-        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion->costo;
+        $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
+        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
         $request["presupuesto_usarse"] = $presupuesto_usarse;
         $certificacion->update(array_map("mb_strtoupper", $request->except("archivo")));
 

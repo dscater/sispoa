@@ -244,10 +244,10 @@
                 <td class="centreado bold bg_principal">O.F.</td>
             </tr>
             <tr>
-                <td class="centreado">{{ $certificacion->memoria_operacion->ue }}</td>
-                <td class="centreado">{{ $certificacion->memoria_operacion->prog }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->ue }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->prog }}</td>
                 <td class="centreado">00</td>
-                <td class="centreado">{{ $certificacion->memoria_operacion->act }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->act }}</td>
                 <td class="centreado">42</td>
                 <td class="centreado">230</td>
             </tr>
@@ -310,12 +310,12 @@
         </thead>
         <tbody>
             <tr>
-                <td class="centreado">{{ $certificacion->memoria_operacion->justificacion }}</td>
-                <td class="centreado">{{ $certificacion->memoria_operacion->partida }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->justificacion }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->partida }}</td>
                 <td class="centreado">{{ number_format($certificacion->memoria_operacion->presupuesto, 2) }}</td>
                 <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
                 @php
-                    $saldo = number_format((float) $certificacion->memoria_operacion->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
+                    $saldo = number_format((float) $certificacion->memoria_operacion_detalle->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
                     if ((float) $saldo == 0) {
                         $saldo = '-';
                     }

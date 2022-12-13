@@ -14,6 +14,7 @@ use App\Http\Controllers\FormularioTresController;
 use App\Http\Controllers\FormularioUnoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemoriaCalculoController;
+use App\Http\Controllers\MemoriaOperacionDetalleController;
 use App\Http\Controllers\OperacionController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\PeiController;
@@ -116,6 +117,9 @@ Route::prefix('admin')->group(function () {
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 
+    // MEMORIA OPERACION DETALLES
+    Route::get("memoria_operacion_detalles/getDetalles", [MemoriaOperacionDetalleController::class, "getDetalles"]);
+    
     // CERTIFICACION
     Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);
     Route::POST("certificacions/aprobar/{certificacion}", [CertificacionController::class, "aprobar"]);

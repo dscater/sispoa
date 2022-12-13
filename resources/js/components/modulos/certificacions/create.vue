@@ -161,7 +161,11 @@
                                             }"
                                             v-model="oCertificacion.mo_id"
                                             clearable
-                                            @change="getDetalleOperacion"
+                                            @change="
+                                                getDetalles();
+                                                oCertificacion.mod_id = '';
+                                                listDetalles = [];
+                                            "
                                         >
                                             <el-option
                                                 v-for="item in listOperaciones"
@@ -170,9 +174,7 @@
                                                 :label="
                                                     item.codigo_operacion +
                                                     ' | ' +
-                                                    item.codigo_actividad +
-                                                    ' | ' +
-                                                    item.partida
+                                                    item.codigo_actividad
                                                 "
                                             >
                                             </el-option>
@@ -183,9 +185,46 @@
                                             v-text="errors.mo_id[0]"
                                         ></span>
 
+                                        <label
+                                            :class="{
+                                                'text-danger': errors.mod_id,
+                                            }"
+                                            >Seleccionar detalle*</label
+                                        >
+                                        <el-select
+                                            filterable
+                                            class="w-100 d-block"
+                                            :class="{
+                                                'is-invalid': errors.mod_id,
+                                            }"
+                                            v-model="oCertificacion.mod_id"
+                                            clearable
+                                            @change="getDetalleOperacion"
+                                        >
+                                            <el-option
+                                                v-for="item in listDetalles"
+                                                :key="item.id"
+                                                :value="item.id"
+                                                :label="
+                                                    item.partida +
+                                                    ' - ' +
+                                                    item.descripcion
+                                                "
+                                            >
+                                            </el-option>
+                                        </el-select>
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.mod_id"
+                                            v-text="errors.mod_id[0]"
+                                        ></span>
+
                                         <div
                                             class="row mt-1"
-                                            v-if="oCertificacion.mo_id != ''"
+                                            v-if="
+                                                oCertificacion.mo_id != '' &&
+                                                oCertificacion.mod_id != ''
+                                            "
                                         >
                                             <div class="col-md-12">
                                                 <div class="card">
@@ -566,6 +605,7 @@ export default {
             oCertificacion: {
                 formulario_id: "",
                 mo_id: "",
+                mod_id: "",
                 cantidad_usar: "",
                 presupuesto_usarse: "",
                 archivo: null,
@@ -583,7 +623,7 @@ export default {
             listFormularios: [],
             listOperaciones: [],
             listTareas: [],
-            listPartidas: [],
+            listDetalles: [],
             listUsuarios: [],
             enviando: false,
             nro_paso: 1,
@@ -712,6 +752,7 @@ export default {
                     this.oCertificacion.formulario_id
                 );
                 formdata.append("mo_id", this.oCertificacion.mo_id);
+                formdata.append("mod_id", this.oCertificacion.mod_id);
                 formdata.append(
                     "cantidad_usar",
                     this.oCertificacion.cantidad_usar
@@ -802,16 +843,14 @@ export default {
 
         // textos codigos
         getDetalleOperacion() {
-            let operacion = this.listOperaciones.filter(
-                (item) => item.id == this.oCertificacion.mo_id
+            let operacion = this.listDetalles.filter(
+                (item) => item.id == this.oCertificacion.mod_id
             )[0];
             this.oMOperacion = operacion;
             this.oCertificacion.cantidad_usar = this.oMOperacion.cantidad;
         },
         cargaArchivo(e) {
             this.oCertificacion.archivo = e.target.files[0];
-            console.log(e);
-            console.log(this.oCertificacion.archivo);
         },
         // ARMAR ERRORES
         muestraErrores() {
@@ -839,16 +878,15 @@ export default {
                 confirmButtonColor: "#0069d9",
             });
         },
-        getPartidas() {
+        getDetalles() {
             axios
-                .get("/admin/actividad_tareas/getPartidas", {
+                .get("/admin/memoria_operacion_detalles/getDetalles", {
                     params: {
-                        actividad_tarea_id:
-                            this.oCertificacion.actividad_tarea_id,
+                        id: this.oCertificacion.mo_id,
                     },
                 })
                 .then((response) => {
-                    this.listPartidas = response.data;
+                    this.listDetalles = response.data;
                 });
         },
         validaCantidadUsar() {

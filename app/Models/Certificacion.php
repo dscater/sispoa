@@ -10,9 +10,9 @@ class Certificacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        "formulario_id", "mo_id", "cantidad_usar", "presupuesto_usarse", "archivo",
+        "formulario_id", "mo_id", "mod_id", "cantidad_usar", "presupuesto_usarse", "archivo",
         "correlativo", "solicitante_id", "superior_id", "inicio", "final", "personal_designado", "departamento", "municipio",
-        "estado", "fecha_registro",
+        "estado", "fecha_registro", "anulado"
     ];
 
     protected $with = ["formulario", "memoria_operacion"];
@@ -25,6 +25,11 @@ class Certificacion extends Model
     public function memoria_operacion()
     {
         return $this->belongsTo(MemoriaOperacion::class, 'mo_id');
+    }
+
+    public function memoria_operacion_detalle()
+    {
+        return $this->belongsTo(MemoriaOperacionDetalle::class, 'mod_id');
     }
 
     public function solicitante()

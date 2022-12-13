@@ -16,6 +16,11 @@ class MemoriaOperacionDetalle extends Model
         "ago", "sep", "oct", "nov", "dic", "total_actividad",
     ];
 
+    protected $appends = ["presupuesto"];
+    public function getPresupuestoAttribute()
+    {
+        return (float)$this->cantidad * (float)$this->costo;
+    }
 
     public function memoria_operacion()
     {

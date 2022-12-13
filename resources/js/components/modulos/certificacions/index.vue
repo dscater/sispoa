@@ -114,24 +114,21 @@
                                                     <strong>Partida: </strong
                                                     >{{
                                                         row.item
-                                                            .memoria_operacion
+                                                            .memoria_operacion_detalle
                                                             .partida
                                                     }}<br />
-                                                    <strong>Personal designado: </strong
+                                                    <strong
+                                                        >Personal designado: </strong
                                                     >{{
                                                         row.item
                                                             .personal_designado
                                                     }}<br />
-                                                    <strong>Departamento: </strong
-                                                    >{{
-                                                        row.item
-                                                            .departamento
+                                                    <strong
+                                                        >Departamento: </strong
+                                                    >{{ row.item.departamento
                                                     }}<br />
                                                     <strong>Municipio: </strong
-                                                    >{{
-                                                        row.item
-                                                            .municipio
-                                                    }}
+                                                    >{{ row.item.municipio }}
                                                 </template>
 
                                                 <template
@@ -146,7 +143,8 @@
                                                     <strong
                                                         >Total a usar: </strong
                                                     >{{
-                                                        row.item.presupuesto_usarse
+                                                        row.item
+                                                            .presupuesto_usarse
                                                     }}
                                                     <br />
                                                     <strong>Inicio: </strong
