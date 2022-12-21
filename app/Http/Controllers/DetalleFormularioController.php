@@ -21,7 +21,7 @@ class DetalleFormularioController extends Controller
     public function index(Request $request)
     {
         $detalle_formularios = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
