@@ -139,21 +139,6 @@ class UserController extends Controller
 
         ],
         'ENLACE' => [
-            'unidads.index',
-            'unidads.create',
-            'unidads.edit',
-            'unidads.destroy',
-
-            'subdireccions.index',
-            'subdireccions.create',
-            'subdireccions.edit',
-            'subdireccions.destroy',
-
-            'partidas.index',
-            'partidas.create',
-            'partidas.edit',
-            'partidas.destroy',
-
             'formulario_uno.index',
 
             'formulario_dos.index',
@@ -209,15 +194,9 @@ class UserController extends Controller
             'actividad_realizadas.edit',
             'actividad_realizadas.destroy',
 
-            'verificacion_actividads.index',
-            'verificacion_actividads.edit',
-
             "seguimiento_trimestral.index",
 
             "informe_actividad.index",
-
-            'configuracion.index',
-            'configuracion.edit',
 
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",

@@ -31,7 +31,7 @@ class FormularioCuatroController extends Controller
     public function index(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
             $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
         } else {
             $listado = FormularioCuatro::all();

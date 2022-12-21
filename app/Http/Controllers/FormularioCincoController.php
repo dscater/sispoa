@@ -27,7 +27,7 @@ class FormularioCincoController extends Controller
     public function index(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
             $listado = FormularioCinco::select("formulario_cinco.*")
                 ->join("memoria_calculos", "memoria_calculos.id", "=", "formulario_cinco.memoria_id")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")

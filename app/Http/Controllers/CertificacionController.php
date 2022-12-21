@@ -30,7 +30,7 @@ class CertificacionController extends Controller
     public function index()
     {
         $certificacions = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
             $certificacions = Certificacion::with("memoria_operacion_detalle")->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)

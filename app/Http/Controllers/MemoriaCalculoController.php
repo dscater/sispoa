@@ -20,7 +20,7 @@ class MemoriaCalculoController extends Controller
     public function index(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
             $listado = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
