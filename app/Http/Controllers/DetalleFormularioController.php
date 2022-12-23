@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificacion;
 use App\Models\DetalleFormulario;
 use App\Models\DetalleOperacion;
+use App\Models\Log;
 use App\Models\MemoriaCalculo;
 use App\Models\Operacion;
 use Illuminate\Http\Request;
@@ -69,6 +71,9 @@ class DetalleFormularioController extends Controller
                 ]);
             }
         }
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "DETALLE FORMULARIO CUATRO", "EL USUARIO $user->id REGISTRO UN DETALLE FORMULARIO CUATRO", $user);
 
         return response()->JSON([
             'sw' => true,
@@ -168,6 +173,9 @@ class DetalleFormularioController extends Controller
             }
         }
 
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "DETALLE FORMULARIO CUATRO", "EL USUARIO $user->id MODIFICÓ UN DETALLE FORMULARIO CUATRO", $user);
+
         return response()->JSON([
             'sw' => true,
             'detalle_formulario' => $detalle_formulario,
@@ -191,11 +199,20 @@ class DetalleFormularioController extends Controller
             return response()->JSON(["sw" => false, "formulario_cuatro" => $detalle_formulario->formulario, "msj" => "No es posible eliminar este registro, debido a que su información esta siendo utilizada en Memoria de cálculo"]);
         }
 
+        $existe = Certificacion::where("formulario_id", $detalle_formulario->formulario->id)->get();
+        if (count($existe) > 0) {
+            return response()->JSON(["sw" => false, "formulario_cuatro" => $detalle_formulario->formulario, "msj" => "No es posible eliminar este registro, porque la información esta siendo utilizada en Certificaciones"]);
+        }
+
         foreach ($detalle_formulario->operacions as $o) {
             DB::delete("DELETE FROM detalle_operacions WHERE operacion_id = $o->id");
             $o->delete();
         }
         $detalle_formulario->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "DETALLE FORMULARIO CUATRO", "EL USUARIO $user->id ELIMINÓ UN DETALLE FORMULARIO CUATRO", $user);
+
         return response()->JSON([
             'sw' => true,
             'msj' => 'El registro se eliminó correctamente'

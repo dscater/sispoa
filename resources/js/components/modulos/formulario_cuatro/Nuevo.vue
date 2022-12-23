@@ -172,7 +172,7 @@
                                 <el-input
                                     type="textarea"
                                     autosize
-                                    placeholder="Línea de base"
+                                    placeholder="Meta"
                                     :class="{
                                         'is-invalid': errors.meta,
                                     }"

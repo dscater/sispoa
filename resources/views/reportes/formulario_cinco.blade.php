@@ -165,7 +165,7 @@
             page-break-after: always;
         }
 
-        .tabla_detalle{
+        .tabla_detalle {
             border-collapse: collapse;
         }
     </style>
@@ -177,6 +177,7 @@
     @endphp
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('o_certificacion', 'App\Models\Certificacion')
+    @inject('o_formulario_cinco_controller', 'App\Http\Controllers\FormularioCincoController')
     @foreach ($formularios as $formulario)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">FORMULARIO 5<br />GESTIÓN {{ date('Y') }}</div>
@@ -190,12 +191,20 @@
                 </tr>
                 <tr>
                     <td class="bold p-5">Unidad:</td>
-                    <td class="bold p-5" colspan="3">{{$formulario->unidad->nombre}}</td>
+                    <td class="bold p-5" colspan="3">{{ $formulario->unidad->nombre }}</td>
                 </tr>
             </tbody>
         </table>
-
-        <table class="tabla_detalle" border="1">
+        @php
+            $tabla = '<p class="centreado">SIN REGISTROS</p>';
+            if ($formulario->memoria_calculo) {
+                $formulario_cinco = $formulario->memoria_calculo->formulario_cinco;
+                $array_registros = $o_formulario_cinco_controller::armaRepetidos($formulario_cinco);
+                $tabla = view('reportes.parcial.formulario_cinco', compact('array_registros', 'formulario_cinco'))->render();
+            }
+        @endphp
+        {!! $tabla !!}
+        {{-- <table class="tabla_detalle" border="1">
             <thead class="bg-primary">
                 <tr>
                     <th colspan="17">
@@ -323,7 +332,7 @@
                     </tr>
                 @endif
             </tbody>
-        </table>
+        </table> --}}
         @php
             $contador++;
         @endphp

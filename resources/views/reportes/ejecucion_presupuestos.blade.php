@@ -221,28 +221,36 @@
                 @endphp
                 @if ($formulario->memoria_calculo)
                     @foreach ($formulario->memoria_calculo->operacions as $operacion)
-                        <tr>
-                            <td class="centreado">
-                                {{ $operacion->codigo_actividad }}
-                            </td>
-                            <td>{{ $operacion->descripcion_actividad }}</td>
-                            <td class="centreado">{{ $operacion->partida }}</td>
-                            <td class="centreado">{{ $operacion->cantidad }}</td>
-                            <td class="centreado">{{ $operacion->costo }}</td>
-                            <td class="centreado">{{ $operacion->total }}</td>
+                        @foreach ($operacion->memoria_operacion_detalles as $mod)
+                            <tr>
+                                <td class="centreado">
+                                    {{ $operacion->codigo_actividad }}
+                                </td>
+                                <td>{{ $operacion->descripcion_actividad }}</td>
+                                <td class="centreado">{{ $mod->m_partida->partida }}</td>
+                                <td class="centreado">{{ $mod->cantidad }}</td>
+                                <td class="centreado">{{ $mod->costo }}</td>
+                                <td class="centreado">{{ $mod->total }}</td>
+                                @php
+                                    $cantidad_usado = $o_certificacion
+                                        ->where('mo_id', $operacion->id)
+                                        ->where('mod_id', $mod->id)
+                                        ->sum('cantidad_usar');
+                                    $total_usado = $o_certificacion
+                                        ->where('mo_id', $operacion->id)
+                                        ->where('mod_id', $mod->id)
+                                        ->sum('presupuesto_usarse');
+                                    $saldo = (float) $mod->total - (float) $total_usado;
+                                @endphp
+                                <td class="centreado">{{ $cantidad_usado }}</td>
+                                <td class="centreado">{{ $total_usado }}</td>
+                                <td class="centreado">{{ $saldo }}</td>
+                            </tr>
                             @php
-                                $cantidad_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('cantidad_usar');
-                                $total_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('presupuesto_usarse');
-                                $saldo = (float) $operacion->total - (float) $total_usado;
+                                $suma_ejecutados += $total_usado;
+                                $suma_saldos += $saldo;
                             @endphp
-                            <td class="centreado">{{ $cantidad_usado }}</td>
-                            <td class="centreado">{{ $total_usado }}</td>
-                            <td class="centreado">{{ $saldo }}</td>
-                        </tr>
-                        @php
-                            $suma_ejecutados += $total_usado;
-                            $suma_saldos += $saldo;
-                        @endphp
+                        @endforeach
                     @endforeach
                 @else
                     <tr>

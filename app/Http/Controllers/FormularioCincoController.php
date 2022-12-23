@@ -222,8 +222,6 @@ class FormularioCincoController extends Controller
 
     public function show(FormularioCinco $formulario_cinco)
     {
-
-
         // armar repetidos
         $array_registros = [];
         $codigos = DB::select("SELECT DISTINCT operacion_id FROM memoria_operacions WHERE memoria_id = $formulario_cinco->memoria_id");

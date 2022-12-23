@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Financiera;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FinancieraController extends Controller
 {
@@ -30,6 +32,10 @@ class FinancieraController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $financiera->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "FINANCIERO", "EL USUARIO $user->id REGISTRO UN FINANCIERO", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
@@ -55,6 +61,10 @@ class FinancieraController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $financiera->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "FINANCIERO", "EL USUARIO $user->id MODIFICÓ UN FINANCIERO", $user);
+
         return response()->JSON(["sw" => true, "financiera" => $financiera, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -63,6 +73,10 @@ class FinancieraController extends Controller
         $antiguo = $financiera->archivo;
         \File::delete(public_path() . "/files/" . $antiguo);
         $financiera->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "FINANCIERO", "EL USUARIO $user->id ELIMINÓ UN FINANCIERO", $user);
+
         return response()->JSON(["sw" => true, "financiera" => $financiera, "msj" => "El registro se actualizó correctamente"]);
     }
 }

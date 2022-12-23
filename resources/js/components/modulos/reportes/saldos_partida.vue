@@ -64,13 +64,15 @@
                                                     >Seleccionar partida*</label
                                                 >
                                                 <el-select
-                                                    v-model="oReporte.memoria_operacion_id"
+                                                    v-model="
+                                                        oReporte.partida_id
+                                                    "
                                                     filterable
                                                     placeholder="Seleccione"
                                                     class="d-block"
                                                     :class="{
                                                         'is-invalid':
-                                                            errors.memoria_operacion_id,
+                                                            errors.partida_id,
                                                     }"
                                                 >
                                                     <el-option
@@ -85,8 +87,10 @@
                                                 </el-select>
                                                 <span
                                                     class="error invalid-feedback"
-                                                    v-if="errors.memoria_operacion_id"
-                                                    v-text="errors.memoria_operacion_id[0]"
+                                                    v-if="errors.partida_id"
+                                                    v-text="
+                                                        errors.partida_id[0]
+                                                    "
                                                 ></span>
                                             </div>
                                         </div>
@@ -127,7 +131,7 @@ export default {
             errors: [],
             oReporte: {
                 formulario_id: "",
-                memoria_operacion_id: "",
+                partida_id: "",
             },
             aFechas: [],
             enviando: false,
@@ -139,6 +143,7 @@ export default {
     },
     mounted() {
         this.getFormularios();
+        this.getPartidas();
     },
     methods: {
         // OBTENER LA LISTA DE FORMULARIO
@@ -147,19 +152,25 @@ export default {
                 this.listFormularios = response.data.listado;
             });
         },
-        // OBTENER LA LISTA DE ACTIVIDADES
+        // GET PARTIDAS
         getPartidas() {
-            axios
-                .get("/admin/memoria_calculos/getOperaciones", {
-                    params: { formulario_id: this.oReporte.formulario_id },
-                })
-                .then((response) => {
-                    this.listPartidas = response.data;
-                });
+            axios.get("/admin/partidas").then((response) => {
+                this.listPartidas = response.data.partidas;
+            });
         },
+        // OBTENER LA LISTA DE ACTIVIDADES
+        // getPartidas() {
+        //     axios
+        //         .get("/admin/memoria_calculos/getOperaciones", {
+        //             params: { formulario_id: this.oReporte.formulario_id },
+        //         })
+        //         .then((response) => {
+        //             this.listPartidas = response.data;
+        //         });
+        // },
         limpiarFormulario() {
             this.oReporte.formulario_id = "";
-            this.oReporte.memoria_operacion_id = "";
+            this.oReporte.partida_id = "";
         },
         generaReporte() {
             this.enviando = true;

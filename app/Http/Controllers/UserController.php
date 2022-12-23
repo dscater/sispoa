@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificacion;
 use App\Models\Cliente;
+use App\Models\Log;
 use App\Models\Tcont;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -397,6 +399,10 @@ class UserController extends Controller
         }
 
         $nuevo_usuario->save();
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "USUARIOS", "EL USUARIO $user->id REGISTRO UN USUARIO", $user);
+
         return response()->JSON([
             'sw' => true,
             'usuario' => $nuevo_usuario,
@@ -426,6 +432,11 @@ class UserController extends Controller
             $file->move(public_path() . '/imgs/users/', $nom_foto);
         }
         $usuario->save();
+
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "USUARIOS", "EL USUARIO $user->id MODIFICÓ UN USUARIO", $user);
+
         return response()->JSON([
             'sw' => true,
             'usuario' => $usuario,
@@ -484,11 +495,24 @@ class UserController extends Controller
 
     public function destroy(User $usuario)
     {
+
+        $existe = Certificacion::where("solicitante_id", $usuario->id)->get();
+        if (count($existe) > 0) {
+            return response()->JSON(["sw" => false, "user" => $usuario, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
+        }
+        $existe = Certificacion::where("superior_id", $usuario->id)->get();
+        if (count($existe) > 0) {
+            return response()->JSON(["sw" => false, "user" => $usuario, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
+        }
         $antiguo = $usuario->foto;
         if ($antiguo != 'default.png') {
             \File::delete(public_path() . '/imgs/users/' . $antiguo);
         }
         $usuario->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "USUARIOS", "EL USUARIO $user->id ELIMINÓ UN USUARIO", $user);
+
         return response()->JSON([
             'sw' => true,
             'msj' => 'El registro se eliminó correctamente'

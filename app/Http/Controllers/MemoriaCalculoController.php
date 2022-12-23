@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormularioCuatro;
+use App\Models\Log;
 use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
 use App\Models\MemoriaOperacionDetalle;
@@ -140,6 +141,9 @@ class MemoriaCalculoController extends Controller
         $nuevo_memoria_calculo->save();
 
         $nuevo_memoria_calculo->formulario_cinco()->create(["fecha_registro" => date("Y-m-d")]);
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "MEMORIA DE CÁLCULO", "EL USUARIO $user->id REGISTRO UNA MEMORIA DE CÁLCULO", $user);
 
         return response()->JSON([
             'sw' => true,
@@ -327,6 +331,9 @@ class MemoriaCalculoController extends Controller
             $memoria_calculo->formulario_cinco()->create(["fecha_registro" => date("Y-m-d")]);
         }
 
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "MEMORIA DE CÁLCULO", "EL USUARIO $user->id MODIFICÓ UNA MEMORIA DE CÁLCULO", $user);
+
         return response()->JSON([
             'sw' => true,
             'memoria_calculo' => $memoria_calculo,
@@ -338,7 +345,7 @@ class MemoriaCalculoController extends Controller
     {
         return response()->JSON([
             'sw' => true,
-            'memoria_calculo' => $memoria_calculo->load("operacions.memoria_operacion_detalles", "operacions.detalle_operacion","operacions.operacion.subdireccion")
+            'memoria_calculo' => $memoria_calculo->load("operacions.memoria_operacion_detalles", "operacions.detalle_operacion", "operacions.operacion.subdireccion")
         ], 200);
     }
 
@@ -357,6 +364,10 @@ class MemoriaCalculoController extends Controller
         $memoria_calculo->operacions()->delete();
         $memoria_calculo->formulario_cinco()->delete();
         $memoria_calculo->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "MEMORIA DE CÁLCULO", "EL USUARIO $user->id ELIMINÓ UNA MEMORIA DE CÁLCULO", $user);
+
         return response()->JSON([
             'sw' => true,
             'msj' => 'El registro se eliminó correctamente'

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Semaforo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SemaforoController extends Controller
 {
@@ -30,6 +32,10 @@ class SemaforoController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $semaforo->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "SEMÁFORO", "EL USUARIO $user->id REGISTRO UN SEMÁFORO", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
@@ -55,6 +61,10 @@ class SemaforoController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $semaforo->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "SEMÁFORO", "EL USUARIO $user->id MODIFICÓ UN SEMÁFORO", $user);
+
         return response()->JSON(["sw" => true, "semaforo" => $semaforo, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -63,6 +73,10 @@ class SemaforoController extends Controller
         $antiguo = $semaforo->archivo;
         \File::delete(public_path() . "/files/" . $antiguo);
         $semaforo->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "SEMÁFORO", "EL USUARIO $user->id ELIMINÓ UN SEMÁFORO", $user);
+
         return response()->JSON(["sw" => true, "semaforo" => $semaforo, "msj" => "El registro se actualizó correctamente"]);
     }
 }

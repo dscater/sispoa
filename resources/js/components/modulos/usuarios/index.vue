@@ -93,11 +93,19 @@
                                                     ></b-avatar>
                                                 </template>
 
-                                                <template
-                                                    #cell(acceso)="row"
-                                                >
-                                                    <span class="badge badge-success" v-if="row.item.acceso == 1">HABILITADO</span>
-                                                    <span class="badge badge-danger" v-else>DESHABILITADO</span>
+                                                <template #cell(acceso)="row">
+                                                    <span
+                                                        class="badge badge-success"
+                                                        v-if="
+                                                            row.item.acceso == 1
+                                                        "
+                                                        >HABILITADO</span
+                                                    >
+                                                    <span
+                                                        class="badge badge-danger"
+                                                        v-else
+                                                        >DESHABILITADO</span
+                                                    >
                                                 </template>
 
                                                 <template
@@ -129,8 +137,8 @@
                                                         >
                                                             <i
                                                                 class="fa fa-edit"
-                                                            ></i>
-                                                        </b-button><br>
+                                                            ></i> </b-button
+                                                        ><br />
                                                         <b-button
                                                             size="sm"
                                                             pill
@@ -290,7 +298,7 @@ export default {
             this.oUsuario.cargo = item.cargo ? item.cargo : "";
             this.oUsuario.unidad_id = item.unidad_id ? item.unidad_id : "";
             this.oUsuario.tipo = item.tipo ? item.tipo : "";
-            this.oUsuario.acceso = item.acceso ? ""+item.acceso : "0";
+            this.oUsuario.acceso = item.acceso ? "" + item.acceso : "0";
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
@@ -330,14 +338,23 @@ export default {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getUsuarios();
-                            this.filter = "";
-                            Swal.fire({
-                                icon: "success",
-                                title: res.data.msj,
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
+                            if (res.data.sw) {
+                                this.getUsuarios();
+                                this.filter = "";
+                                Swal.fire({
+                                    icon: "success",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                });
+                            }
                         });
                 }
             });

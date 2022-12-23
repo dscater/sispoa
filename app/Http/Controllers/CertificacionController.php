@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
+use App\Models\Log;
 use App\Models\MemoriaOperacion;
 use App\Models\MemoriaOperacionDetalle;
 use App\Models\Partida;
@@ -61,6 +62,10 @@ class CertificacionController extends Controller
             $file->move(public_path() . '/archivos/', $nom_archivo);
             $certificacion->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id REGISTRO UNA CERTIFICACIÓN POA", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
@@ -107,6 +112,9 @@ class CertificacionController extends Controller
             $certificacion->save();
         }
 
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ UNA CERTIFICACIÓN POA", $user);
+
         return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -115,6 +123,10 @@ class CertificacionController extends Controller
         $antiguo = $certificacion->archivo;
         \File::delete(public_path() . '/archivos/' . $antiguo);
         $certificacion->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id ELIMINÓ UNA CERTIFICACIÓN POA", $user);
+
         return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -122,6 +134,10 @@ class CertificacionController extends Controller
     {
         $certificacion->estado = "APROBADO";
         $certificacion->save();
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ EL ESTADO DE UNA CERTIFICACIÓN POA A " . $certificacion->estado, $user);
+
         return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se aprobó correctamente"]);
     }
 

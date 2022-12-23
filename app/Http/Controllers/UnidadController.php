@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormularioCuatro;
+use App\Models\Log;
 use App\Models\Unidad;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UnidadController extends Controller
 {
@@ -23,6 +25,10 @@ class UnidadController extends Controller
     {
         $request->validate($this->validacion);
         Unidad::create(array_map("mb_strtoupper", $request->all()));
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "UNIDADES ORGANIZACIONALES", "EL USUARIO $user->id REGISTRO UNA UNIDAD ORGANIZACIONAL", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
@@ -35,6 +41,10 @@ class UnidadController extends Controller
     {
         $request->validate($this->validacion);
         $unidad->update(array_map("mb_strtoupper", $request->all()));
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "UNIDADES ORGANIZACIONALES", "EL USUARIO $user->id MODIFICÓ UNA UNIDAD ORGANIZACIONAL", $user);
+
         return response()->JSON(["sw" => true, "unidad" => $unidad, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -51,6 +61,10 @@ class UnidadController extends Controller
         }
 
         $unidad->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "UNIDADES ORGANIZACIONALES", "EL USUARIO $user->id ELIMINÓ UNA UNIDAD ORGANIZACIONAL", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se eliminó correctamente"]);
     }
 }

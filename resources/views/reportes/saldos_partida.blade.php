@@ -179,20 +179,12 @@
         <tbody>
             <tr class="bg_principal">
                 <td class="bold p-5" width="10%">Código PEI:</td>
-                <td class="bold p-5">{{ $memoria_operacion->operacion->detalle_formulario->formulario->codigo_pei }}
+                <td class="bold p-5">{{ $formulario->codigo_pei }}
                 </td>
             </tr>
             <tr>
-                <td class="bold p-5">Código operación:</td>
-                <td class="bold p-5">{{ $memoria_operacion->codigo_operacion }}</td>
-            </tr>
-            <tr>
-                <td class="bold p-5">Actividad:</td>
-                <td class="bold p-5">{{ $memoria_operacion->descripcion_actividad }}</td>
-            </tr>
-            <tr>
                 <td class="bold p-5">Partida:</td>
-                <td class="bold p-5">{{ $memoria_operacion->partida }}</td>
+                <td class="bold p-5">{{ $partida->partida }}</td>
             </tr>
         </tbody>
     </table>
@@ -200,6 +192,9 @@
     <table class="collapse tabla_detalle" border="1">
         <thead>
             <tr>
+                <th rowspan="2" width="5%">
+                    Código operación
+                </th>
                 <th rowspan="2" width="5%">
                     Código tarea
                 </th>
@@ -229,24 +224,35 @@
                 $suma_saldos = 0;
             @endphp
 
-            <tr>
-                <td class="centreado">
-                    {{ $memoria_operacion->codigo_actividad }}
-                </td>
-                <td>{{ $memoria_operacion->descripcion_actividad }}</td>
-                <td class="centreado">{{ $memoria_operacion->partida }}</td>
-                <td class="centreado">{{ $memoria_operacion->cantidad }}</td>
-                <td class="centreado">{{ $memoria_operacion->costo }}</td>
-                <td class="centreado">{{ $memoria_operacion->total }}</td>
-                @php
-                    $cantidad_usado = $o_certificacion->where('mo_id', $memoria_operacion->id)->sum('cantidad_usar');
-                    $total_usado = $o_certificacion->where('mo_id', $memoria_operacion->id)->sum('presupuesto_usarse');
-                    $saldo = (float) $memoria_operacion->total - (float) $total_usado;
-                @endphp
-                <td class="centreado">{{ number_format($cantidad_usado, 2) }}</td>
-                <td class="centreado">{{ number_format($total_usado, 2) }}</td>
-                <td class="centreado">{{ number_format($saldo, 2) }}</td>
-            </tr>
+            @foreach ($memoria_operacion_detalles as $mod)
+                <tr>
+                    <td class="centreado">
+                        {{ $mod->memoria_operacion->codigo_operacion }}
+                    </td>
+                    <td class="centreado">
+                        {{ $mod->memoria_operacion->codigo_actividad }}
+                    </td>
+                    <td>{{ $mod->memoria_operacion->descripcion_actividad }}</td>
+                    <td class="centreado">{{ $mod->partida }}</td>
+                    <td class="centreado">{{ $mod->cantidad }}</td>
+                    <td class="centreado">{{ $mod->costo }}</td>
+                    <td class="centreado">{{ $mod->total }}</td>
+                    @php
+                        $cantidad_usado = $o_certificacion
+                            ->where('mo_id', $mod->memoria_operacion->id)
+                            ->where('mod_id', $mod->id)
+                            ->sum('cantidad_usar');
+                        $total_usado = $o_certificacion
+                            ->where('mo_id', $mod->memoria_operacion->id)
+                            ->where('mod_id', $mod->id)
+                            ->sum('presupuesto_usarse');
+                        $saldo = (float) $mod->total - (float) $total_usado;
+                    @endphp
+                    <td class="centreado">{{ number_format($cantidad_usado, 2) }}</td>
+                    <td class="centreado">{{ number_format($total_usado, 2) }}</td>
+                    <td class="centreado">{{ number_format($saldo, 2) }}</td>
+                </tr>
+            @endforeach
 
         </tbody>
     </table>

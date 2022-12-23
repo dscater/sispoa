@@ -149,8 +149,9 @@
                                                             @click="
                                                                 eliminaFormularioCuatro(
                                                                     row.item.id,
-                                                                    row.item
-                                                                        .full_name
+                                                                    'Código PEI: ' +
+                                                                        row.item
+                                                                            .codigo_pei
                                                                 )
                                                             "
                                                         >

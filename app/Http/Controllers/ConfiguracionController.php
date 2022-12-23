@@ -66,6 +66,10 @@ class ConfiguracionController extends Controller
                 $configuracion->logo = $nombre;
                 $configuracion->save();
             }
+
+            $user = Auth::user();
+            Log::registrarLog("MODIFICACIÓN", "CONFIGURACIÓN", "EL USUARIO $user->id MODIFICÓ LA CONFIGURACIÓN DEL SISTEMA", $user);
+
             return response()->JSON([
                 'sw' => true,
                 'msj' => 'Los datos se actualizarón de forma correcta',

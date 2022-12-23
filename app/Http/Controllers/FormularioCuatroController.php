@@ -6,6 +6,7 @@ use App\Models\Certificacion;
 use App\Models\DetalleFormulario;
 use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
+use App\Models\Log;
 use App\Models\MemoriaCalculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class FormularioCuatroController extends Controller
         'indicador' => 'required|min:1',
         'codigo_poa' => 'required|min:1',
         'accion_corto' => 'required|min:1',
-        'indicador_proceso' => 'required|min:1',
+        // 'indicador_proceso' => 'required|min:1',
         'linea_base' => 'required|min:1',
         'meta' => 'required|min:1',
         'presupuesto' => 'required|numeric',
@@ -44,6 +45,10 @@ class FormularioCuatroController extends Controller
         $request->validate($this->validacion, $this->mensajes);
         $request['fecha_registro'] = date('Y-m-d');
         $nuevo_formulario_cuatro = FormularioCuatro::create(array_map('mb_strtoupper', $request->all()));
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id REGISTRO UN FORMULARIO CUATRO", $user);
+
         return response()->JSON([
             'sw' => true,
             'formulario_cuatro' => $nuevo_formulario_cuatro,
@@ -56,6 +61,10 @@ class FormularioCuatroController extends Controller
         $request->validate($this->validacion, $this->mensajes);
 
         $formulario_cuatro->update(array_map('mb_strtoupper', $request->all()));
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id MODIFICÓ UN FORMULARIO CUATRO", $user);
+
         return response()->JSON([
             'sw' => true,
             'formulario_cuatro' => $formulario_cuatro,
@@ -84,17 +93,16 @@ class FormularioCuatroController extends Controller
             return response()->JSON(["sw" => false, "formulario_cuatro" => $formulario_cuatro, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
         }
 
-        $existe = FormularioCinco::where("formulario_id", $formulario_cuatro->id)->get();
-        if (count($existe) > 0) {
-            return response()->JSON(["sw" => false, "formulario_cuatro" => $formulario_cuatro, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
-        }
-
         $existe = MemoriaCalculo::where("formulario_id", $formulario_cuatro->id)->get();
         if (count($existe) > 0) {
             return response()->JSON(["sw" => false, "formulario_cuatro" => $formulario_cuatro, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
         }
 
         $formulario_cuatro->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id ELIMINÓ UN FORMULARIO CUATRO", $user);
+
         return response()->JSON([
             'sw' => true,
             'msj' => 'El registro se eliminó correctamente'

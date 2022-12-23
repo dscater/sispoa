@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActividadRealizada;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActividadRealizadaController extends Controller
 {
@@ -30,6 +32,10 @@ class ActividadRealizadaController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $actividad_realizada->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "INFORME DE ACTIVIDAD REALIZADA", "EL USUARIO $user->id REGISTRO UN INFORME DE ACTIVIDAD REALIZADA", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
@@ -55,6 +61,10 @@ class ActividadRealizadaController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $actividad_realizada->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "INFORME DE ACTIVIDAD REALIZADA", "EL USUARIO $user->id MODIFICÓ UN INFORME DE ACTIVIDAD REALIZADA", $user);
+
         return response()->JSON(["sw" => true, "actividad_realizada" => $actividad_realizada, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -63,6 +73,10 @@ class ActividadRealizadaController extends Controller
         $antiguo = $actividad_realizada->archivo;
         \File::delete(public_path() . "/files/" . $antiguo);
         $actividad_realizada->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "INFORME DE ACTIVIDAD REALIZADA", "EL USUARIO $user->id ELIMINÓ UN INFORME DE ACTIVIDAD REALIZADA", $user);
+
         return response()->JSON(["sw" => true, "actividad_realizada" => $actividad_realizada, "msj" => "El registro se actualizó correctamente"]);
     }
 

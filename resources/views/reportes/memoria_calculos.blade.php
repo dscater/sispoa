@@ -292,42 +292,44 @@
             <tbody>
                 @if ($formulario->memoria_calculo)
                     @foreach ($formulario->memoria_calculo->operacions as $operacion)
-                        <tr v-for="item in oMemoriaCalculo.operacions">
-                            <td>{{ $operacion->ue }}</td>
-                            <td>{{ $operacion->prog }}</td>
-                            <td>{{ $operacion->act }}</td>
-                            <td>
-                                {{ $operacion->codigo_operacion }}
-                            </td>
-                            <td>
-                                {{ $operacion->codigo_actividad }}
-                            </td>
-                            <td>{{ $operacion->partida }}</td>
-                            <td>{{ $operacion->nro }}</td>
-                            <td>{{ $operacion->descripcion }}</td>
-                            <td>{{ $operacion->cantidad }}</td>
-                            <td>{{ $operacion->unidad }}</td>
-                            <td>{{ $operacion->costo }}</td>
-                            <td>{{ $operacion->total }}</td>
-                            <td>
-                                {{ $operacion->justificacion }}
-                            </td>
-                            <td>{{ $operacion->ene }}</td>
-                            <td>{{ $operacion->feb }}</td>
-                            <td>{{ $operacion->mar }}</td>
-                            <td>{{ $operacion->abr }}</td>
-                            <td>{{ $operacion->may }}</td>
-                            <td>{{ $operacion->jun }}</td>
-                            <td>{{ $operacion->jul }}</td>
-                            <td>{{ $operacion->ago }}</td>
-                            <td>{{ $operacion->sep }}</td>
-                            <td>{{ $operacion->oct }}</td>
-                            <td>{{ $operacion->nov }}</td>
-                            <td>{{ $operacion->dic }}</td>
-                            <td>
-                                {{ $operacion->total_operacion }}
-                            </td>
-                        </tr>
+                        @foreach ($operacion->memoria_operacion_detalles as $mod)
+                            <tr v-for="item in oMemoriaCalculo.operacions">
+                                <td>{{ $mod->ue }}</td>
+                                <td>{{ $mod->prog }}</td>
+                                <td>{{ $mod->act }}</td>
+                                <td>
+                                    {{ $operacion->codigo_operacion }}
+                                </td>
+                                <td>
+                                    {{ $operacion->codigo_actividad }}
+                                </td>
+                                <td>{{ $mod->partida }}</td>
+                                <td>{{ $mod->nro }}</td>
+                                <td>{{ $mod->descripcion }}</td>
+                                <td>{{ $mod->cantidad }}</td>
+                                <td>{{ $mod->unidad }}</td>
+                                <td>{{ $mod->costo }}</td>
+                                <td>{{ $mod->total }}</td>
+                                <td>
+                                    {{ $mod->justificacion }}
+                                </td>
+                                <td>{{ $mod->ene }}</td>
+                                <td>{{ $mod->feb }}</td>
+                                <td>{{ $mod->mar }}</td>
+                                <td>{{ $mod->abr }}</td>
+                                <td>{{ $mod->may }}</td>
+                                <td>{{ $mod->jun }}</td>
+                                <td>{{ $mod->jul }}</td>
+                                <td>{{ $mod->ago }}</td>
+                                <td>{{ $mod->sep }}</td>
+                                <td>{{ $mod->oct }}</td>
+                                <td>{{ $mod->nov }}</td>
+                                <td>{{ $mod->dic }}</td>
+                                <td>
+                                    {{ $mod->total_actividad }}
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                     <tr>
                         <th colspan="8" class="text-center">TOTAL PARTIDA</th>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fisico;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FisicoController extends Controller
 {
@@ -30,6 +32,10 @@ class FisicoController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $fisico->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("CREACIÓN", "FÍSICO", "EL USUARIO $user->id REGISTRO UN FÍSICO", $user);
+
         return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
@@ -55,6 +61,10 @@ class FisicoController extends Controller
             $file->move(public_path() . '/files/', $nom_archivo);
             $fisico->save();
         }
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "FÍSICO", "EL USUARIO $user->id MODIFICÓ UN FÍSICO", $user);
+
         return response()->JSON(["sw" => true, "fisico" => $fisico, "msj" => "El registro se actualizó correctamente"]);
     }
 
@@ -63,6 +73,10 @@ class FisicoController extends Controller
         $antiguo = $fisico->archivo;
         \File::delete(public_path() . "/files/" . $antiguo);
         $fisico->delete();
+
+        $user = Auth::user();
+        Log::registrarLog("ELIMINACIÓN", "FÍSICO", "EL USUARIO $user->id ELIMINÓ UN FÍSICO", $user);
+
         return response()->JSON(["sw" => true, "fisico" => $fisico, "msj" => "El registro se actualizó correctamente"]);
     }
 }

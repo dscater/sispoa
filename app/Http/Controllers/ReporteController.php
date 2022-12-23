@@ -11,7 +11,9 @@ use App\Models\FormularioCinco;
 use App\Models\FormularioCuatro;
 use App\Models\MemoriaCalculo;
 use App\Models\MemoriaOperacion;
+use App\Models\MemoriaOperacionDetalle;
 use App\Models\Operacion;
+use App\Models\Partida;
 use App\Models\Semaforo;
 use App\Models\Unidad;
 use App\Models\User;
@@ -308,20 +310,27 @@ class ReporteController extends Controller
                 foreach ($formulario_cuatro->memoria_calculo->operacions as $operacion) {
                     $sheet->setCellValue('A' . $fila, $operacion->codigo_actividad);
                     $sheet->setCellValue('B' . $fila, $operacion->descripcion_actividad);
-                    $sheet->setCellValue('C' . $fila, $operacion->partida);
-                    $sheet->setCellValue('D' . $fila, $operacion->cantidad);
-                    $sheet->setCellValue('E' . $fila, number_format($operacion->costo, 2) . " ");
-                    $sheet->setCellValue('F' . $fila, number_format($operacion->total, 2) . " ");
-                    $cantidad_usado = Certificacion::where('mo_id', $operacion->id)->sum('cantidad_usar');
-                    $total_usado = Certificacion::where('mo_id', $operacion->id)->sum('presupuesto_usarse');
-                    $saldo = (float) $operacion->total - (float) $total_usado;
-                    $sheet->setCellValue('G' . $fila, $cantidad_usado);
-                    $sheet->setCellValue('H' . $fila, $total_usado);
-                    $sheet->setCellValue('I' . $fila, number_format($saldo, 2) . " ");
-                    $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
-                    $fila++;
-                    $suma_ejecutados += $total_usado;
-                    $suma_saldos += $saldo;
+
+                    foreach ($operacion->memoria_operacion_detalles as $mod) {
+                        $sheet->setCellValue('C' . $fila, $mod->m_partida->partida);
+                        $sheet->setCellValue('D' . $fila, $mod->cantidad);
+                        $sheet->setCellValue('E' . $fila, number_format($mod->costo, 2) . " ");
+                        $sheet->setCellValue('F' . $fila, number_format($mod->total, 2) . " ");
+                        $cantidad_usado = Certificacion::where('mo_id', $operacion->id)
+                            ->where("mod_id", $mod->id)
+                            ->sum('cantidad_usar');
+                        $total_usado = Certificacion::where('mo_id', $operacion->id)
+                            ->where("mod_id", $mod->id)
+                            ->sum('presupuesto_usarse');
+                        $saldo = (float) $mod->total - (float) $total_usado;
+                        $sheet->setCellValue('G' . $fila, $cantidad_usado);
+                        $sheet->setCellValue('H' . $fila, $total_usado);
+                        $sheet->setCellValue('I' . $fila, number_format($saldo, 2) . " ");
+                        $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+                        $fila++;
+                        $suma_ejecutados += $total_usado;
+                        $suma_saldos += $saldo;
+                    }
                 }
 
                 $sheet->setCellValue('A' . $fila, 'TOTAL');
@@ -528,7 +537,15 @@ class ReporteController extends Controller
         }
 
 
-        $pdf = PDF::loadView('reportes.formulario_cinco', compact('formularios'))->setPaper('legal', 'landscape');
+        $array_tablas = [];
+        // foreach ($formularios as $formulario) {
+        //     $formulario_cinco = $formulario->memoria_calculo->formulario_cinco;
+        //     $array_registros = FormularioCincoController::armaRepetidos($formulario_cinco);
+        //     $tabla = view('reportes.parcial.formulario_cinco', compact('array_registros', 'formulario_cinco'))->render();
+        //     $array_tablas[$formulario->id] = $tabla;
+        // }
+
+        $pdf = PDF::loadView('reportes.formulario_cinco', compact('formularios', "array_tablas"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -615,9 +632,19 @@ class ReporteController extends Controller
     public function saldos_partida(Request $request)
     {
         $formulario_id =  $request->formulario_id;
-        $memoria_operacion_id =  $request->memoria_operacion_id;
-        $memoria_operacion = MemoriaOperacion::find($memoria_operacion_id);
-        $pdf = PDF::loadView('reportes.saldos_partida', compact("memoria_operacion"))->setPaper('legal', 'landscape');
+        $partida_id =  $request->partida_id;
+
+        $formulario = FormularioCuatro::find($formulario_id);
+        $partida = Partida::find($partida_id);
+        $memoria_operacion_detalles = null;
+        if ($formulario->memoria_calculo) {
+            $memoria_operacion_detalles = MemoriaOperacionDetalle::select("memoria_operacion_detalles.*")
+                ->join("memoria_operacions", "memoria_operacions.id", "=", "memoria_operacion_detalles.memoria_operacion_id")
+                ->where("memoria_operacions.memoria_id", $formulario->memoria_calculo->id)
+                ->where("memoria_operacion_detalles.partida_id", $partida_id)
+                ->get();
+        }
+        $pdf = PDF::loadView('reportes.saldos_partida', compact("memoria_operacion_detalles", "formulario", "partida"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -744,10 +771,14 @@ class ReporteController extends Controller
                 foreach ($formularios as $formulario) {
                     if ($formulario->memoria_calculo) {
                         foreach ($formulario->memoria_calculo->operacions as $operacion) {
-                            $total_usado = Certificacion::where("mo_id", $operacion->id)->sum("presupuesto_usarse");
-                            $suma_ejecutados += (float)$total_usado;
-                            $saldo = (float) $operacion->total - (float) $total_usado;
-                            $suma_saldos += (float)$saldo;
+                            foreach ($operacion->memoria_operacion_detalles as $mod) {
+                                $total_usado = Certificacion::where("mo_id", $operacion->id)
+                                    ->where("mod_id", $mod->id)
+                                    ->sum("presupuesto_usarse");
+                                $suma_ejecutados += (float)$total_usado;
+                                $saldo = (float) $mod->total - (float) $total_usado;
+                                $suma_saldos += (float)$saldo;
+                            }
                         }
                         $suma_presupuestos += (float)$formulario->memoria_calculo->total_final;
                     }
@@ -936,7 +967,7 @@ class ReporteController extends Controller
         $fila++;
         $sheet->setCellValue('A' . $fila, 'OBJETIVO ESTRATÉGICO INSTITUCIONAL');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_institucional);
+        $sheet->setCellValue('B' . $fila, $formulario_cuatro->meta);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
@@ -960,7 +991,7 @@ class ReporteController extends Controller
         $fila++;
         $sheet->setCellValue('A' . $fila, 'RESULTADO ESPERADO GESTIÓN');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('B' . $fila, $formulario_cuatro->resultado_esperado);
+        $sheet->setCellValue('B' . $fila, $formulario_cuatro->resultado_institucional);
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
