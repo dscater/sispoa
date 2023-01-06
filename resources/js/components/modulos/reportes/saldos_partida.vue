@@ -42,7 +42,11 @@
                                                     <el-option
                                                         v-for="item in listFormularios"
                                                         :key="item.id"
-                                                        :label="item.codigo_pei"
+                                                        :label="
+                                                            ingresarEnter(
+                                                                item.codigo_pei
+                                                            )
+                                                        "
                                                         :value="item.id"
                                                     >
                                                     </el-option>
@@ -197,6 +201,9 @@ export default {
                             this.errors = responseObj.errors;
                     }
                 });
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
 };

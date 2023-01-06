@@ -84,6 +84,30 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
+                                                <template
+                                                    #cell(codigo_pei)="row"
+                                                >
+                                                    <span
+                                                        v-html="
+                                                            ingresarEnter(
+                                                                row.item
+                                                                    .codigo_pei
+                                                            )
+                                                        "
+                                                    ></span>
+                                                </template>
+                                                <template
+                                                    #cell(codigo_poa)="row"
+                                                >
+                                                    <span
+                                                        v-html="
+                                                            ingresarEnter(
+                                                                row.item
+                                                                    .codigo_poa
+                                                            )
+                                                        "
+                                                    ></span>
+                                                </template>
                                                 <template #cell(foto)="row">
                                                     <b-avatar
                                                         :src="
@@ -285,10 +309,10 @@ export default {
             modal_accion: "nuevo",
             oFormularioCuatro: {
                 id: 0,
-                codigo_pei: "",
+                codigo_pei: [],
                 resultado_institucional: "",
                 indicador: "",
-                codigo_poa: "",
+                codigo_poa: [],
                 accion_corto: "",
                 indicador_proceso: "",
                 linea_base: "",
@@ -320,7 +344,7 @@ export default {
         editarRegistro(item) {
             this.oFormularioCuatro.id = item.id;
             this.oFormularioCuatro.codigo_pei = item.codigo_pei
-                ? item.codigo_pei
+                ? item.codigo_pei.split(",")
                 : "";
             this.oFormularioCuatro.resultado_institucional =
                 item.resultado_institucional
@@ -330,7 +354,7 @@ export default {
                 ? item.indicador
                 : "";
             this.oFormularioCuatro.codigo_poa = item.codigo_poa
-                ? item.codigo_poa
+                ? item.codigo_poa.split(",")
                 : "";
             this.oFormularioCuatro.accion_corto = item.accion_corto
                 ? item.accion_corto
@@ -424,10 +448,10 @@ export default {
             this.currentPage = 1;
         },
         limpiaFormularioCuatro() {
-            this.oFormularioCuatro.codigo_pei = "";
+            this.oFormularioCuatro.codigo_pei = [];
             this.oFormularioCuatro.resultado_institucional = "";
             this.oFormularioCuatro.indicador = "";
-            this.oFormularioCuatro.codigo_poa = "";
+            this.oFormularioCuatro.codigo_poa = [];
             this.oFormularioCuatro.accion_corto = "";
             this.oFormularioCuatro.indicador_proceso = "";
             this.oFormularioCuatro.linea_base = "";
@@ -468,6 +492,9 @@ export default {
                     if (error.response) {
                     }
                 });
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", "<br/>");
         },
     },
 };

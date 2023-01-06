@@ -290,7 +290,7 @@
         </thead>
         <tbody>
             <tr>
-                <td class="bold">{{ $certificacion->memoria_operacion->memoria->formulario->codigo_pei }}</td>
+                <td class="bold">{!! str_replace(",","<br>",$certificacion->memoria_operacion->memoria->formulario->codigo_pei) !!}</td>
                 <td class="centreado">{{ $certificacion->memoria_operacion->memoria->formulario->accion_corto }}</td>
                 <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
                 <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>

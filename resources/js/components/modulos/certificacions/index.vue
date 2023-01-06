@@ -83,6 +83,19 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
+                                                <template
+                                                    #cell(formulario.codigo_pei)="row"
+                                                >
+                                                    <span
+                                                        v-html="
+                                                            ingresarEnter(
+                                                                row.item
+                                                                    .formulario
+                                                                    .codigo_pei
+                                                            )
+                                                        "
+                                                    ></span>
+                                                </template>
                                                 <template #cell(mo_id)="row">
                                                     <strong
                                                         >Código de operación: </strong
@@ -550,6 +563,9 @@ export default {
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", "<br/>");
         },
     },
 };

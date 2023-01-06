@@ -93,7 +93,13 @@
                                 >
                                 <p
                                     class="text-muted"
-                                    v-text="oUsuario?.unidad.nombre"
+                                    v-text="
+                                        oUsuario
+                                            ? oUsuario.unidad
+                                                ? oUsuario.unidad.nombre
+                                                : ''
+                                            : ''
+                                    "
                                 ></p>
                                 <hr />
                                 <strong

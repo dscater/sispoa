@@ -128,7 +128,7 @@
                             v-loading.fullscreen.lock="fullscreenLoading"
                         >
                             <i class="nav-icon fas fa-list-alt"></i>
-                            <p>Subdirecciones</p>
+                            <p>Subunidades</p>
                         </router-link>
                     </li>
                     <li

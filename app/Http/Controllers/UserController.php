@@ -212,34 +212,6 @@ class UserController extends Controller
             "reportes.semaforos",
         ],
         'JEFES DE UNIDAD' => [
-            'pei.index',
-
-            'formulario_uno.index',
-
-            'formulario_dos.index',
-
-            'formulario_tres.index',
-
-            'formulario_cuatro.index',
-            'formulario_cuatro.create',
-            'formulario_cuatro.edit',
-            'formulario_cuatro.destroy',
-
-            'detalle_formularios.index',
-            'detalle_formularios.create',
-            'detalle_formularios.edit',
-            'detalle_formularios.destroy',
-
-            'formulario_cinco.index',
-            'formulario_cinco.create',
-            'formulario_cinco.edit',
-            'formulario_cinco.destroy',
-
-            'memoria_calculos.index',
-            'memoria_calculos.create',
-            'memoria_calculos.edit',
-            'memoria_calculos.destroy',
-
             'certificacions.index',
             'certificacions.create',
             'certificacions.edit',
@@ -256,34 +228,6 @@ class UserController extends Controller
             "reportes.ejecucion_presupuestos_g",
         ],
         'DIRECTORES' => [
-            'pei.index',
-
-            'formulario_uno.index',
-
-            'formulario_dos.index',
-
-            'formulario_tres.index',
-
-            'formulario_cuatro.index',
-            'formulario_cuatro.create',
-            'formulario_cuatro.edit',
-            'formulario_cuatro.destroy',
-
-            'detalle_formularios.index',
-            'detalle_formularios.create',
-            'detalle_formularios.edit',
-            'detalle_formularios.destroy',
-
-            'formulario_cinco.index',
-            'formulario_cinco.create',
-            'formulario_cinco.edit',
-            'formulario_cinco.destroy',
-
-            'memoria_calculos.index',
-            'memoria_calculos.create',
-            'memoria_calculos.edit',
-            'memoria_calculos.destroy',
-
             'certificacions.index',
             'certificacions.create',
             'certificacions.edit',

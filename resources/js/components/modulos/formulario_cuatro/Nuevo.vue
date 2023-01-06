@@ -30,13 +30,14 @@
                                     }"
                                     >Código PEI*</label
                                 >
-                                <el-input
+                                <b-form-tags
+                                    input-id="tags-basic"
                                     placeholder="Código PEI"
                                     :class="{ 'is-invalid': errors.codigo_pei }"
                                     v-model="formulario_cuatro.codigo_pei"
-                                    clearable
-                                >
-                                </el-input>
+                                    addButtonText="Añadir"
+                                    remove-on-delete
+                                ></b-form-tags>
                                 <span
                                     class="error invalid-feedback"
                                     v-if="errors.codigo_pei"
@@ -101,13 +102,14 @@
                                     }"
                                     >Código POA*</label
                                 >
-                                <el-input
+                                <b-form-tags
+                                    input-id="tags-basic"
                                     placeholder="Código POA"
                                     :class="{ 'is-invalid': errors.codigo_poa }"
                                     v-model="formulario_cuatro.codigo_poa"
-                                    clearable
-                                >
-                                </el-input>
+                                    addButtonText="Añadir"
+                                    remove-on-delete
+                                ></b-form-tags>
                                 <span
                                     class="error invalid-feedback"
                                     v-if="errors.codigo_poa"
@@ -306,10 +308,10 @@ export default {
             type: Object,
             default: {
                 id: 0,
-                codigo_pei: "",
+                codigo_pei: [],
                 resultado_institucional: "",
                 indicador: "",
-                codigo_poa: "",
+                codigo_poa: [],
                 accion_corto: "",
                 indicador_proceso: "",
                 linea_base: "",
@@ -380,7 +382,7 @@ export default {
                     "codigo_pei",
                     this.formulario_cuatro.codigo_pei
                         ? this.formulario_cuatro.codigo_pei
-                        : ""
+                        : []
                 );
                 formdata.append(
                     "resultado_institucional",
@@ -398,7 +400,7 @@ export default {
                     "codigo_poa",
                     this.formulario_cuatro.codigo_poa
                         ? this.formulario_cuatro.codigo_poa
-                        : ""
+                        : []
                 );
                 formdata.append(
                     "accion_corto",
@@ -503,10 +505,10 @@ export default {
         },
         limpiaFormularioCuatro() {
             this.errors = [];
-            this.formulario_cuatro.codigo_pei = "";
+            this.formulario_cuatro.codigo_pei = [];
             this.formulario_cuatro.resultado_institucional = "";
             this.formulario_cuatro.indicador = "";
-            this.formulario_cuatro.codigo_poa = "";
+            this.formulario_cuatro.codigo_poa = [];
             this.formulario_cuatro.accion_corto = "";
             this.formulario_cuatro.indicador_proceso = "";
             this.formulario_cuatro.linea_base = "";

@@ -139,6 +139,10 @@ class ReporteController extends Controller
                 'size' => 9,
                 'color' => ['argb' => 'ffffff'],
             ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -229,7 +233,7 @@ class ReporteController extends Controller
             $fila++;
             $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_pei);
+            $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
             $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
             $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
@@ -247,7 +251,7 @@ class ReporteController extends Controller
             $fila++;
             $sheet->setCellValue('A' . $fila, 'CODIGO POA');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_poa);
+            $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
             $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
             $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
@@ -961,7 +965,7 @@ class ReporteController extends Controller
         $fila++;
         $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_pei);
+        $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
@@ -979,8 +983,9 @@ class ReporteController extends Controller
         $fila++;
         $sheet->setCellValue('A' . $fila, 'CODIGO POA');
         $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('B' . $fila, $formulario_cuatro->codigo_poa);
+        $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
         $sheet->mergeCells("B" . $fila . ":U" . $fila);  //COMBINAR
+        $sheet->getRowDimension($fila)->setRowHeight(-1);
         $sheet->getStyle('B' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
@@ -1964,7 +1969,7 @@ class ReporteController extends Controller
         $fila++;
         $fila++;
         $sheet->setCellValue('A' . $fila, 'CODIGO POA:');
-        $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario->codigo_poa);
+        $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $memoria_calculo->formulario->codigo_poa));
         $sheet->setCellValue('C' . $fila, $memoria_calculo->formulario->accion_corto);
         $sheet->getStyle('A' . $fila)->applyFromArray($estilo_conenido1);
         $sheet->getStyle('C' . $fila . ":AA" . $fila)->applyFromArray($estilo_conenido1);

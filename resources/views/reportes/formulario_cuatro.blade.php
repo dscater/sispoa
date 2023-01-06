@@ -182,7 +182,7 @@
             @endphp
             @foreach ($formularios as $formulario)
                 <tr>
-                    <td class="centreado">{{ $formulario->codigo_pei }}</td>
+                    <td class="centreado">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
                     <td>{{ $formulario->accion_institucional }}</td>
                     <td>{{ $formulario->indicador }}</td>
                     <td class="centreado">{{ $formulario->codigo_poa }}</td>

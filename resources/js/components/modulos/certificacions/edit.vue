@@ -132,7 +132,11 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.codigo_pei"
+                                                :label="
+                                                    ingresarEnter(
+                                                        item.codigo_pei
+                                                    )
+                                                "
                                             >
                                             </el-option>
                                         </el-select>
@@ -962,6 +966,9 @@ export default {
                     timer: 1500,
                 });
             }
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
 };

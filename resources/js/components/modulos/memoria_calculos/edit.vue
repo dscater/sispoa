@@ -58,7 +58,11 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.codigo_pei"
+                                                :label="
+                                                    ingresarEnter(
+                                                        item.codigo_pei
+                                                    )
+                                                "
                                             >
                                             </el-option>
                                         </el-select>
@@ -448,6 +452,9 @@ export default {
         },
         addEliminadosMod(id) {
             this.mod_eliminados.push(id);
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
 };

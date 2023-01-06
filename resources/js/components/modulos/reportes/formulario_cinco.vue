@@ -120,7 +120,11 @@
                                                     <el-option
                                                         v-for="item in listFormularios"
                                                         :key="item.id"
-                                                        :label="item.codigo_pei"
+                                                        :label="
+                                                            ingresarEnter(
+                                                                item.codigo_pei
+                                                            )
+                                                        "
                                                         :value="item.id"
                                                     >
                                                     </el-option>
@@ -292,6 +296,9 @@ export default {
         obtieneFechas() {
             this.oReporte.fecha_ini = this.aFechas[0];
             this.oReporte.fecha_fin = this.aFechas[1];
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
 };

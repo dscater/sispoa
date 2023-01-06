@@ -64,6 +64,19 @@
                                                 :filter="filter"
                                             >
                                                 <template
+                                                    #cell(formulario.codigo_pei)="row"
+                                                >
+                                                    <span
+                                                        v-html="
+                                                            ingresarEnter(
+                                                                row.item
+                                                                    .formulario
+                                                                    .codigo_pei
+                                                            )
+                                                        "
+                                                    ></span>
+                                                </template>
+                                                <template
                                                     #cell(fecha_registro)="row"
                                                 >
                                                     {{
@@ -291,6 +304,9 @@ export default {
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", "<br/>");
         },
     },
 };

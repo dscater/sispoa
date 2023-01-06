@@ -58,7 +58,11 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.codigo_pei"
+                                                :label="
+                                                    ingresarEnter(
+                                                        item.codigo_pei
+                                                    )
+                                                "
                                             >
                                             </el-option>
                                         </el-select>
@@ -367,6 +371,9 @@ export default {
         },
         removerValidacion() {
             // window.removeEventListener("beforeunload");
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
     beforeRouteLeave(to, from, next) {

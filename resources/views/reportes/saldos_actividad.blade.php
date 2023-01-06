@@ -179,7 +179,7 @@
         <tbody>
             <tr class="bg_principal">
                 <td class="bold p-5" width="10%">Código PEI:</td>
-                <td class="bold p-5">{{ $actividad->operacion->detalle_formulario->formulario->codigo_pei }}</td>
+                    <td class="bold p-5">{!! str_replace(',', '<br>', $actividad->operacion->detalle_formulario->formulario->codigo_pei) !!}</td>
             </tr>
             <tr>
                 <td class="bold p-5">Código operación:</td>

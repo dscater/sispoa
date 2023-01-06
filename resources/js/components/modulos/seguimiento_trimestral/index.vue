@@ -29,7 +29,9 @@
                                                 :key="item.id"
                                                 :value="item.id"
                                                 :label="
-                                                    item.formulario.codigo_pei
+                                                    ingresarEnter(
+                                                        item.formulario.codigo_pei
+                                                    )
                                                 "
                                             >
                                             </el-option>
@@ -90,6 +92,9 @@ export default {
                         this.htmlTabla = response.data;
                     });
             }
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
 };

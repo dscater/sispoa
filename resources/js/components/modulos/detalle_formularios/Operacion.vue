@@ -16,9 +16,9 @@
             </button>
             <div class="row">
                 <div class="form-group col-md-12">
-                    <label>Seleccionar subdirección</label>
+                    <label>Seleccionar subunidad</label>
                     <el-select
-                        placeholder="Sin subdirección"
+                        placeholder="Sin subunidad"
                         class="w-100 d-block"
                         :class="{
                             'is-invalid': errors.subdireccion_id,

@@ -27,7 +27,10 @@ class FormularioCuatroController extends Controller
         'unidad_id' => 'required',
     ];
 
-    public $mensajes = [];
+    public $mensajes = [
+        "codigo_pei.min" => "Debes ingresar al menos un código",
+        "codigo_poa.min" => "Debes ingresar al menos un código",
+    ];
 
     public function index(Request $request)
     {
@@ -44,6 +47,8 @@ class FormularioCuatroController extends Controller
     {
         $request->validate($this->validacion, $this->mensajes);
         $request['fecha_registro'] = date('Y-m-d');
+        // $request["codigo_pei"] = implode(",", $request->codigo_pei);
+        // $request["codigo_poa"] = implode(",", $request->codigo_poa);
         $nuevo_formulario_cuatro = FormularioCuatro::create(array_map('mb_strtoupper', $request->all()));
 
         $user = Auth::user();

@@ -58,7 +58,11 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.codigo_pei"
+                                                :label="
+                                                    ingresarEnter(
+                                                        item.codigo_pei
+                                                    )
+                                                "
                                             >
                                             </el-option>
                                         </el-select>
@@ -244,86 +248,139 @@ export default {
                             (index + 1)
                     );
                 }
-                item.memoria_operacion_detalles.forEach((elem_detalle, index_detalle) => {
-                    if (elem_detalle.ue == null || elem_detalle.ue == "") {
-                        array_errors.push(
-                            "Debes ingresar una <b>Unidad Ejecutora</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
+                item.memoria_operacion_detalles.forEach(
+                    (elem_detalle, index_detalle) => {
+                        if (elem_detalle.ue == null || elem_detalle.ue == "") {
+                            array_errors.push(
+                                "Debes ingresar una <b>Unidad Ejecutora</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.prog == null ||
+                            elem_detalle.prog == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Programación</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.act == null ||
+                            elem_detalle.act == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Actividad</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.lugar == null ||
+                            elem_detalle.lugar == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Lugar de Ejecución de la Operación</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.responsable == null ||
+                            elem_detalle.responsable == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.partida_id == null ||
+                            elem_detalle.partida_id == ""
+                        ) {
+                            array_errors.push(
+                                "Debes seleccionar una <b>Partida de gasto</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.nro == null ||
+                            elem_detalle.nro == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Nro</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.descripcion_detallada == null ||
+                            elem_detalle.descripcion_detallada == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.cantidad == null ||
+                            elem_detalle.cantidad == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Canitdad</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.unidad == null ||
+                            elem_detalle.unidad == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Unidad</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.costo == null ||
+                            elem_detalle.costo == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar un <b>Precio Unitario</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
+                        if (
+                            elem_detalle.justificacion == null ||
+                            elem_detalle.justificacion == ""
+                        ) {
+                            array_errors.push(
+                                "Debes ingresar una <b>Justificación</b> en el detalle " +
+                                    (index + 1) +
+                                    "-" +
+                                    (index_detalle + 1)
+                            );
+                        }
                     }
-                    if (elem_detalle.prog == null || elem_detalle.prog == "") {
-                        array_errors.push(
-                            "Debes ingresar una <b>Programación</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.act == null || elem_detalle.act == "") {
-                        array_errors.push(
-                            "Debes ingresar una <b>Actividad</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.lugar == null || elem_detalle.lugar == "") {
-                        array_errors.push(
-                            "Debes ingresar un <b>Lugar de Ejecución de la Operación</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.responsable == null || elem_detalle.responsable == "") {
-                        array_errors.push(
-                            "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.partida_id == null || elem_detalle.partida_id == "") {
-                        array_errors.push(
-                            "Debes seleccionar una <b>Partida de gasto</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.nro == null || elem_detalle.nro == "") {
-                        array_errors.push(
-                            "Debes ingresar un <b>Nro</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (
-                        elem_detalle.descripcion_detallada == null ||
-                        elem_detalle.descripcion_detallada == ""
-                    ) {
-                        array_errors.push(
-                            "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.cantidad == null || elem_detalle.cantidad == "") {
-                        array_errors.push(
-                            "Debes ingresar una <b>Canitdad</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.unidad == null || elem_detalle.unidad == "") {
-                        array_errors.push(
-                            "Debes ingresar una <b>Unidad</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (elem_detalle.costo == null || elem_detalle.costo == "") {
-                        array_errors.push(
-                            "Debes ingresar un <b>Precio Unitario</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                    if (
-                        elem_detalle.justificacion == null ||
-                        elem_detalle.justificacion == ""
-                    ) {
-                        array_errors.push(
-                            "Debes ingresar una <b>Justificación</b> en el detalle " +
-                                (index + 1) + '-'+(index_detalle + 1)
-                        );
-                    }
-                });
+                );
             });
 
             return array_errors;
@@ -371,6 +428,9 @@ export default {
         },
         quitarOperacion(index, item) {
             this.listOperacions.splice(index, 1);
+        },
+        ingresarEnter(valor) {
+            return valor.replace(",", " | ");
         },
     },
 };
