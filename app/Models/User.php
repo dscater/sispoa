@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'usuario', 'nombre', 'paterno', 'materno', 'ci', 'ci_exp', 'fono', 'cargo', 'unidad_id', 'tipo', 'password',
+        'usuario', 'nombre', 'paterno', 'materno', 'ci', 'ci_exp', 'fono', 'cargo',
+        "lugar_trabajo", "descripcion_puesto", "observacion",
+        'unidad_id', 'tipo', 'password',
         'foto', 'acceso', 'fecha_registro',
     ];
 
@@ -38,8 +40,11 @@ class User extends Authenticatable
     public static function getNombreUsuario($nom, $apep)
     {
         //determinando el nombre de usuario inicial del 1er_nombre+apep+tipoUser
-        $nombre_user = substr(mb_strtoupper($nom), 0, 1); //inicial 1er_nombre
-        $nombre_user .= mb_strtoupper($apep);
+        // $nombre_user = substr(mb_strtoupper($nom), 0, 1); //inicial 1er_nombre
+        // $nombre_user .= mb_strtoupper($apep);
+
+        $array_nombre = explode(" ", $nom); //DIVIDIR EL NOMBRE SI TUVIERA MAS DE 1
+        $nombre_user = mb_strtoupper($array_nombre[0] . '.' . $apep); //UNIR EL 1ER NOMBRE CON EL PATERNO
 
         return $nombre_user;
     }

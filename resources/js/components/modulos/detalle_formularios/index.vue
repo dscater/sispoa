@@ -32,6 +32,28 @@
                                             Nuevo
                                         </router-link>
                                     </div>
+                                    <div class="col-md-3">
+                                        <button
+                                            v-if="
+                                                permisos.includes(
+                                                    'configuracion.modulos'
+                                                )
+                                            "
+                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
+                                            @click="muestraConfiguracionModulos"
+                                        >
+                                            <i class="fa fa-cog"></i>
+                                            Configuración de modulos
+                                        </button>
+                                        <ConfiguracionModulo
+                                            :muestra_modal="
+                                                muestra_configuracion_modulo
+                                            "
+                                            @close="
+                                                muestra_configuracion_modulo = false
+                                            "
+                                        ></ConfiguracionModulo>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -153,6 +175,11 @@
                                                             variant="outline-warning"
                                                             class="btn-flat btn-block"
                                                             title="Editar registro"
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'detalle_formularios.edit'
+                                                                )
+                                                            "
                                                             @click="
                                                                 editar(
                                                                     row.item.id
@@ -169,6 +196,11 @@
                                                             variant="outline-danger"
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'detalle_formularios.destroy'
+                                                                )
+                                                            "
                                                             @click="
                                                                 eliminaDetalleFormulario(
                                                                     row.item.id,
@@ -232,9 +264,14 @@
 </template>
 
 <script>
+import ConfiguracionModulo from "../configuracion_modulos/ConfiguracionModulo.vue";
 export default {
+    components: {
+        ConfiguracionModulo,
+    },
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             permisos: localStorage.getItem("permisos"),
             search: "",
             listRegistros: [],
@@ -275,11 +312,13 @@ export default {
             ],
             totalRows: 10,
             filter: null,
+            muestra_configuracion_modulo: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getDetalleFormularios();
+        this.obtienePermisos();
     },
     methods: {
         // Listar DetalleFormularios
@@ -379,6 +418,17 @@ export default {
         },
         ingresarEnter(valor) {
             return valor.replace(",", "<br/>");
+        },
+        muestraConfiguracionModulos() {
+            this.muestra_configuracion_modulo = true;
+        },
+        obtienePermisos() {
+            axios
+                .get("/admin/usuarios/getPermisos/" + this.user.id)
+                .then((res) => {
+                    localStorage.setItem("permisos", JSON.stringify(res.data));
+                    this.permisos = localStorage.getItem("permisos");
+                });
         },
     },
 };

@@ -1362,6 +1362,25 @@ class ReporteController extends Controller
             ],
         ];
 
+        $estilo_conenido_rojo = [
+            'font' => [
+                'size' => 8,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DC3545']
+            ],
+        ];
 
         $estilo_conenido2 = [
             'font' => [
@@ -1590,6 +1609,10 @@ class ReporteController extends Controller
                             $sheet->setCellValue('P' . $fila, $registro["justificacion"]);
                             $sheet->setCellValue('Q' . $fila, number_format($registro["total_actividad"], 2) . " ");
                             $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido);
+                            if ($registro["saldo"] == 0) {
+                                $sheet->getStyle('Q' . $fila)->applyFromArray($estilo_conenido_rojo);
+                            }
+
                             $fila++;
                         }
                     }
@@ -1832,6 +1855,26 @@ class ReporteController extends Controller
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
                 ],
+            ],
+        ];
+
+        $estilo_conenido_rojo = [
+            'font' => [
+                'size' => 8,
+                'color' => ['argb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'DC3545']
             ],
         ];
 
@@ -2090,6 +2133,9 @@ class ReporteController extends Controller
                 $sheet->setCellValue('Z' . $fila, number_format($mod->dic, 2) . " ");
                 $sheet->setCellValue('AA' . $fila, number_format($mod->total_actividad, 2) . " ");
                 $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($estilo_conenido);
+                if ($mod->saldo == 0) {
+                    $sheet->getStyle('AA' . $fila)->applyFromArray($estilo_conenido_rojo);
+                }
                 $fila++;
             }
         }

@@ -32,6 +32,28 @@
                                             Nuevo
                                         </router-link>
                                     </div>
+                                    <div class="col-md-3">
+                                        <button
+                                            v-if="
+                                                permisos.includes(
+                                                    'configuracion.modulos'
+                                                )
+                                            "
+                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
+                                            @click="muestraConfiguracionModulos"
+                                        >
+                                            <i class="fa fa-cog"></i>
+                                            Configuración de modulos
+                                        </button>
+                                        <ConfiguracionModulo
+                                            :muestra_modal="
+                                                muestra_configuracion_modulo
+                                            "
+                                            @close="
+                                                muestra_configuracion_modulo = false
+                                            "
+                                        ></ConfiguracionModulo>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -169,6 +191,11 @@
                                                             variant="outline-warning"
                                                             class="btn-flat btn-block"
                                                             title="Editar registro"
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'memoria_calculos.edit'
+                                                                )
+                                                            "
                                                             @click="
                                                                 editar(
                                                                     row.item.id
@@ -185,6 +212,11 @@
                                                             variant="outline-danger"
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'memoria_calculos.destroy'
+                                                                )
+                                                            "
                                                             @click="
                                                                 eliminaMemoriaCalculo(
                                                                     row.item.id,
@@ -248,7 +280,11 @@
 </template>
 
 <script>
+import ConfiguracionModulo from "../configuracion_modulos/ConfiguracionModulo.vue";
 export default {
+    components: {
+        ConfiguracionModulo,
+    },
     data() {
         return {
             permisos: localStorage.getItem("permisos"),
@@ -296,6 +332,7 @@ export default {
             ],
             totalRows: 10,
             filter: null,
+            muestra_configuracion_modulo: false,
         };
     },
     mounted() {
@@ -423,6 +460,9 @@ export default {
         },
         ingresarEnter(valor) {
             return valor.replace(",", "<br/>");
+        },
+        muestraConfiguracionModulos() {
+            this.muestra_configuracion_modulo = true;
         },
     },
 };

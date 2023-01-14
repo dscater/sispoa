@@ -23,6 +23,11 @@ class CreateUsersTable extends Migration
             $table->string("ci_exp", 20);
             $table->string("fono", 155);
             $table->string("cargo", 255);
+
+            $table->string("lugar_trabajo", 255);
+            $table->text("descripcion_puesto");
+            $table->text("observacion")->nullable();
+
             $table->unsignedBigInteger("unidad_id")->nullable();
             $table->string("tipo", 255);
             $table->string("foto", 255)->nullable();

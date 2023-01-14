@@ -91,7 +91,8 @@
                                 <td>{{ $registro_resp->prog }}</td>
                                 <td>{{ $registro_resp->act }}</td>
                                 <td>{{ $registro_resp->justificacion }}</td>
-                                <td>{{ $registro_resp->total_actividad }}</td>
+                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                    {{ $registro_resp->total_actividad }}</td>
                             </tr>
                         @elseif ($index_responsable == 0 && $index_registro_rep == 0)
                             <tr>
@@ -108,7 +109,8 @@
                                 <td>{{ $registro_resp->prog }}</td>
                                 <td>{{ $registro_resp->act }}</td>
                                 <td>{{ $registro_resp->justificacion }}</td>
-                                <td>{{ $registro_resp->total_actividad }}</td>
+                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                    {{ $registro_resp->total_actividad }}</td>
                             </tr>
                         @elseif ($index_registro_rep == 0)
                             <tr>
@@ -123,7 +125,8 @@
                                 <td>{{ $registro_resp->prog }}</td>
                                 <td>{{ $registro_resp->act }}</td>
                                 <td>{{ $registro_resp->justificacion }}</td>
-                                <td>{{ $registro_resp->total_actividad }}</td>
+                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                    {{ $registro_resp->total_actividad }}</td>
                             </tr>
                         @else
                             <tr>
@@ -137,7 +140,8 @@
                                 <td>{{ $registro_resp->prog }}</td>
                                 <td>{{ $registro_resp->act }}</td>
                                 <td>{{ $registro_resp->justificacion }}</td>
-                                <td>{{ $registro_resp->total_actividad }}</td>
+                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                    {{ $registro_resp->total_actividad }}</td>
                             </tr>
                         @endif
                     @endforeach

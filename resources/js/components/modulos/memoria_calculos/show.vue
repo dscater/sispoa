@@ -314,7 +314,14 @@
                                                         <td>
                                                             {{ item_mod.dic }}
                                                         </td>
-                                                        <td>
+                                                        <td
+                                                            :class="{
+                                                                'bg-red':
+                                                                    parseFloat(
+                                                                        item_mod.saldo
+                                                                    ) == 0,
+                                                            }"
+                                                        >
                                                             {{
                                                                 item_mod.total_actividad
                                                             }}
@@ -406,7 +413,14 @@
                                                         <td>
                                                             {{ item_mod.dic }}
                                                         </td>
-                                                        <td>
+                                                        <td
+                                                            :class="{
+                                                                'bg-red':
+                                                                    parseFloat(
+                                                                        item_mod.saldo
+                                                                    ) == 0,
+                                                            }"
+                                                        >
                                                             {{
                                                                 item_mod.total_actividad
                                                             }}

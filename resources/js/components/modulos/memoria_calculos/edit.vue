@@ -82,6 +82,7 @@
                             :index="index"
                             @quitar="quitarOperacion"
                             @quitar_detalle="addEliminadosMod"
+                            @sw_guardar="swBotonGuardar"
                             :key="index"
                             :accion="'edit'"
                         ></Operacion>
@@ -146,6 +147,8 @@ export default {
             memoria_id: "",
             eliminados: [],
             mod_eliminados: [],
+            cambioPagina: true,
+            next_pagina: null,
         };
     },
     watch: {
@@ -168,6 +171,8 @@ export default {
         this.getMemoriaCalculo();
         this.loadingWindow.close();
         this.getFormularios();
+        this.cambioPagina = true;
+        this.next_pagina = null;
     },
     methods: {
         // OBTENER EL REGISTRO DETALLE FORMULARIO
@@ -206,7 +211,12 @@ export default {
                             showConfirmButton: false,
                             timer: 2000,
                         });
-                        location.reload();
+                        this.cambioPagina = false;
+                        if (this.next_pagina != null) {
+                            this.next_pagina();
+                        } else {
+                            location.reload();
+                        }
                     })
                     .catch((error) => {
                         this.enviando = false;
@@ -456,6 +466,32 @@ export default {
         ingresarEnter(valor) {
             return valor.replace(",", " | ");
         },
+        swBotonGuardar(val) {
+            this.enviable = val;
+        },
+    },
+    beforeRouteLeave(to, from, next) {
+        if (this.cambioPagina) {
+            Swal.fire({
+                title: "¿Desea guardar el formulario antes de salir?",
+                html: ``,
+                showCancelButton: true,
+                confirmButtonColor: "#05568e",
+                confirmButtonText: "Si, guardar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    this.next_pagina = next;
+                    this.enviarRegistro();
+                } else {
+                    next();
+                }
+            });
+        } else {
+            next();
+        }
     },
 };
 </script>

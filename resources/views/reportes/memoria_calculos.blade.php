@@ -24,6 +24,11 @@
             width: 200px;
         }
 
+        .fondo_rojo {
+            background: #DC3545;
+            color: white;
+        }
+
         .titulo {
             position: absolute;
             width: 350px;
@@ -325,9 +330,9 @@
                                 <td>{{ $mod->oct }}</td>
                                 <td>{{ $mod->nov }}</td>
                                 <td>{{ $mod->dic }}</td>
-                                <td>
+                                <td class="{{ (float) $mod->saldo == 0 ? 'fondo_rojo' : '' }} centreado">
                                     {{ $mod->total_actividad }}
-                                </td>
+                                    </>
                             </tr>
                         @endforeach
                     @endforeach

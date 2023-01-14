@@ -148,6 +148,7 @@ export default {
             eliminados: [],
             do_eliminados: [],
             cambioPagina: true,
+            next_pagina: null,
         };
     },
     watch: {
@@ -172,6 +173,7 @@ export default {
         this.getFormularios();
         // this.validarCierre();
         this.cambioPagina = true;
+        this.next_pagina = null;
     },
     methods: {
         // OBTENER EL REGISTRO DETALLE FORMULARIO
@@ -218,9 +220,13 @@ export default {
                             timer: 2000,
                         });
                         this.cambioPagina = false;
-                        this.$router.push({
-                            name: "detalle_formularios.index",
-                        });
+                        if (this.next_pagina != null) {
+                            this.next_pagina();
+                        } else {
+                            this.$router.push({
+                                name: "detalle_formularios.index",
+                            });
+                        }
                     })
                     .catch((error) => {
                         this.enviando = false;
@@ -416,6 +422,7 @@ export default {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
+                    this.next_pagina = next;
                     this.enviarRegistro();
                     this.removerValidacion();
                 } else {

@@ -4,6 +4,7 @@ use App\Http\Controllers\ActividadRealizadaController;
 use App\Http\Controllers\ActividadTareaController;
 use App\Http\Controllers\CertificacionController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\ConfiguracionModuloController;
 use App\Http\Controllers\DetalleFormularioController;
 use App\Http\Controllers\FinancieraController;
 use App\Http\Controllers\FisicoController;
@@ -52,6 +53,11 @@ Route::get('/pei/vision', [PeiController::class, "vision"]);
 Route::get('/pei/objetivos', [PeiController::class, "objetivos"]);
 
 Route::prefix('admin')->group(function () {
+
+    // CONFIGURACION MODULOS
+    Route::get('/configuracion_modulos', [ConfiguracionModuloController::class, 'index']);
+    Route::put('/configuracion_modulos/{configuracion_modulo}', [ConfiguracionModuloController::class, 'update']);
+
     // USUARIOS
     Route::get('usuarios/getUsuario/{usuario}', [UserController::class, 'getUsuario']);
     Route::get('usuarios/userActual', [UserController::class, 'userActual']);
@@ -119,7 +125,7 @@ Route::prefix('admin')->group(function () {
 
     // MEMORIA OPERACION DETALLES
     Route::get("memoria_operacion_detalles/getDetalles", [MemoriaOperacionDetalleController::class, "getDetalles"]);
-    
+
     // CERTIFICACION
     Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);
     Route::POST("certificacions/aprobar/{certificacion}", [CertificacionController::class, "aprobar"]);

@@ -158,10 +158,10 @@
                                     :class="{
                                         'text-danger': errors.cargo,
                                     }"
-                                    >Cargo*</label
+                                    >Denominación del puesto*</label
                                 >
                                 <el-input
-                                    placeholder="Cargo"
+                                    placeholder="Denominación del puesto"
                                     :class="{ 'is-invalid': errors.cargo }"
                                     v-model="usuario.cargo"
                                     clearable
@@ -171,6 +171,75 @@
                                     class="error invalid-feedback"
                                     v-if="errors.cargo"
                                     v-text="errors.cargo[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.lugar_trabajo,
+                                    }"
+                                    >Lugar de trabajo*</label
+                                >
+                                <el-input
+                                    placeholder="Lugar de trabajo"
+                                    :class="{
+                                        'is-invalid': errors.lugar_trabajo,
+                                    }"
+                                    v-model="usuario.lugar_trabajo"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.lugar_trabajo"
+                                    v-text="errors.lugar_trabajo[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger':
+                                            errors.descripcion_puesto,
+                                    }"
+                                    >Descripción del puesto*</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Descripción del puesto"
+                                    :class="{
+                                        'is-invalid': errors.descripcion_puesto,
+                                    }"
+                                    v-model="usuario.descripcion_puesto"
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.descripcion_puesto"
+                                    v-text="errors.descripcion_puesto[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.observacion,
+                                    }"
+                                    >Observaciones</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Observaciones"
+                                    :class="{
+                                        'is-invalid': errors.observacion,
+                                    }"
+                                    v-model="usuario.observacion"
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.observacion"
+                                    v-text="errors.observacion[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -327,6 +396,11 @@ export default {
                 ci: "",
                 ci_exp: "",
                 fono: "",
+                cargo: "",
+                lugar_trabajo: "",
+                descripcion_puesto: "",
+                observacion: "",
+                unidad_id: "",
                 tipo: "",
                 foto: null,
                 acceso: "0",
@@ -435,6 +509,22 @@ export default {
                     "cargo",
                     this.usuario.cargo ? this.usuario.cargo : ""
                 );
+
+                formdata.append(
+                    "lugar_trabajo",
+                    this.usuario.lugar_trabajo ? this.usuario.lugar_trabajo : ""
+                );
+                formdata.append(
+                    "descripcion_puesto",
+                    this.usuario.descripcion_puesto
+                        ? this.usuario.descripcion_puesto
+                        : ""
+                );
+                formdata.append(
+                    "observacion",
+                    this.usuario.observacion ? this.usuario.observacion : ""
+                );
+
                 formdata.append(
                     "unidad_id",
                     this.usuario.unidad_id ? this.usuario.unidad_id : ""
@@ -511,6 +601,9 @@ export default {
             this.usuario.ci_exp = "";
             this.usuario.fono = "";
             this.usuario.cargo = "";
+            this.usuario.lugar_trabajo = "";
+            this.usuario.descripcion_puesto = "";
+            this.usuario.observacion = "";
             this.usuario.unidad_id = "";
             this.usuario.tipo = "";
             this.usuario.foto = null;

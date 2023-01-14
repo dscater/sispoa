@@ -270,10 +270,28 @@
                                                         </p>
                                                         <p>
                                                             <strong
-                                                                >Total Actual: </strong
+                                                                >Total: </strong
                                                             >{{
                                                                 oMOperacion.total
                                                             }}
+                                                        </p>
+                                                        <p>
+                                                            <strong
+                                                                >Saldo:
+                                                            </strong>
+                                                            <span
+                                                                class="text-md"
+                                                                :class="{
+                                                                    'text-danger font-weight-bold':
+                                                                        parseFloat(
+                                                                            oMOperacion.saldo
+                                                                        ) == 0,
+                                                                }"
+                                                            >
+                                                                {{
+                                                                    oMOperacion.saldo
+                                                                }}</span
+                                                            >
                                                         </p>
                                                     </div>
                                                 </div>
@@ -742,95 +760,126 @@ export default {
         },
         // ENVIAR FORMULARIO
         enviaRegistro() {
-            this.enviando = true;
-            try {
-                let url = "/admin/certificacions";
-                let formdata = new FormData();
-                let config = {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                };
-                formdata.append(
-                    "formulario_id",
-                    this.oCertificacion.formulario_id
-                );
-                formdata.append("mo_id", this.oCertificacion.mo_id);
-                formdata.append("mod_id", this.oCertificacion.mod_id);
-                formdata.append(
-                    "cantidad_usar",
-                    this.oCertificacion.cantidad_usar
-                );
-                formdata.append(
-                    "presupuesto_usarse",
-                    this.oCertificacion.presupuesto_usarse
-                );
-                formdata.append("archivo", this.oCertificacion.archivo);
-                formdata.append("correlativo", this.oCertificacion.correlativo);
-                formdata.append(
-                    "solicitante_id",
-                    this.oCertificacion.solicitante_id
-                );
-                formdata.append("superior_id", this.oCertificacion.superior_id);
-                formdata.append("inicio", this.oCertificacion.inicio);
-                formdata.append("final", this.oCertificacion.final);
-                formdata.append("final", this.oCertificacion.final);
-                formdata.append(
-                    "personal_designado",
-                    this.oCertificacion.personal_designado
-                );
-                formdata.append(
-                    "departamento",
-                    this.oCertificacion.departamento
-                        ? this.oCertificacion.departamento
-                        : ""
-                );
-                formdata.append(
-                    "municipio",
-                    this.oCertificacion.municipio
-                        ? this.oCertificacion.municipio
-                        : ""
-                );
+            if (this.oMOperacion) {
+                if (parseFloat(this.oMOperacion.saldo) > 0) {
+                    this.enviando = true;
+                    try {
+                        let url = "/admin/certificacions";
+                        let formdata = new FormData();
+                        let config = {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        };
+                        formdata.append(
+                            "formulario_id",
+                            this.oCertificacion.formulario_id
+                        );
+                        formdata.append("mo_id", this.oCertificacion.mo_id);
+                        formdata.append("mod_id", this.oCertificacion.mod_id);
+                        formdata.append(
+                            "cantidad_usar",
+                            this.oCertificacion.cantidad_usar
+                        );
+                        formdata.append(
+                            "presupuesto_usarse",
+                            this.oCertificacion.presupuesto_usarse
+                        );
+                        formdata.append("archivo", this.oCertificacion.archivo);
+                        formdata.append(
+                            "correlativo",
+                            this.oCertificacion.correlativo
+                        );
+                        formdata.append(
+                            "solicitante_id",
+                            this.oCertificacion.solicitante_id
+                        );
+                        formdata.append(
+                            "superior_id",
+                            this.oCertificacion.superior_id
+                        );
+                        formdata.append("inicio", this.oCertificacion.inicio);
+                        formdata.append("final", this.oCertificacion.final);
+                        formdata.append("final", this.oCertificacion.final);
+                        formdata.append(
+                            "personal_designado",
+                            this.oCertificacion.personal_designado
+                        );
+                        formdata.append(
+                            "departamento",
+                            this.oCertificacion.departamento
+                                ? this.oCertificacion.departamento
+                                : ""
+                        );
+                        formdata.append(
+                            "municipio",
+                            this.oCertificacion.municipio
+                                ? this.oCertificacion.municipio
+                                : ""
+                        );
 
-                axios
-                    .post(url, formdata, config)
-                    .then((res) => {
-                        this.enviando = false;
-                        Swal.fire({
-                            icon: "success",
-                            title: res.data.msj,
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                        this.errors = [];
-                        this.$router.push({ name: "certificacions.index" });
-                    })
-                    .catch((error) => {
-                        this.enviando = false;
-                        if (error.response) {
-                            if (error.response.status === 422) {
-                                this.errors = error.response.data.errors;
-                                this.muestraErrores();
-                            } else {
+                        axios
+                            .post(url, formdata, config)
+                            .then((res) => {
+                                this.enviando = false;
                                 Swal.fire({
-                                    icon: "error",
-                                    title: error,
+                                    icon: "success",
+                                    title: res.data.msj,
                                     showConfirmButton: false,
-                                    timer: 2000,
+                                    timer: 1500,
                                 });
-                            }
-                        } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: error,
-                                showConfirmButton: false,
-                                timer: 2000,
+                                this.errors = [];
+                                this.$router.push({
+                                    name: "certificacions.index",
+                                });
+                            })
+                            .catch((error) => {
+                                this.enviando = false;
+                                if (error.response) {
+                                    if (error.response.status === 422) {
+                                        this.errors =
+                                            error.response.data.errors;
+                                        this.muestraErrores();
+                                    } else {
+                                        Swal.fire({
+                                            icon: "error",
+                                            title: error,
+                                            showConfirmButton: false,
+                                            timer: 2000,
+                                        });
+                                    }
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: error,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                    });
+                                }
                             });
-                        }
+                    } catch (e) {
+                        this.enviando = false;
+                        console.log(e);
+                    }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "ERROR",
+                        html: `El saldo del detalle seleccionado es de <span class="text-md font-weight-bold text-red">${this.oMOperacion.saldo}</span>`,
+                        showConfirmButton: true,
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#0069d9",
                     });
-            } catch (e) {
-                this.enviando = false;
-                console.log(e);
+                }
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR",
+                    html: "Debes seleccionar el detalle de la operación",
+                    showConfirmButton: true,
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#0069d9",
+                });
             }
         },
 

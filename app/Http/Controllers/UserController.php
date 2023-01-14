@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
 use App\Models\Cliente;
+use App\Models\ConfiguracionModulo;
 use App\Models\Log;
 use App\Models\Tcont;
 use App\Models\User;
@@ -20,6 +21,8 @@ class UserController extends Controller
         'ci_exp' => 'required',
         'fono' => 'required|min:4',
         'cargo' => 'required',
+        'lugar_trabajo' => 'required',
+        'descripcion_puesto' => 'required',
         'unidad_id' => 'required',
         'tipo' => 'required',
         'acceso' => 'required',
@@ -37,6 +40,8 @@ class UserController extends Controller
         'fono.required' => 'Este campo es obligatorio',
         'fono.min' => 'Debes ingresar al menos 4 carácteres',
         'cargo.required' => 'Debes ingresar un cargo',
+        'lugar_trabajo.required' => 'Debes ingresar un lugar de trabajo',
+        'descripcion_puesto.required' => 'Debes ingresar la descripción del puesto',
         'unidad_id.required' => 'Debes seleccionar una unidad',
         'tipo.required' => 'Este campo es obligatorio',
     ];
@@ -127,6 +132,8 @@ class UserController extends Controller
 
             'configuracion.index',
             'configuracion.edit',
+
+            'configuracion.modulos',
 
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
@@ -244,34 +251,6 @@ class UserController extends Controller
             "reportes.ejecucion_presupuestos_g",
         ],
         'JEFES DE ÁREAS' => [
-            'pei.index',
-
-            'formulario_uno.index',
-
-            'formulario_dos.index',
-
-            'formulario_tres.index',
-
-            'formulario_cuatro.index',
-            'formulario_cuatro.create',
-            'formulario_cuatro.edit',
-            'formulario_cuatro.destroy',
-
-            'detalle_formularios.index',
-            'detalle_formularios.create',
-            'detalle_formularios.edit',
-            'detalle_formularios.destroy',
-
-            'formulario_cinco.index',
-            'formulario_cinco.create',
-            'formulario_cinco.edit',
-            'formulario_cinco.destroy',
-
-            'memoria_calculos.index',
-            'memoria_calculos.create',
-            'memoria_calculos.edit',
-            'memoria_calculos.destroy',
-
             'certificacions.index',
             'certificacions.create',
             'certificacions.edit',
@@ -466,7 +445,45 @@ class UserController extends Controller
     public function getPermisos(User $usuario)
     {
         $tipo = $usuario->tipo;
-        return response()->JSON($this->permisos[$tipo]);
+
+        $permisos = $this->permisos[$tipo];
+
+        $index = [];
+
+        $conf_form4 = ConfiguracionModulo::where("modulo", "FORMULARIO 4")->get()->first();
+        if ($conf_form4->editar == 0) {
+            // agregar index permiso
+            $index[] = array_search("formulario_cuatro.edit", $permisos);
+        }
+        if ($conf_form4->eliminar == 0) {
+            // agregar index permiso
+            $index[] = array_search("formulario_cuatro.destroy", $permisos);
+        }
+        $conf_dform4 = ConfiguracionModulo::where("modulo", "DETALLE FORMULARIO 4")->get()->first();
+        if ($conf_dform4->editar == 0) {
+            // agregar index permiso
+            $index[] = array_search("detalle_formularios.edit", $permisos);
+        }
+        if ($conf_dform4->eliminar == 0) {
+            // agregar index permiso
+            $index[] = array_search("detalle_formularios.destroy", $permisos);
+        }
+        $conf_mcalculo = ConfiguracionModulo::where("modulo", "MEMORIA DE CÁLCULO")->get()->first();
+        if ($conf_mcalculo->editar == 0) {
+            // agregar index permiso
+            $index[] = array_search("memoria_calculos.edit", $permisos);
+        }
+        if ($conf_mcalculo->eliminar == 0) {
+            // agregar index permiso
+            $index[] = array_search("memoria_calculos.destroy", $permisos);
+        }
+
+        // remover permisos
+        foreach ($index as $value) {
+            unset($permisos[$value]);
+        }
+
+        return response()->JSON($permisos);
     }
 
     public function getInfoBox()

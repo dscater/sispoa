@@ -81,6 +81,7 @@
                             :operacion="operacion"
                             :index="index"
                             @quitar="quitarOperacion"
+                            @sw_guardar="swBotonGuardar"
                             :key="index"
                         ></Operacion>
                         <div class="row">
@@ -139,6 +140,7 @@ export default {
             cantidad_registrados: 0,
             errors: [],
             formulario_id: "",
+            cambioPagina: true,
         };
     },
     watch: {
@@ -160,6 +162,7 @@ export default {
     mounted() {
         this.loadingWindow.close();
         this.getFormularios();
+        this.cambioPagina = true;
     },
     methods: {
         // OBTENER LA LISTA DE FORMULARIO
@@ -186,6 +189,7 @@ export default {
                             showConfirmButton: false,
                             timer: 2000,
                         });
+                        this.cambioPagina = false;
                         this.$router.push({
                             name: "memoria_calculos.index",
                         });
@@ -432,6 +436,31 @@ export default {
         ingresarEnter(valor) {
             return valor.replace(",", " | ");
         },
+        swBotonGuardar(val) {
+            this.enviable = val;
+        },
+    },
+    beforeRouteLeave(to, from, next) {
+        if (this.cambioPagina) {
+            Swal.fire({
+                title: "¿Desea guardar el formulario antes de salir?",
+                html: ``,
+                showCancelButton: true,
+                confirmButtonColor: "#05568e",
+                confirmButtonText: "Si, guardar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    this.enviarRegistro();
+                } else {
+                    next();
+                }
+            });
+        } else {
+            next();
+        }
     },
 };
 </script>

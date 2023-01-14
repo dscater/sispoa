@@ -24,6 +24,11 @@
             width: 200px;
         }
 
+        .fondo_rojo {
+            background: #DC3545;
+            color: white;
+        }
+
         .titulo {
             position: absolute;
             width: 350px;

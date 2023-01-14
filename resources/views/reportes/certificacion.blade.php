@@ -310,7 +310,7 @@
         </thead>
         <tbody>
             <tr>
-                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->justificacion }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->m_partida->descripcion }}</td>
                 <td class="centreado">{{ $certificacion->memoria_operacion_detalle->partida }}</td>
                 <td class="centreado">{{ number_format($certificacion->memoria_operacion->presupuesto, 2) }}</td>
                 <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>

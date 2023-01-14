@@ -5,9 +5,9 @@
     --secondary: #da1900;
 }
 
-.bg-azul{
+.bg-azul {
     background-color: #2198e7;
-    color:white!important;
+    color: white !important;
 }
 
 .secondary {
@@ -66,4 +66,9 @@ input.form-control {
 
 .el-input__inner:read-only {
     cursor: not-allowed;
+}
+
+.fondo_rojo {
+    background: #DC3545;
+    color: white;
 }

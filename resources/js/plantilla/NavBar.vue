@@ -90,8 +90,8 @@ export default {
             axios.post("/logout").then((res) => {
                 setTimeout(function () {
                     localStorage.clear();
-                    location.reload();
-                    this.$router.push({ name: "login" });
+                    // this.$router.push({ name: "login" });
+                    window.location = "/";
                 }, 500);
             });
         },

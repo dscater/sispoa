@@ -427,8 +427,10 @@
                                         placeholder="Total"
                                         :class="{
                                             'is-invalid': errors.total,
-                                            'is-invalid':
+                                            monto_invalido:
                                                 error_totales[index_mod],
+                                            monto_valido:
+                                                !error_totales[index_mod],
                                         }"
                                         v-model="item_mod.total"
                                         clearable
@@ -746,6 +748,10 @@
                                                             error_totales[
                                                                 index_mod
                                                             ],
+                                                        'bg-success':
+                                                            !error_totales[
+                                                                index_mod
+                                                            ],
                                                     }"
                                                     v-text="
                                                         parseFloat(
@@ -904,7 +910,9 @@ export default {
             });
         },
         getTextoPartida(index_mod = null) {
-            console.log(this.o_Operacion.memoria_operacion_detalles[index_mod].id);
+            console.log(
+                this.o_Operacion.memoria_operacion_detalles[index_mod].id
+            );
             if (index_mod != null) {
                 let item = this.listPartidas.filter(
                     (value) =>
@@ -913,11 +921,19 @@ export default {
                             .partida_id
                 );
                 if (item.length > 0) {
-                    this.o_Operacion.memoria_operacion_detalles[index_mod].partida = item[0].partida;
-                    this.o_Operacion.memoria_operacion_detalles[index_mod].descripcion = item[0].descripcion;
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].partida = item[0].partida;
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].descripcion = item[0].descripcion;
                 } else {
-                    this.o_Operacion.memoria_operacion_detalles[index_mod].partida = "";
-                    this.o_Operacion.memoria_operacion_detalles[index_mod].descripcion = "";
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].partida = "";
+                    this.o_Operacion.memoria_operacion_detalles[
+                        index_mod
+                    ].descripcion = "";
                 }
             }
         },
@@ -1183,6 +1199,15 @@ export default {
             ) {
                 this.error_totales[index_mod] = true;
             }
+
+            let existe_error_totales = this.error_totales.filter(
+                (element) => element == true
+            );
+            if (existe_error_totales.length > 0) {
+                this.$emit("sw_guardar", false);
+            } else {
+                this.$emit("sw_guardar", true);
+            }
         },
         calculaTotalOperacion() {
             let total = 0;
@@ -1343,5 +1368,14 @@ textarea[readonly] {
 
 .tabla_programacion tbody tr td input {
     padding: 2px;
+}
+
+.monto_invalido input {
+    background: #dc3545;
+    color: white;
+}
+.monto_valido input {
+    background: #28a745;
+    color: white;
 }
 </style>

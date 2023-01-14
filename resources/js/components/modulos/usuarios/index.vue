@@ -262,6 +262,9 @@ export default {
                 ci_exp: "",
                 fono: "",
                 cargo: "",
+                lugar_trabajo: "",
+                descripcion_puesto: "",
+                observacion: "",
                 unidad_id: "",
                 tipo: "",
                 foto: null,
@@ -296,6 +299,9 @@ export default {
             this.oUsuario.ci_exp = item.ci_exp ? item.ci_exp : "";
             this.oUsuario.fono = item.fono ? item.fono : "";
             this.oUsuario.cargo = item.cargo ? item.cargo : "";
+            this.oUsuario.lugar_trabajo = item.lugar_trabajo ? item.lugar_trabajo : "";
+            this.oUsuario.descripcion_puesto = item.descripcion_puesto ? item.descripcion_puesto : "";
+            this.oUsuario.observacion = item.observacion ? item.observacion : "";
             this.oUsuario.unidad_id = item.unidad_id ? item.unidad_id : "";
             this.oUsuario.tipo = item.tipo ? item.tipo : "";
             this.oUsuario.acceso = item.acceso ? "" + item.acceso : "0";
@@ -379,6 +385,9 @@ export default {
             this.oUsuario.ci_exp = "";
             this.oUsuario.fono = "";
             this.oUsuario.cargo = "";
+            this.oUsuario.lugar_trabajo = "";
+            this.oUsuario.descripcion_puesto = "";
+            this.oUsuario.observacion = "";
             this.oUsuario.unidad_id = "";
             this.oUsuario.tipo = "";
             this.oUsuario.foto = null;

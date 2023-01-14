@@ -271,10 +271,28 @@
                                                         </p>
                                                         <p>
                                                             <strong
-                                                                >Total Actual: </strong
+                                                                >Total: </strong
                                                             >{{
                                                                 oMOperacion.total
                                                             }}
+                                                        </p>
+                                                        <p>
+                                                            <strong
+                                                                >Saldo:
+                                                            </strong>
+                                                            <span
+                                                                class="text-md"
+                                                                :class="{
+                                                                    'text-danger font-weight-bold':
+                                                                        parseFloat(
+                                                                            oMOperacion.saldo
+                                                                        ) == 0,
+                                                                }"
+                                                            >
+                                                                {{
+                                                                    oMOperacion.saldo
+                                                                }}</span
+                                                            >
                                                         </p>
                                                     </div>
                                                 </div>
