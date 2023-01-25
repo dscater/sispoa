@@ -32,13 +32,15 @@
                                             Nuevo
                                         </router-link>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div
+                                        class="col-md-3"
+                                        v-if="
+                                            permisos.includes(
+                                                'configuracion.modulos'
+                                            )
+                                        "
+                                    >
                                         <button
-                                            v-if="
-                                                permisos.includes(
-                                                    'configuracion.modulos'
-                                                )
-                                            "
                                             class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
                                             @click="muestraConfiguracionModulos"
                                         >
@@ -53,6 +55,30 @@
                                                 muestra_configuracion_modulo = false
                                             "
                                         ></ConfiguracionModulo>
+                                    </div>
+
+                                    <!-- APROBAR FORMULARIOS -->
+                                    <div
+                                        class="col-md-3"
+                                        v-if="
+                                            permisos.includes('aprobar.modulos')
+                                        "
+                                    >
+                                        <button
+                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
+                                            @click="muestraAprobarFormularios"
+                                        >
+                                            <i class="fa fa-check-square"></i>
+                                            Aprobar formulario
+                                        </button>
+                                        <AprobarFormularios
+                                            :muestra_modal="
+                                                muestra_aprobar_formularios
+                                            "
+                                            @close="
+                                                muestra_aprobar_formularios = false
+                                            "
+                                        ></AprobarFormularios>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +204,8 @@
                                                             v-if="
                                                                 permisos.includes(
                                                                     'detalle_formularios.edit'
-                                                                )
+                                                                ) &&
+                                                                !estado_aprobado
                                                             "
                                                             @click="
                                                                 editar(
@@ -199,7 +226,8 @@
                                                             v-if="
                                                                 permisos.includes(
                                                                     'detalle_formularios.destroy'
-                                                                )
+                                                                ) &&
+                                                                !estado_aprobado
                                                             "
                                                             @click="
                                                                 eliminaDetalleFormulario(
@@ -265,9 +293,11 @@
 
 <script>
 import ConfiguracionModulo from "../configuracion_modulos/ConfiguracionModulo.vue";
+import AprobarFormularios from "../aprobar_formularios/AprobarFormularios.vue";
 export default {
     components: {
         ConfiguracionModulo,
+        AprobarFormularios,
     },
     data() {
         return {
@@ -292,6 +322,11 @@ export default {
                     label: "Fecha de registro",
                     sortable: true,
                 },
+                {
+                    key: "estado_aprobado",
+                    label: "Estado",
+                    sortable: true,
+                },
                 { key: "detalles", label: "Ver más" },
                 { key: "accion", label: "Acción" },
             ],
@@ -313,12 +348,15 @@ export default {
             totalRows: 10,
             filter: null,
             muestra_configuracion_modulo: false,
+            muestra_aprobar_formularios: false,
+            estado_aprobado: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getDetalleFormularios();
         this.obtienePermisos();
+        this.getAprobado();
     },
     methods: {
         // Listar DetalleFormularios
@@ -429,6 +467,14 @@ export default {
                     localStorage.setItem("permisos", JSON.stringify(res.data));
                     this.permisos = localStorage.getItem("permisos");
                 });
+        },
+        muestraAprobarFormularios() {
+            this.muestra_aprobar_formularios = true;
+        },
+        getAprobado() {
+            axios.get("/admin/get_aprobados").then((response) => {
+                this.estado_aprobado = response.data;
+            });
         },
     },
 };

@@ -19,6 +19,8 @@ class FormularioCuatro extends Model
 
     protected $with = ["unidad"];
 
+    protected $appends = ["estado_aprobado"];
+
     public function unidad()
     {
         return $this->belongsTo(Unidad::class, 'unidad_id');
@@ -37,5 +39,11 @@ class FormularioCuatro extends Model
     public function certificacions()
     {
         return $this->hasMany(Certificacion::class, 'formulario_id');
+    }
+
+    public function getEstadoAprobadoAttribute()
+    {
+        $configuracion_modulos = ConfiguracionModulo::where("modulo", "APROBAR FORMULARIOS")->get()->first();
+        return $configuracion_modulos->editar === 1 ? "APROBADO" : "PENDIENTE";
     }
 }

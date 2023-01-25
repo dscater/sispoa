@@ -176,6 +176,11 @@ export default {
                     sortable: true,
                 },
                 {
+                    key: "estado_aprobado",
+                    label: "Estado",
+                    sortable: true,
+                },
+                {
                     key: "fecha_registro",
                     label: "Fecha de registro",
                     sortable: true,
@@ -199,11 +204,13 @@ export default {
             ],
             totalRows: 10,
             filter: null,
+            estado_aprobado: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getFormularioCinco();
+        this.getAprobado();
     },
     methods: {
         // Listar FormularioCinco
@@ -289,6 +296,11 @@ export default {
                     if (error.response) {
                     }
                 });
+        },
+        getAprobado() {
+            axios.get("/admin/get_aprobados").then((response) => {
+                this.estado_aprobado = response.data;
+            });
         },
     },
 };

@@ -58,6 +58,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/configuracion_modulos', [ConfiguracionModuloController::class, 'index']);
     Route::put('/configuracion_modulos/{configuracion_modulo}', [ConfiguracionModuloController::class, 'update']);
 
+    // APROBAR FORMULARIOS
+    Route::get('/aprobar_formularios', [ConfiguracionModuloController::class, 'get_aprobar_formularios']);
+    Route::get('/get_aprobados', [ConfiguracionModuloController::class, 'get_aprobados']);
+
     // USUARIOS
     Route::get('usuarios/getUsuario/{usuario}', [UserController::class, 'getUsuario']);
     Route::get('usuarios/userActual', [UserController::class, 'userActual']);

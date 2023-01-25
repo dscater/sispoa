@@ -33,13 +33,16 @@
                                             Nuevo
                                         </button>
                                     </div>
-                                    <div class="col-md-3">
+                                    <!-- CONFIGURACION MODULOS -->
+                                    <div
+                                        class="col-md-3"
+                                        v-if="
+                                            permisos.includes(
+                                                'configuracion.modulos'
+                                            )
+                                        "
+                                    >
                                         <button
-                                            v-if="
-                                                permisos.includes(
-                                                    'configuracion.modulos'
-                                                )
-                                            "
                                             class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
                                             @click="muestraConfiguracionModulos"
                                         >
@@ -54,6 +57,29 @@
                                                 muestra_configuracion_modulo = false
                                             "
                                         ></ConfiguracionModulo>
+                                    </div>
+                                    <!-- APROBAR FORMULARIOS -->
+                                    <div
+                                        class="col-md-3"
+                                        v-if="
+                                            permisos.includes('aprobar.modulos')
+                                        "
+                                    >
+                                        <button
+                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
+                                            @click="muestraAprobarFormularios"
+                                        >
+                                            <i class="fa fa-check-square"></i>
+                                            Aprobar formulario
+                                        </button>
+                                        <AprobarFormularios
+                                            :muestra_modal="
+                                                muestra_aprobar_formularios
+                                            "
+                                            @close="
+                                                muestra_aprobar_formularios = false
+                                            "
+                                        ></AprobarFormularios>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +205,8 @@
                                                             v-if="
                                                                 permisos.includes(
                                                                     'formulario_cuatro.edit'
-                                                                )
+                                                                ) &&
+                                                                !estado_aprobado
                                                             "
                                                             @click="
                                                                 editarRegistro(
@@ -200,7 +227,8 @@
                                                             v-if="
                                                                 permisos.includes(
                                                                     'formulario_cuatro.destroy'
-                                                                )
+                                                                ) &&
+                                                                !estado_aprobado
                                                             "
                                                             @click="
                                                                 eliminaFormularioCuatro(
@@ -267,11 +295,13 @@
 
 <script>
 import ConfiguracionModulo from "../configuracion_modulos/ConfiguracionModulo.vue";
+import AprobarFormularios from "../aprobar_formularios/AprobarFormularios.vue";
 import Nuevo from "./Nuevo.vue";
 export default {
     components: {
         Nuevo,
         ConfiguracionModulo,
+        AprobarFormularios,
     },
     data() {
         return {
@@ -328,6 +358,11 @@ export default {
                 { key: "ponderacion", label: "Ponderación %", sortable: true },
                 { key: "unidad.nombre", label: "Unidad Organizacional" },
                 {
+                    key: "estado_aprobado",
+                    label: "Estado",
+                    sortable: true,
+                },
+                {
                     key: "fecha_registro",
                     label: "Fecha de registro",
                     sortable: true,
@@ -368,11 +403,14 @@ export default {
             totalRows: 10,
             filter: null,
             muestra_configuracion_modulo: false,
+            muestra_aprobar_formularios: false,
+            estado_aprobado: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getFormularioCuatros();
+        this.getAprobado();
     },
     methods: {
         // Seleccionar Opciones de Tabla
@@ -533,6 +571,14 @@ export default {
         },
         muestraConfiguracionModulos() {
             this.muestra_configuracion_modulo = true;
+        },
+        muestraAprobarFormularios() {
+            this.muestra_aprobar_formularios = true;
+        },
+        getAprobado() {
+            axios.get("/admin/get_aprobados").then((response) => {
+                this.estado_aprobado = response.data;
+            });
         },
     },
 };

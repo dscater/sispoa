@@ -13,9 +13,16 @@ class FormularioCinco extends Model
     protected $fillable = ['memoria_id', "fecha_registro"];
 
     protected $with = ["memoria"];
-
+    protected $appends = ["estado_aprobado"];
+    
     public function memoria()
     {
         return $this->belongsTo(MemoriaCalculo::class, 'memoria_id');
+    }
+
+    public function getEstadoAprobadoAttribute()
+    {
+        $configuracion_modulos = ConfiguracionModulo::where("modulo", "APROBAR FORMULARIOS")->get()->first();
+        return $configuracion_modulos->editar === 1 ? "APROBADO" : "PENDIENTE";
     }
 }
