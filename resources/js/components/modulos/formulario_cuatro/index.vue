@@ -410,6 +410,7 @@ export default {
     mounted() {
         this.loadingWindow.close();
         this.getFormularioCuatros();
+        this.obtienePermisos();
         this.getAprobado();
     },
     methods: {
@@ -568,6 +569,14 @@ export default {
         },
         ingresarEnter(valor) {
             return valor.replace(",", "<br/>");
+        },
+        obtienePermisos() {
+            axios
+                .get("/admin/usuarios/getPermisos/" + this.user.id)
+                .then((res) => {
+                    localStorage.setItem("permisos", JSON.stringify(res.data));
+                    this.permisos = localStorage.getItem("permisos");
+                });
         },
         muestraConfiguracionModulos() {
             this.muestra_configuracion_modulo = true;

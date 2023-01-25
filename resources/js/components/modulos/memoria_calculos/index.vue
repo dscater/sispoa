@@ -374,6 +374,7 @@ export default {
     mounted() {
         this.loadingWindow.close();
         this.getMemoriaCalculo();
+        this.obtienePermisos();
         this.getAprobado();
     },
     methods: {
@@ -500,6 +501,14 @@ export default {
         },
         muestraConfiguracionModulos() {
             this.muestra_configuracion_modulo = true;
+        },
+        obtienePermisos() {
+            axios
+                .get("/admin/usuarios/getPermisos/" + this.user.id)
+                .then((res) => {
+                    localStorage.setItem("permisos", JSON.stringify(res.data));
+                    this.permisos = localStorage.getItem("permisos");
+                });
         },
         muestraAprobarFormularios() {
             this.muestra_aprobar_formularios = true;
